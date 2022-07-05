@@ -14,9 +14,9 @@ class Mailbook
         $this->mailables = collect();
     }
 
-    public function register(string $class, Closure $closure): Mailable
+    public function register(string $class, Closure $closure): MailbookItem
     {
-        $mailable = new Mailable($class, $closure);
+        $mailable = new MailbookItem($class, $closure);
 
         $this->mailables->push($mailable);
 
@@ -24,7 +24,7 @@ class Mailbook
     }
 
     /**
-     * @return Collection<int, Mailable>
+     * @return Collection<int, MailbookItem>
      */
     public function mailables(): Collection
     {

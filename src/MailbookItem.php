@@ -3,12 +3,13 @@
 namespace Xammie\Mailbook;
 
 use Closure;
+use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 
-class Mailable
+class MailbookItem
 {
-    private \Illuminate\Contracts\Mail\Mailable|null $mailable = null;
+    private Mailable|null $mailable = null;
 
     public function __construct(public string $class, public Closure $closure)
     {
@@ -21,6 +22,7 @@ class Mailable
 
     public function subject(): string
     {
+        // @phpstan-ignore-next-line
         return $this->getMailable()->build()->subject;
     }
 
@@ -29,9 +31,9 @@ class Mailable
         return $this->getMailable()->render();
     }
 
-    public function getMailable(): \Illuminate\Contracts\Mail\Mailable
+    public function getMailable(): Mailable
     {
-        if ($this->mailable instanceof \Illuminate\Contracts\Mail\Mailable) {
+        if ($this->mailable instanceof Mailable) {
             return $this->mailable;
         }
 

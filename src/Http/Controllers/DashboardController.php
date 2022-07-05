@@ -5,7 +5,7 @@ namespace Xammie\Mailbook\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\Mailable;
+use Xammie\Mailbook\MailbookItem;
 
 class DashboardController
 {
@@ -22,7 +22,7 @@ class DashboardController
         $current = $mailables->first();
 
         if ($request->has('selected')) {
-            $selected = $mailables->first(fn (Mailable $mailable) => $mailable->class === $request->get('selected'));
+            $selected = $mailables->first(fn (MailbookItem $mailable) => $mailable->class === $request->get('selected'));
             $current = $selected ?: $current;
         }
 

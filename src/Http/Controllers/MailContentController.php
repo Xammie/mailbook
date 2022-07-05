@@ -3,7 +3,7 @@
 namespace Xammie\Mailbook\Http\Controllers;
 
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\Mailable;
+use Xammie\Mailbook\MailbookItem;
 
 class MailContentController
 {
@@ -15,7 +15,7 @@ class MailContentController
             abort(500);
         }
 
-        $current = $mailables->first(fn (Mailable $mailable) => $mailable->class === $class);
+        $current = $mailables->first(fn (MailbookItem $mailable) => $mailable->class === $class);
 
         if (! $current) {
             abort(400);
