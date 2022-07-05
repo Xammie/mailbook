@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
+use UnexpectedValueException;
 
 class MailbookItem
 {
@@ -37,6 +38,12 @@ class MailbookItem
             return $this->mailable;
         }
 
-        return $this->mailable = App::call($this->closure);
+        $mailable = App::call($this->closure);
+
+        if (! $mailable instanceof Mailable) {
+            throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($mailable)));
+        }
+
+        return $this->mailable = $mailable;
     }
 }

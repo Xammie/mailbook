@@ -7,20 +7,23 @@ use Illuminate\Support\Collection;
 
 class Mailbook
 {
+    /**
+     * @var Collection<int, MailbookItem> $mailables
+     */
     protected Collection $mailables;
 
     public function __construct()
     {
-        $this->mailables = collect();
+        $this->mailables = collect(); // @phpstan-ignore-line
     }
 
     public function register(string $class, Closure $closure): MailbookItem
     {
-        $mailable = new MailbookItem($class, $closure);
+        $item = new MailbookItem($class, $closure);
 
-        $this->mailables->push($mailable);
+        $this->mailables->push($item);
 
-        return $mailable;
+        return $item;
     }
 
     /**

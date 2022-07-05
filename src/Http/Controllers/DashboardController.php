@@ -28,7 +28,7 @@ class DashboardController
 
         return view('mailbook::dashboard', [
             'current' => $current,
-            'subject' => $current->subject(),
+            'subject' => $current?->subject(),
             'mailables' => $mailables,
         ]);
     }
