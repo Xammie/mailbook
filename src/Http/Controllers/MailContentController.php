@@ -5,7 +5,7 @@ namespace Xammie\Mailbook\Http\Controllers;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Mailable;
 
-class RenderMailableController
+class MailContentController
 {
     public function __invoke(string $class): string
     {

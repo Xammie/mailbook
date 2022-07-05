@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Mailable;
 
-class MailbookController
+class DashboardController
 {
     public function __invoke(Request $request): View
     {
