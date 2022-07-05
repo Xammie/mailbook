@@ -34,7 +34,7 @@ class Mailable
         if ($this->mailable instanceof \Illuminate\Contracts\Mail\Mailable) {
             return $this->mailable;
         }
-        
+
         return $this->mailable = App::call($this->closure);
     }
 }
