@@ -1,8 +1,8 @@
 <?php
 
+use function Spatie\Snapshots\assertMatchesHtmlSnapshot;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\TestMail;
-use function Spatie\Snapshots\assertMatchesHtmlSnapshot;
 
 it('can render', function () {
     $html = Mailbook::register(TestMail::class, fn () => new TestMail())->render();

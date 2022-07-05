@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 class Mailbook
 {
     /**
-     * @var Collection<int, MailbookItem> $mailables
+     * @var Collection<int, MailbookItem>
      */
     protected Collection $mailables;
 
