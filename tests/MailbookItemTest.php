@@ -25,6 +25,7 @@ it('throws with invalid return type', function () {
 it('can inject dependencies', function () {
     Mailbook::register(TestMail::class, function (TestMail $testMail) {
         expect($testMail)->toBeInstanceOf(TestMail::class);
+
         return $testMail;
     })
         ->getMailable();
