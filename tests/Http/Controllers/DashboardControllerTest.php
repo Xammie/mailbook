@@ -1,8 +1,8 @@
 <?php
 
+use function Pest\Laravel\get;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\TestMail;
-use function Pest\Laravel\get;
 
 it('can render', function () {
     Mailbook::register(TestMail::class, function () {

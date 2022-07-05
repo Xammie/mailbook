@@ -10,9 +10,11 @@ use Illuminate\Queue\SerializesModels;
 
 final class TestMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
-    public function __construct() {
+    public function __construct()
+    {
     }
 
     public function build(): self
