@@ -21,3 +21,11 @@ it('throws with invalid return type', function () {
         ->getMailable();
 })
     ->throws(UnexpectedValueException::class, 'Unexpected value returned from mailbook closure expected instance of Illuminate\Mail\Mailable but got string');
+
+it('can inject dependencies', function () {
+    Mailbook::register(TestMail::class, function (TestMail $testMail) {
+        expect($testMail)->toBeInstanceOf(TestMail::class);
+        return $testMail;
+    })
+        ->getMailable();
+});
