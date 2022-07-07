@@ -22,6 +22,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.8",
+        "infection/infection": "^0.26.13",
         "laravel/pint": "^0.2.3",
         "nunomaduro/collision": "^6.0",
         "nunomaduro/larastan": "^2.0.1",
@@ -47,15 +48,17 @@
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
+        "coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage",
         "format": "vendor/bin/pint",
-        "pint": "vendor/bin/pint"
+        "pint": "vendor/bin/pint",
+        "infection": "XDEBUG_MODE=coverage vendor/bin/infection --test-framework=pest --threads=4 --min-covered-msi=100"
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "infection/extension-installer": true
         }
     },
     "extra": {
