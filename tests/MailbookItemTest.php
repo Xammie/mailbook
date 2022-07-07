@@ -24,8 +24,7 @@ it('can get subject', function () {
 });
 
 it('cannot get missing subject', function () {
-    $class = new class extends Mailable
-    {
+    $class = new class () extends Mailable {
         public function build(): self
         {
             return $this->markdown('mailbook::test-email');
