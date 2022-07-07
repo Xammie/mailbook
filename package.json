@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "tailwindcss": "^3.1.4"
+  },
+    "scripts": {
+        "watch": "tailwindcss --input ./resources/css/mailbook.css --output ./resources/dist/mailbook.css --watch",
+        "build": "tailwindcss --input ./resources/css/mailbook.css --output ./resources/dist/mailbook.css --minify"
+    }
+}

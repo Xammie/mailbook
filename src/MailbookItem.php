@@ -27,7 +27,7 @@ class MailbookItem
         return $this->getMailable()->build()->subject;
     }
 
-    public function render(): string
+    public function content(): string
     {
         return $this->getMailable()->render();
     }

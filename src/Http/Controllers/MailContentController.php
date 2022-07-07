@@ -21,6 +21,6 @@ class MailContentController
             abort(400);
         }
 
-        return $current->render();
+        return $current->content();
     }
 }

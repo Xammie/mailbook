@@ -5,7 +5,7 @@ use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 
 it('can render', function () {
-    $html = Mailbook::register(TestMail::class, fn () => new TestMail())->render();
+    $html = Mailbook::register(TestMail::class, fn () => new TestMail())->content();
 
     assertMatchesHtmlSnapshot($html);
 });
@@ -13,7 +13,7 @@ it('can render', function () {
 it('can render multiple times', function () {
     $item = Mailbook::register(TestMail::class, fn () => new TestMail());
 
-    expect($item->render())->toBe($item->render());
+    expect($item->content())->toBe($item->content());
 });
 
 it('throws with invalid return type', function () {
