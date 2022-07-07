@@ -12,15 +12,26 @@ Laravel Mailbook lets you explore your mailables.
 You can install the package via composer:
 
 ```bash
-composer require xammie/mailbook
+composer require --dev xammie/mailbook
 ```
 
-You can publish and run the migrations with:
+## Usage
 
-```bash
-php artisan vendor:publish --tag="mailbook-migrations"
-php artisan migrate
+Before you can view transactional emails in the mailbook you have to register them.
+
+```php
+// This will use dependency injection if your mailable has parameters
+Mailbook::add(\App\Mai\VerificationMail::class);
+
+// Use a closure to customize the parameters of the mail instance
+Mailbook::add(function () {
+    $user = User::factory()->make();
+
+    return new VerificationMail($user, '/example/url')
+});
 ```
+
+## Customization
 
 You can publish the config file with:
 
@@ -31,21 +42,13 @@ php artisan vendor:publish --tag="mailbook-config"
 This is the contents of the published config file:
 
 ```php
-return [
-];
+return [];
 ```
 
 Optionally, you can publish the views using
 
 ```bash
 php artisan vendor:publish --tag="mailbook-views"
-```
-
-## Usage
-
-```php
-$mailbook = new Xammie\Mailbook();
-echo $mailbook->echoPhrase('Hello, Xammie!');
 ```
 
 ## Testing
