@@ -15,6 +15,13 @@ it('can get class from closure', function () {
     expect($resolver->class())->toEqual(TestMail::class);
 });
 
+it('cannot get class from closure with invalid type', function () {
+    $resolver = new MailableResolver(fn () => 'invalid');
+
+    $resolver->class();
+})
+    ->throws(UnexpectedValueException::class, 'Unexpected value returned from mailbook closure expected instance of Illuminate\Contracts\Mail\Mailable but got string');
+
 it('can get class from closure with return type', function () {
     $resolver = new MailableResolver(fn (): TestMail => new TestMail());
 
@@ -38,6 +45,13 @@ it('can get instance from closure', function () {
 
     expect($resolver->instance())->toEqual(new TestMail());
 });
+
+it('cannot get instance from closure with invalid type', function () {
+    $resolver = new MailableResolver(fn () => 'invalid');
+
+    $resolver->instance();
+})
+    ->throws(UnexpectedValueException::class, 'Unexpected value returned from mailbook closure expected instance of Illuminate\Contracts\Mail\Mailable but got string');
 
 it('can get instance from closure with return type', function () {
     $resolver = new MailableResolver(fn (): TestMail => new TestMail());

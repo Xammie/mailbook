@@ -27,6 +27,7 @@ class MailbookItem
 
     public function content(): string
     {
+        // @phpstan-ignore-next-line
         return $this->resolver()->instance()->render();
     }
 

@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Facades\App;
 use ReflectionFunction;
+use ReflectionNamedType;
 use UnexpectedValueException;
 
 class MailableResolver
@@ -16,9 +17,6 @@ class MailableResolver
     {
     }
 
-    /**
-     * @return class-string<Mailable>
-     */
     public function class(): string
     {
         if ($this->mailable instanceof Mailable) {
@@ -30,13 +28,23 @@ class MailableResolver
         }
 
         $reflection = new ReflectionFunction($this->mailable);
-        $type = $reflection->getReturnType()?->getName();
+        $reflectionType = $reflection->getReturnType();
 
-        if (class_exists($type)) {
-            return $type;
+        if ($reflectionType instanceof ReflectionNamedType) {
+            $type = $reflectionType->getName();
+
+            if (class_exists($type)) {
+                return $type;
+            }
         }
 
-        return get_class(App::call($this->mailable));
+        $instance = App::call($this->mailable);
+
+        if (! $instance instanceof Mailable) {
+            throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
+        }
+
+        return get_class($instance);
     }
 
     public function instance(): Mailable
