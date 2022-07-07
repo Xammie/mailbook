@@ -5,7 +5,16 @@ use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 
 it('can render', function () {
-    Mailbook::register(TestMail::class, fn () => new TestMail());
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard'))
+        ->assertSuccessful()
+        ->assertSeeText('Mailbook')
+        ->assertSeeText('Test email subject');
+});
+
+it('can render closure', function () {
+    Mailbook::add(fn () => new TestMail());
 
     get(route('mailbook.dashboard'))
         ->assertSuccessful()
@@ -14,8 +23,8 @@ it('can render', function () {
 });
 
 it('can render selected', function () {
-    Mailbook::register(TestMail::class, fn () => new TestMail());
-    Mailbook::register(TestMail::class, fn () => new TestMail());
+    Mailbook::add(fn () => new TestMail());
+    Mailbook::add(fn () => new TestMail());
 
     get(route('mailbook.dashboard', ['selected' => TestMail::class]))
         ->assertSuccessful()
@@ -25,6 +34,5 @@ it('can render selected', function () {
 
 it('cannot render without mailables', function () {
     get(route('mailbook.dashboard'))
-        ->assertSuccessful()
-        ->assertSeeText('You have not registered any mailables.');
+        ->assertStatus(500);
 });

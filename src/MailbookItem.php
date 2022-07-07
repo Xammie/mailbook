@@ -3,47 +3,45 @@
 namespace Xammie\Mailbook;
 
 use Closure;
-use Illuminate\Mail\Mailable;
-use Illuminate\Support\Facades\App;
+use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Str;
-use UnexpectedValueException;
 
 class MailbookItem
 {
-    private Mailable|null $mailable = null;
+    private ?MailableResolver $resolver = null;
 
-    public function __construct(public string $class, public Closure $closure)
+    public function __construct(public string|Closure|Mailable $closure)
     {
     }
 
     public function name(): string
     {
-        return Str::title(Str::snake(class_basename($this->class), ' '));
+        return Str::title(Str::snake(class_basename($this->class()), ' '));
     }
 
     public function subject(): string
     {
         // @phpstan-ignore-next-line
-        return $this->getMailable()->build()->subject;
+        return $this->resolver()->instance()->build()->subject ?? 'NULL';
     }
 
     public function content(): string
     {
-        return $this->getMailable()->render();
+        return $this->resolver()->instance()->render();
     }
 
-    public function getMailable(): Mailable
+    public function is(MailbookItem $target): bool
     {
-        if ($this->mailable instanceof Mailable) {
-            return $this->mailable;
-        }
+        return $this->class() === $target->class();
+    }
 
-        $mailable = App::call($this->closure);
+    public function resolver(): MailableResolver
+    {
+        return $this->resolver = $this->resolver ?? new MailableResolver($this->closure);
+    }
 
-        if (! $mailable instanceof Mailable) {
-            throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($mailable)));
-        }
-
-        return $this->mailable = $mailable;
+    public function class(): string
+    {
+        return $this->resolver()->class();
     }
 }

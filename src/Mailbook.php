@@ -3,6 +3,7 @@
 namespace Xammie\Mailbook;
 
 use Closure;
+use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Collection;
 
 class Mailbook
@@ -17,9 +18,9 @@ class Mailbook
         $this->mailables = collect(); // @phpstan-ignore-line
     }
 
-    public function register(string $class, Closure $closure): MailbookItem
+    public function add(string|Closure|Mailable $class): MailbookItem
     {
-        $item = new MailbookItem($class, $closure);
+        $item = new MailbookItem($class);
 
         $this->mailables->push($item);
 

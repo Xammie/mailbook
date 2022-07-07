@@ -15,7 +15,7 @@ class MailContentController
             abort(500);
         }
 
-        $current = $mailables->first(fn (MailbookItem $mailable) => $mailable->class === $class);
+        $current = $mailables->first(fn (MailbookItem $mailable) => $mailable->class() === $class);
 
         if (! $current) {
             abort(400);
