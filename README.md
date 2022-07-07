@@ -31,6 +31,8 @@ Mailbook::add(function () {
 });
 ```
 
+Next head over to `/mailbook` to preview the emails.
+
 ## Customization
 
 You can publish the config file with:
