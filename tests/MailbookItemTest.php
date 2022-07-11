@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Mail\Mailable;
-use function Spatie\Snapshots\assertMatchesHtmlSnapshot;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 
