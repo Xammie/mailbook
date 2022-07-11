@@ -17,4 +17,3 @@
 /UPGRADING.md       export-ignore
 /phpstan.neon.dist  export-ignore
 /phpstan-baseline.neon  export-ignore
-tests/**/__snapshots__/** text eol=lf

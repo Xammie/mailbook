@@ -8,13 +8,13 @@ use Xammie\Mailbook\Tests\Mails\TestMail;
 it('can render', function () {
     $html = Mailbook::add(TestMail::class)->content();
 
-    assertMatchesHtmlSnapshot($html);
+    expect($html)->toContain('Test mail');
 });
 
 it('can render closure', function () {
     $html = Mailbook::add(fn () => new TestMail())->content();
 
-    assertMatchesHtmlSnapshot($html);
+    expect($html)->toContain('Test mail');
 });
 
 it('can get subject', function () {
