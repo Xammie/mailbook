@@ -7,6 +7,8 @@
 
 Laravel Mailbook lets you explore your mailables.
 
+![Example screenshot](./screenshot.png)
+
 ## Installation
 
 You can install the package via composer:
