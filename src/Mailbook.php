@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 class Mailbook
 {
     /**
-     * @var Collection<int, MailbookItem>
+     * @var Collection<int, MailableItem>
      */
     protected Collection $mailables;
 
@@ -18,9 +18,9 @@ class Mailbook
         $this->mailables = collect(); // @phpstan-ignore-line
     }
 
-    public function add(string|Closure|Mailable $class): MailbookItem
+    public function add(string|Closure|Mailable $class): MailableItem
     {
-        $item = new MailbookItem($class);
+        $item = new MailableItem($class);
 
         $this->mailables->push($item);
 
@@ -28,7 +28,7 @@ class Mailbook
     }
 
     /**
-     * @return Collection<int, MailbookItem>
+     * @return Collection<int, MailableItem>
      */
     public function mailables(): Collection
     {

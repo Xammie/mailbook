@@ -4,10 +4,40 @@ use function Pest\Laravel\get;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 
-it('can render', function () {
+it('can render default', function () {
     Mailbook::add(TestMail::class);
 
-    get(route('mailbook.content', TestMail::class))
+    get(route('mailbook.content', ['class' => TestMail::class, 'variant' => null]))
+        ->assertSuccessful()
+        ->assertSeeText('Test mail');
+});
+
+it('can default variant', function () {
+    Mailbook::add(TestMail::class)
+        ->variant('First variant', fn (): TestMail => new TestMail())
+        ->variant('Second variant', fn (): TestMail => new TestMail());
+
+    get(route('mailbook.content', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertSeeText('Test mail');
+});
+
+it('can render variant', function () {
+    Mailbook::add(TestMail::class)
+        ->variant('First variant', fn (): TestMail => new TestMail())
+        ->variant('Second variant', fn (): TestMail => new TestMail());
+
+    get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'first-variant']))
+        ->assertSuccessful()
+        ->assertSeeText('Test mail');
+});
+
+it('cannot render unknown variant', function () {
+    Mailbook::add(TestMail::class)
+        ->variant('First variant', fn (): TestMail => new TestMail())
+        ->variant('Second variant', fn (): TestMail => new TestMail());
+
+    get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'unknown']))
         ->assertSuccessful()
         ->assertSeeText('Test mail');
 });
@@ -15,19 +45,35 @@ it('can render', function () {
 it('can render closure', function () {
     Mailbook::add(fn () => new TestMail());
 
-    get(route('mailbook.content', TestMail::class))
+    get(route('mailbook.content', ['class' => TestMail::class]))
         ->assertSuccessful()
         ->assertSeeText('Test mail');
 });
 
 it('cannot render without mailables', function () {
-    get(route('mailbook.content', TestMail::class))
+    get(route('mailbook.content', ['class' => TestMail::class]))
         ->assertStatus(500);
 });
 
 it('cannot render with unknown mailable', function () {
-    Mailbook::add(TestMail::class, fn () => new TestMail());
+    Mailbook::add(TestMail::class);
 
-    get(route('mailbook.content', 'test-mail'))
+    get(route('mailbook.content', ['class' => 'test-mail']))
         ->assertStatus(400);
+});
+
+it('rolls back database changes', function () {
+    expect(DB::transactionLevel())->toBe(0);
+
+    Mailbook::add(function () {
+        expect(DB::transactionLevel())->toBe(1);
+
+        return new TestMail();
+    });
+
+    get(route('mailbook.content', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertSeeText('Test mail');
+
+    expect(DB::transactionLevel())->toBe(0);
 });

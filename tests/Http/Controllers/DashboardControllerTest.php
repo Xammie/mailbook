@@ -13,6 +13,28 @@ it('can render', function () {
         ->assertSeeText('Test email subject');
 });
 
+it('can render default variant', function () {
+    Mailbook::add(TestMail::class)
+        ->variant('Test variant', fn () => new TestMail());
+
+    get(route('mailbook.dashboard'))
+        ->assertSuccessful()
+        ->assertSeeText('Mailbook')
+        ->assertSeeText('Test email subject')
+        ->assertSeeText('Test variant');
+});
+
+it('can render variant', function () {
+    Mailbook::add(TestMail::class)
+        ->variant('Test variant', fn () => new TestMail());
+
+    get(route('mailbook.dashboard', ['selected' => TestMail::class, 'variant' => 'test-variant']))
+        ->assertSuccessful()
+        ->assertSeeText('Mailbook')
+        ->assertSeeText('Test email subject')
+        ->assertSeeText('Test variant');
+});
+
 it('can render closure', function () {
     Mailbook::add(fn () => new TestMail());
 

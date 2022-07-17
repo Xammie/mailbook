@@ -23,7 +23,7 @@ Before you can view transactional emails in the mailbook you have to register th
 
 ```php
 // This will use dependency injection if your mailable has parameters
-Mailbook::add(\App\Mai\VerificationMail::class);
+Mailbook::add(VerificationMail::class);
 
 // Use a closure to customize the parameters of the mail instance
 Mailbook::add(function () {
@@ -31,9 +31,27 @@ Mailbook::add(function () {
 
     return new VerificationMail($user, '/example/url')
 });
+
+// You can also use dependency injection in the closure
+Mailbook::add(function (User $user) {
+    return new VerificationMail($user, '/example/url');
+});
 ```
 
-Next head over to `/mailbook` to preview the emails.
+Next head over to `/mailbook` to preview the mailables.
+
+## Variants
+
+When creating mails you might have a couple of different scenario's that you want to test for one mail, you can use
+variants to solve this.
+
+```php
+// Use a closure to customize the parameters of the mail instance
+Mailbook::add(OrderCreatedMail::class)
+    ->variant('1 item', fn () => new OrderCreatedMail(Order::factory()->withOneProduct()->create()))
+    ->variant('2 items', fn () => new OrderCreatedMail(Order::factory()->withTwoProducts()->create()));
+```
+
 
 ## Customization
 
