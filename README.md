@@ -52,6 +52,21 @@ Mailbook::add(OrderCreatedMail::class)
     ->variant('2 items', fn () => new OrderCreatedMail(Order::factory()->withTwoProducts()->create()));
 ```
 
+## Using the database
+
+Most of the time your mailables will need database models. Sometimes you will even preform queries when rendering these
+mailables. You can safely use factories and other queries when registering your mailables. Mailbook will automatically
+rollback these changes after rendering.
+
+```php
+// All database changes are rolled back after rendering the mail.
+Mailbook::add(function (): OrderShippedMail {
+    $order = Order::factory()->create();
+    $tracker = Tracker::factory()->create();
+        
+    return new OrderShippedMail($order, $tracker);
+});
+```
 
 ## Customization
 
