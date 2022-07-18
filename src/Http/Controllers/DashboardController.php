@@ -25,21 +25,21 @@ class DashboardController
             throw new MailbookException('No mailbook mailables registered');
         }
 
-        /** @var MailableItem|null $current */
-        $current = $mailables->first();
+        /** @var MailableItem $item */
+        $item = $mailables->first();
 
         if ($request->has('selected')) {
             $selected = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $request->get('selected'));
-            $current = $selected ?: $current;
+            $item = $selected ?: $item;
         }
 
-        if ($request->has('variant') && $current->hasVariant($request->get('variant'))) {
-            $current->selectVariant($request->get('variant'));
+        if ($request->has('variant')) {
+            $item->selectVariant(strval($request->get('variant')));
         }
 
         return view('mailbook::dashboard', [
-            'current' => $current,
-            'subject' => $current?->subject(),
+            'current' => $item,
+            'subject' => $item->subject(),
             'mailables' => $mailables,
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
         ]);

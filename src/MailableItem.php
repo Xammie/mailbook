@@ -24,10 +24,10 @@ class MailableItem
 
     public function __construct(public string|Closure|Mailable $closure)
     {
-        $this->variants = collect();
+        $this->variants = collect(); // @phpstan-ignore-line
     }
 
-    public function label($label): self
+    public function label(string $label): self
     {
         $this->label = $label;
 
@@ -56,6 +56,9 @@ class MailableItem
         return $this;
     }
 
+    /**
+     * @return Collection<int, MailableVariant>
+     */
     public function getVariants(): Collection
     {
         return $this->variants;
@@ -82,7 +85,9 @@ class MailableItem
 
     public function selectVariant(string $variant): self
     {
-        $this->selectedVariant = $variant;
+        if ($this->hasVariant($variant)) {
+            $this->selectedVariant = $variant;
+        }
 
         return $this;
     }

@@ -7,7 +7,7 @@ use DB;
 
 class RollbackDatabase
 {
-    public function handle($request, Closure $next): mixed
+    public function handle(mixed $request, Closure $next): mixed
     {
         DB::beginTransaction();
 

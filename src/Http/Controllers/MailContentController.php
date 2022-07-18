@@ -22,7 +22,7 @@ class MailContentController
             abort(400);
         }
 
-        if (! is_null($variant) && $current->hasVariant($variant)) {
+        if (! is_null($variant)) {
             $current->selectVariant($variant);
         }
 
