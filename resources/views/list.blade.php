@@ -18,7 +18,7 @@
                         </a>
                     @endif
                 @endforeach
-                <div class="border-b border-solid border-gray-300"></div>
+                <div class="border-b border-solid border-gray-500"></div>
             @else
                 @if($mailable->is($current))
                     <a href="{{ route('mailbook.dashboard', ['selected' => $mailable->class()]) }}"
