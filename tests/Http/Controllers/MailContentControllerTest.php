@@ -2,30 +2,32 @@
 
 use function Pest\Laravel\get;
 use Xammie\Mailbook\Facades\Mailbook;
+use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 
-it('can render default', function () {
+it('can render', function () {
     Mailbook::add(TestMail::class);
-
-    get(route('mailbook.content', ['class' => TestMail::class, 'variant' => null]))
-        ->assertSuccessful()
-        ->assertSeeText('Test mail');
-});
-
-it('can default variant', function () {
-    Mailbook::add(TestMail::class)
-        ->variant('First variant', fn (): TestMail => new TestMail())
-        ->variant('Second variant', fn (): TestMail => new TestMail());
+    Mailbook::add(OtherMail::class);
 
     get(route('mailbook.content', ['class' => TestMail::class]))
         ->assertSuccessful()
         ->assertSeeText('Test mail');
 });
 
-it('can render variant', function () {
+it('can render default variant', function () {
     Mailbook::add(TestMail::class)
         ->variant('First variant', fn (): TestMail => new TestMail())
-        ->variant('Second variant', fn (): TestMail => new TestMail());
+        ->variant('Second variant', fn (): OtherMail => new OtherMail());
+
+    get(route('mailbook.content', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertSeeText('Test mail');
+});
+
+it('can render selected variant', function () {
+    Mailbook::add(TestMail::class)
+        ->variant('Second variant', fn (): OtherMail => new OtherMail())
+        ->variant('First variant', fn (): TestMail => new TestMail());
 
     get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'first-variant']))
         ->assertSuccessful()
@@ -35,7 +37,7 @@ it('can render variant', function () {
 it('cannot render unknown variant', function () {
     Mailbook::add(TestMail::class)
         ->variant('First variant', fn (): TestMail => new TestMail())
-        ->variant('Second variant', fn (): TestMail => new TestMail());
+        ->variant('Second variant', fn (): OtherMail => new OtherMail());
 
     get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'unknown']))
         ->assertSuccessful()

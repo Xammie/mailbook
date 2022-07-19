@@ -64,14 +64,14 @@ class MailableItem
         return $this->variants;
     }
 
-    public function getVariant(string $slug): ?MailableVariant
+    private function getVariant(string $slug): ?MailableVariant
     {
         return $this
             ->getVariants()
             ->first(fn (MailableVariant $variant) => $variant->slug === $slug);
     }
 
-    public function hasVariant(string $slug): bool
+    private function hasVariant(string $slug): bool
     {
         return $this->getVariants()
             ->filter(fn (MailableVariant $variant) => $variant->slug === $slug)
@@ -150,6 +150,6 @@ class MailableItem
 
     public function class(): string
     {
-        return $this->variantResolver()->class();
+        return $this->resolver()->class();
     }
 }

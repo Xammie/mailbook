@@ -23,7 +23,9 @@ it('cannot get class from closure with invalid type', function () {
     ->throws(UnexpectedValueException::class, 'Unexpected value returned from mailbook closure expected instance of Illuminate\Contracts\Mail\Mailable but got string');
 
 it('can get class from closure with return type', function () {
-    $resolver = new MailableResolver(fn (): TestMail => new TestMail());
+    $resolver = new MailableResolver(function (): TestMail {
+        throw new Exception('this will not be executed');
+    });
 
     expect($resolver->class())->toEqual(TestMail::class);
 });
@@ -72,4 +74,10 @@ it('can resolve dependencies from closure', function () {
         return $testMail;
     }))
         ->instance();
+});
+
+it('will resolve instance once', function () {
+    $resolver = new MailableResolver(TestMail::class);
+
+    expect($resolver->instance())->toBe($resolver->instance());
 });
