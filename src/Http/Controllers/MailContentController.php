@@ -3,11 +3,11 @@
 namespace Xammie\Mailbook\Http\Controllers;
 
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\MailbookItem;
+use Xammie\Mailbook\MailableItem;
 
 class MailContentController
 {
-    public function __invoke(string $class): string
+    public function __invoke(string $class, ?string $variant = null): string
     {
         $mailables = Mailbook::mailables();
 
@@ -15,10 +15,15 @@ class MailContentController
             abort(500);
         }
 
-        $current = $mailables->first(fn (MailbookItem $mailable) => $mailable->class() === $class);
+        /** @var MailableItem|null $current */
+        $current = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $class);
 
         if (! $current) {
             abort(400);
+        }
+
+        if (! is_null($variant)) {
+            $current->selectVariant($variant);
         }
 
         return $current->content();

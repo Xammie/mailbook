@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\HtmlString;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\MailbookItem;
+use Xammie\Mailbook\MailableItem;
 
 class DashboardController
 {
@@ -25,16 +25,21 @@ class DashboardController
             throw new MailbookException('No mailbook mailables registered');
         }
 
-        $current = $mailables->first();
+        /** @var MailableItem $item */
+        $item = $mailables->first();
 
         if ($request->has('selected')) {
-            $selected = $mailables->first(fn (MailbookItem $mailable) => $mailable->class() === $request->get('selected'));
-            $current = $selected ?: $current;
+            $selected = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $request->get('selected'));
+            $item = $selected ?: $item;
+        }
+
+        if ($request->has('variant')) {
+            $item->selectVariant(strval($request->get('variant')));
         }
 
         return view('mailbook::dashboard', [
-            'current' => $current,
-            'subject' => $current?->subject(),
+            'current' => $item,
+            'subject' => $item->subject(),
             'mailables' => $mailables,
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
         ]);

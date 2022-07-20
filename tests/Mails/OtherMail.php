@@ -6,7 +6,7 @@ namespace Xammie\Mailbook\Tests\Mails;
 
 use Illuminate\Mail\Mailable;
 
-final class TestMail extends Mailable
+final class OtherMail extends Mailable
 {
     public function __construct()
     {
@@ -14,6 +14,6 @@ final class TestMail extends Mailable
 
     public function build(): self
     {
-        return $this->html('Test mail')->subject('Test email subject');
+        return $this->html('Are you ignoring me?')->subject('Hello!');
     }
 }

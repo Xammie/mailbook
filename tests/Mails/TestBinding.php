@@ -6,14 +6,14 @@ namespace Xammie\Mailbook\Tests\Mails;
 
 use Illuminate\Mail\Mailable;
 
-final class TestMail extends Mailable
+final class TestBinding extends Mailable
 {
-    public function __construct()
+    public function __construct(string $random)
     {
     }
 
     public function build(): self
     {
-        return $this->html('Test mail')->subject('Test email subject');
+        return $this->html('Hey!')->subject('Test email subject');
     }
 }

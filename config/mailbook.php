@@ -1,6 +1,6 @@
 <?php
 
-// config for Xammie/Mailbook
 return [
-
+    'route_prefix' => '/mailbook',
+    'database_rollback' => true,
 ];
