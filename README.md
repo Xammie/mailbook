@@ -5,9 +5,11 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/xammie/mailbook/Check%20&%20fix%20styling?label=code%20style)](https://github.com/xammie/mailbook/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/xammie/mailbook.svg?style=flat-square)](https://packagist.org/packages/xammie/mailbook)
 
-Laravel Mailbook lets you explore your mailables.
+Mailbook is a Laravel package that lets you easily inspect your mails without having to actually trigger it in your application.
 
 ![Example screenshot](./screenshot.png)
+
+<p align="center"><a href="https://mailbook.dev/">View demo</a></p>
 
 ## Installation
 
@@ -15,6 +17,38 @@ You can install the package via composer:
 
 ```bash
 composer require --dev xammie/mailbook
+```
+
+You can register mails in a new service provider.
+
+```php
+php artisan make:provider MailbookProvider
+```
+
+Make sure to return early if your application is not in debug mode.
+
+```php
+public function boot(): void
+{
+    if (! config('app.debug')) {
+        return;
+    }
+    
+    Mailbook::add(...);
+}
+```
+
+and register it in `config/app.php`.
+
+```php{4}
+'providers' => [
+    ...  
+       
+    /*
+     * Application Service Providers...
+     */
+    App\Providers\MailbookProvider::class,
+],
 ```
 
 ## Usage
@@ -66,6 +100,13 @@ Mailbook::add(function (): OrderShippedMail {
         
     return new OrderShippedMail($order, $tracker);
 });
+```
+
+By default, mailbook will roll back any database changes that are executed while rendering the mails. If you don't have a
+database connection, or if you don't want it to rollback you can disable it in the config.
+
+```php
+'database_rollback' => false,
 ```
 
 ## Customization
