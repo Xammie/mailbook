@@ -14,6 +14,6 @@ final class TestBinding extends Mailable
 
     public function build(): self
     {
-        return $this->markdown('mailbook::test-email')->subject('Test email subject');
+        return $this->html('Hey!')->subject('Test email subject');
     }
 }
