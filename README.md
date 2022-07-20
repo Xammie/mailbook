@@ -80,6 +80,7 @@ This is the contents of the published config file:
 
 ```php
 return [
+    'route_prefix' => '/mailbook',
     'database_rollback' => true,
 ];
 ```
