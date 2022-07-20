@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use function Pest\Laravel\get;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
@@ -69,6 +70,24 @@ it('rolls back database changes', function () {
 
     Mailbook::add(function () {
         expect(DB::transactionLevel())->toBe(1);
+
+        return new TestMail();
+    });
+
+    get(route('mailbook.content', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertSeeText('Test mail');
+
+    expect(DB::transactionLevel())->toBe(0);
+});
+
+it('does not rollback database changes when disabled', function () {
+    config()->set('mailbook.database_rollback', false);
+
+    expect(DB::transactionLevel())->toBe(0);
+
+    Mailbook::add(function () {
+        expect(DB::transactionLevel())->toBe(0);
 
         return new TestMail();
     });

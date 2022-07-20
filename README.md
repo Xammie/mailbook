@@ -79,7 +79,9 @@ php artisan vendor:publish --tag="mailbook-config"
 This is the contents of the published config file:
 
 ```php
-return [];
+return [
+    'database_rollback' => true,
+];
 ```
 
 Optionally, you can publish the views using

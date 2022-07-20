@@ -1,6 +1,5 @@
 <?php
 
-// config for Xammie/Mailbook
 return [
-
+    'database_rollback' => true,
 ];
