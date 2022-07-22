@@ -42,6 +42,7 @@ class DashboardController
         return view('mailbook::dashboard', [
             'current' => $item,
             'subject' => $item->subject(),
+            'from' => $item->from(),
             'mailables' => $mailables,
             'display' => $display,
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),

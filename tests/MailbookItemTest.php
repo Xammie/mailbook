@@ -106,3 +106,15 @@ it('can get variant resolver from default variant', function () {
 
     expect($item->variantResolver()->class())->toEqual(OtherMail::class);
 });
+
+it('can get default from', function () {
+    $item = Mailbook::add(TestMail::class);
+
+    expect($item->from())->toBe('Example <hello@example.com>');
+});
+
+it('can get from', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->from())->toBe('Harry Potter <harry@example.com>');
+});

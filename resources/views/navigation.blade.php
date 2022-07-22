@@ -3,11 +3,11 @@
         @include('mailbook::logo')
     </div>
     <div class="flex flex-1 items-stretch justify-between border-l border-b border-gray-500 border-solid">
-        <div class="flex flex-col px-5 py-3">
-            <div class="text-xs font-bold uppercase tracking-wider">
-                Subject
+        <div class="flex flex-col justify-center px-5 py-1">
+            <div class="text-xs">
+                {{ $from }}
             </div>
-            <div class="text-xl">
+            <div class="text-xl font-bold">
                 {{ $subject }}
             </div>
         </div>
