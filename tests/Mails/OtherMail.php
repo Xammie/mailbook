@@ -14,6 +14,9 @@ final class OtherMail extends Mailable
 
     public function build(): self
     {
-        return $this->html('Are you ignoring me?')->subject('Hello!');
+        return $this
+            ->html('Are you ignoring me?')
+            ->from('harry@example.com', 'Harry Potter')
+            ->subject('Hello!');
     }
 }

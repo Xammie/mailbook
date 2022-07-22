@@ -102,6 +102,23 @@ class MailableItem
         }
     }
 
+    public function from(): ?string
+    {
+        $items = collect($this->variantResolver()->instance()->build()->from ?? []); // @phpstan-ignore-line
+
+        if ($items->isEmpty()) {
+            $from = config('mail.from');
+        } else {
+            $from = $items->first();
+        }
+
+        if (! is_array($from)) {
+            return null;
+        }
+
+        return sprintf('%s <%s>', $from['name'], $from['address']);
+    }
+
     public function content(): string
     {
         // @phpstan-ignore-next-line
