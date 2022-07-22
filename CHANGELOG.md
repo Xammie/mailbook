@@ -2,6 +2,10 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 0.0.6 - 2022-07-22
+
+- Added background when using display preview
+
 ## 0.0.5 - 2022-07-22
 
 ### What's Changed
