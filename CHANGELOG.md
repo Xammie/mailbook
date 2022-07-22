@@ -2,6 +2,16 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 0.0.5 - 2022-07-22
+
+### What's Changed
+
+- Device preview by @Xammie in https://github.com/Xammie/mailbook/pull/3
+- Improved navigation layout
+- Added "Sent from" information
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/0.0.4...0.0.5
+
 ## 0.0.4 - 2022-07-22
 
 ### What's Changed
