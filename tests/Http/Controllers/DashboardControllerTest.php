@@ -76,6 +76,8 @@ it('can render other display', function () {
 });
 
 it('can disable display preview', function () {
+    config()->set('mailbook.display_preview', false);
+
     Mailbook::add(TestMail::class);
 
     get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))
