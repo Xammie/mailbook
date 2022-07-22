@@ -66,3 +66,19 @@ it('cannot render without mailables', function () {
     get(route('mailbook.dashboard'));
 })
     ->throws(MailbookException::class, 'No mailbook mailables registered');
+
+it('can render other display', function () {
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))
+        ->assertSuccessful()
+        ->assertViewHas('display', 'phone');
+});
+
+it('can disable display preview', function () {
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))
+        ->assertSuccessful()
+        ->assertViewHas('display', null);
+});

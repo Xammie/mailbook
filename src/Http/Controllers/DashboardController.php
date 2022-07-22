@@ -37,10 +37,13 @@ class DashboardController
             $item->selectVariant(strval($request->get('variant')));
         }
 
+        $display = config('mailbook.display_preview') ? $request->get('display') : null;
+
         return view('mailbook::dashboard', [
             'current' => $item,
             'subject' => $item->subject(),
             'mailables' => $mailables,
+            'display' => $display,
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
         ]);
     }
