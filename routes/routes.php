@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Xammie\Mailbook\Http\Controllers\DashboardController;
 use Xammie\Mailbook\Http\Controllers\MailContentController;
 
-
 Route::prefix(config('mailbook.route_prefix'))
     ->middleware(config('mailbook.middlewares'))
     ->group(function () {
