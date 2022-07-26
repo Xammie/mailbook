@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'enabled' => env('APP_ENV') === 'local',
     'database_rollback' => true,
     'display_preview' => true,
     'refresh_button' => true,
