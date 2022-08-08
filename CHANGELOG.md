@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 0.0.7 - 2022-08-08
+
+### What's Changed
+
+- Added config option to enable or disable routes by @Xammie in https://github.com/Xammie/mailbook/pull/4
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/0.0.6...0.0.7
+
 ## 0.0.6 - 2022-07-22
 
 - Added background when using display preview
