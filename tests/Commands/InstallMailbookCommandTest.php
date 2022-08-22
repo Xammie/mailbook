@@ -35,13 +35,20 @@ it('will not overwrite existing files', function () {
         ->and(file_get_contents($path))->toBe('test');
 });
 
-it('can render installable mail', function () {
+it('can collect mails from route file', function () {
     artisan(InstallMailbookCommand::class)->assertSuccessful();
-    require base_path('app/Mail/MailbookMail.php');
+    require_once base_path('app/Mail/MailbookMail.php');
 
     $mails = Mailbook::mailables();
 
     expect($mails)->isNotEmpty();
+});
+
+it('can render installable mail', function () {
+    artisan(InstallMailbookCommand::class)->assertSuccessful();
+    require_once base_path('app/Mail/MailbookMail.php');
+
+    $mails = Mailbook::mailables();
 
     foreach ($mails as $mail) {
         $this->assertNotEmpty($mail->content());
