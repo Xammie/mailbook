@@ -4,6 +4,7 @@ namespace Xammie\Mailbook;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Xammie\Mailbook\Commands\InstallMailbookCommand;
 
 class MailbookServiceProvider extends PackageServiceProvider
 {
@@ -13,6 +14,7 @@ class MailbookServiceProvider extends PackageServiceProvider
             ->name('mailbook')
             ->hasConfigFile()
             ->hasViews('mailbook')
-            ->hasRoute('routes');
+            ->hasRoute('routes')
+            ->hasCommand(InstallMailbookCommand::class);
     }
 }

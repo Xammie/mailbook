@@ -19,36 +19,10 @@ You can install the package via composer:
 composer require --dev xammie/mailbook
 ```
 
-You can register mails in a new service provider.
+Next install mailbook into your application
 
 ```php
-php artisan make:provider MailbookProvider
-```
-
-Make sure to return early if your application is not in debug mode.
-
-```php
-public function boot(): void
-{
-    if (! config('app.debug')) {
-        return;
-    }
-    
-    Mailbook::add(...);
-}
-```
-
-and register it in `config/app.php`.
-
-```php{4}
-'providers' => [
-    ...  
-       
-    /*
-     * Application Service Providers...
-     */
-    App\Providers\MailbookProvider::class,
-],
+php artisan mailbook:install
 ```
 
 ## Usage
