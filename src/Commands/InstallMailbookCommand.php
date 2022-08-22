@@ -18,7 +18,7 @@ class InstallMailbookCommand extends Command
 
     public function handle(): int
     {
-        $this->info('Installing mailbook');
+        $this->components->info('Installing mailbook');
 
         $stubs = [
             'routes/mailbook.php' => 'route-file.php',
@@ -27,24 +27,53 @@ class InstallMailbookCommand extends Command
         ];
 
         foreach ($stubs as $target => $stub) {
+            $stubPath = __DIR__.'/../../stubs/'.$stub;
             $targetPath = base_path($target);
 
-            if ($this->files->exists($targetPath)) {
-                $this->warn("Warning: $target already exists");
-            } else {
-                $stubPath = __DIR__.'/../../stubs/'.$stub;
-
-                $directory = $this->files->dirname($targetPath);
-                $this->files->makeDirectory(path: $directory, recursive: true, force: true);
-                $this->files->copy($stubPath, $targetPath);
-                $this->info("Created $target");
-            }
+            $this->publishFile($stubPath, $targetPath);
         }
 
-        $url = route('mailbook.dashboard');
+        $this->newLine();
 
-        $this->info("Mailbook has been installed. Head over to $url to view it");
+        $url = route('mailbook.dashboard');
+        $this->components->info("Mailbook has been installed. Navigate to $url to view it");
 
         return self::SUCCESS;
+    }
+
+    private function publishFile(string $from, string $to): void
+    {
+        if ($this->files->missing($to)) {
+            $this->createParentDirectory(dirname($to));
+
+            $this->files->copy($from, $to);
+
+            $this->status($from, $to, 'file');
+        } else {
+            $this->components->twoColumnDetail(sprintf(
+                'File [%s] already exists',
+                str_replace(base_path().'/', '', realpath($to)), // @phpstan-ignore-line
+            ), '<fg=yellow;options=bold>SKIPPED</>');
+        }
+    }
+
+    private function createParentDirectory(string $directory): void
+    {
+        if (! $this->files->isDirectory($directory)) {
+            $this->files->makeDirectory(path: $directory, recursive: true, force: true);
+        }
+    }
+
+    private function status(string $from, string $to, string $type): void
+    {
+        $from = str_replace(base_path().'/', '', realpath($from)); // @phpstan-ignore-line
+        $to = str_replace(base_path().'/', '', realpath($to)); // @phpstan-ignore-line
+
+        $this->components->task(sprintf(
+            'Copying %s [%s] to [%s]',
+            $type,
+            $from,
+            $to,
+        ));
     }
 }

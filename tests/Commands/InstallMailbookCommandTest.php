@@ -5,12 +5,14 @@ use Xammie\Mailbook\Commands\InstallMailbookCommand;
 use Xammie\Mailbook\Facades\Mailbook;
 
 it('can install mailbook', function () {
+    $stubsPath = realpath(__DIR__.'/../../stubs/');
+
     artisan(InstallMailbookCommand::class)
-        ->expectsOutput('Installing mailbook')
-        ->expectsOutput('Created routes/mailbook.php')
-        ->expectsOutput('Created app/Mail/MailbookMail.php')
-        ->expectsOutput('Created resources/views/mail/mailbook.blade.php')
-        ->expectsOutput('Mailbook has been installed. Head over to http://localhost/mailbook to view it')
+        ->expectsOutputToContain('Installing mailbook.')
+        ->expectsOutputToContain("Copying file [$stubsPath/route-file.php] to [routes/mailbook.php]")
+        ->expectsOutputToContain("Copying file [$stubsPath/MailbookMail.php] to [app/Mail/MailbookMail.php]")
+        ->expectsOutputToContain("Copying file [$stubsPath/mailbook.blade.php] to [resources/views/mail/mailbook.blade.php]")
+        ->expectsOutputToContain('Mailbook has been installed.')
         ->assertSuccessful();
 
     expect(base_path('routes/mailbook.php'))->toBeFile()
@@ -23,12 +25,14 @@ it('will not overwrite existing files', function () {
     @mkdir(dirname($path), 0755, true);
     file_put_contents($path, 'test');
 
+    $stubsPath = realpath(__DIR__.'/../../stubs/');
+
     artisan(InstallMailbookCommand::class)
-        ->expectsOutput('Installing mailbook')
-        ->expectsOutput('Warning: routes/mailbook.php already exists')
-        ->expectsOutput('Created app/Mail/MailbookMail.php')
-        ->expectsOutput('Created resources/views/mail/mailbook.blade.php')
-        ->expectsOutput('Mailbook has been installed. Head over to http://localhost/mailbook to view it')
+        ->expectsOutputToContain('Installing mailbook.')
+        ->expectsOutputToContain('File [routes/mailbook.php] already exists')
+        ->expectsOutputToContain("Copying file [$stubsPath/MailbookMail.php] to [app/Mail/MailbookMail.php]")
+        ->expectsOutputToContain("Copying file [$stubsPath/mailbook.blade.php] to [resources/views/mail/mailbook.blade.php]")
+        ->expectsOutputToContain('Mailbook has been installed.')
         ->assertSuccessful();
 
     expect($path)->toBeFile()
