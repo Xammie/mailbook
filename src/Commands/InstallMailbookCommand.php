@@ -11,7 +11,7 @@ class InstallMailbookCommand extends Command
 
     public $description = 'Install mailbook into your application';
 
-    public function __construct(private readonly Filesystem $files)
+    public function __construct(private Filesystem $files)
     {
         parent::__construct();
     }
