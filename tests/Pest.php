@@ -2,10 +2,15 @@
 
 use Xammie\Mailbook\Tests\TestCase;
 
-uses(TestCase::class)->in(__DIR__);
+uses(TestCase::class)
+    ->beforeEach(fn () => cleanInstallFiles())
+    ->afterEach(fn () => cleanInstallFiles())
+    ->in(__DIR__);
 
-beforeAll(function () {
+function cleanInstallFiles(): void
+{
     @unlink(base_path('routes/mailbook.php'));
     @unlink(base_path('app/Mail/MailbookMail.php'));
     @unlink(base_path('resources/views/mail/mailbook.blade.php'));
-});
+    @rmdir(base_path('app/Mail'));
+}

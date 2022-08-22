@@ -35,7 +35,7 @@ class InstallMailbookCommand extends Command
                 $stubPath = __DIR__.'/../../stubs/'.$stub;
 
                 $directory = $this->files->dirname($targetPath);
-                $this->files->makeDirectory($directory, 0755, true, true);
+                $this->files->makeDirectory(path: $directory, recursive: true, force: true);
                 $this->files->copy($stubPath, $targetPath);
                 $this->info("Created $target");
             }
