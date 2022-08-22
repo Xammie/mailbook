@@ -2,7 +2,7 @@
 
 return [
     'enabled' => env('APP_ENV') === 'local',
-    'database_rollback' => true,
+    'database_rollback' => false,
     'display_preview' => true,
     'refresh_button' => true,
     'route_prefix' => '/mailbook',

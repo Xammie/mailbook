@@ -63,8 +63,13 @@ Mailbook::add(OrderCreatedMail::class)
 ## Using the database
 
 Most of the time your mailables will need database models. Sometimes you will even preform queries when rendering these
-mailables. You can safely use factories and other queries when registering your mailables. Mailbook will automatically
-rollback these changes after rendering.
+mailables. Mailbook can automatically rollback database changes after rendering. You can enable it the config with.
+
+```php
+'database_rollback' => true,
+```
+
+You can now safely use factories and other queries when registering your mailables.
 
 ```php
 // All database changes are rolled back after rendering the mail.
@@ -76,12 +81,7 @@ Mailbook::add(function (): OrderShippedMail {
 });
 ```
 
-By default, mailbook will roll back any database changes that are executed while rendering the mails. If you don't have a
-database connection, or if you don't want it to rollback you can disable it in the config.
-
-```php
-'database_rollback' => false,
-```
+Database rollback is disabled by default.
 
 ## Customization
 
@@ -96,7 +96,7 @@ This is the contents of the published config file:
 ```php
 return [
     'enabled' => env('APP_ENV') === 'local',
-    'database_rollback' => true,
+    'database_rollback' => false,
     'display_preview' => true,
     'refresh_button' => true,
     'route_prefix' => '/mailbook',

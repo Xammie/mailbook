@@ -66,6 +66,8 @@ it('cannot render with unknown mailable', function () {
 });
 
 it('rolls back database changes', function () {
+    config()->set('mailbook.database_rollback', true);
+
     expect(DB::transactionLevel())->toBe(0);
 
     Mailbook::add(function () {
