@@ -27,7 +27,7 @@ php artisan mailbook:install
 
 ## Usage
 
-Before you can view transactional emails in the mailbook you have to register them.
+The install command will create a route file named `routes/mailbook.php`. In this file you can register your emails.
 
 ```php
 // This will use dependency injection if your mailable has parameters
