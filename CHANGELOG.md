@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 0.0.8 - 2022-08-23
+
+### What's Changed
+
+- Improved installation by @Xammie in https://github.com/Xammie/mailbook/pull/5
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/0.0.7...0.0.8
+
 ## 0.0.7 - 2022-08-08
 
 ### What's Changed
