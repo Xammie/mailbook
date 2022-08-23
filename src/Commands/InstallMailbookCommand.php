@@ -69,9 +69,6 @@ class InstallMailbookCommand extends Command
         $from = str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($from)); // @phpstan-ignore-line
         $to = str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($to)); // @phpstan-ignore-line
 
-        dump(base_path());
-        dump($from, $to);
-
         $this->components->task(sprintf(
             'Copying file [%s] to [%s]',
             $from,
