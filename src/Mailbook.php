@@ -32,6 +32,17 @@ class Mailbook
      */
     public function mailables(): Collection
     {
+        $this->collect();
+
         return $this->mailables;
+    }
+
+    private function collect(): void
+    {
+        $filename = base_path('routes/mailbook.php');
+
+        if (file_exists($filename)) {
+            include_once $filename;
+        }
     }
 }
