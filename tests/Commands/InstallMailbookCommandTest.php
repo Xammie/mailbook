@@ -9,9 +9,9 @@ it('can install mailbook', function () {
 
     artisan(InstallMailbookCommand::class)
         ->expectsOutputToContain('Installing mailbook.')
-        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath . '/route-file.php'), 'routes/mailbook.php'))
-        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath . '/MailbookMail.php'), 'app/Mail/MailbookMail.php'))
-        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath . '/mailbook.blade.php'), 'resources/views/mail/mailbook.blade.php'))
+        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath.'/route-file.php'), 'routes/mailbook.php'))
+        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath.'/MailbookMail.php'), 'app/Mail/MailbookMail.php'))
+        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath.'/mailbook.blade.php'), 'resources/views/mail/mailbook.blade.php'))
         ->expectsOutputToContain('Mailbook has been installed.')
         ->assertSuccessful();
 
