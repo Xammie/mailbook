@@ -14,3 +14,8 @@ function cleanInstallFiles(): void
     @unlink(base_path('resources/views/mail/mailbook.blade.php'));
     @rmdir(base_path('app/Mail'));
 }
+
+function testFilepath(string $path): string
+{
+    return str_replace('/', DIRECTORY_SEPARATOR, $path);
+}

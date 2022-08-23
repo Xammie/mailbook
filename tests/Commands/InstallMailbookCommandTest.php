@@ -5,7 +5,7 @@ use Xammie\Mailbook\Commands\InstallMailbookCommand;
 use Xammie\Mailbook\Facades\Mailbook;
 
 it('can install mailbook', function () {
-    $stubsPath = realpath(__DIR__.'/../../stubs/');
+    $stubsPath = testFilepath(realpath(__DIR__.'/../../stubs/'));
 
     artisan(InstallMailbookCommand::class)
         ->expectsOutputToContain('Installing mailbook.')
@@ -25,7 +25,7 @@ it('will not overwrite existing files', function () {
     @mkdir(dirname($path), 0755, true);
     file_put_contents($path, 'test');
 
-    $stubsPath = realpath(__DIR__.'/../../stubs/');
+    $stubsPath = testFilepath(realpath(__DIR__.'/../../stubs/'));
 
     artisan(InstallMailbookCommand::class)
         ->expectsOutputToContain('Installing mailbook.')
