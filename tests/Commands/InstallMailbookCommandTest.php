@@ -5,13 +5,13 @@ use Xammie\Mailbook\Commands\InstallMailbookCommand;
 use Xammie\Mailbook\Facades\Mailbook;
 
 it('can install mailbook', function () {
-    $stubsPath = testFilepath(realpath(__DIR__.'/../../stubs/'));
+    $stubsPath = realpath(__DIR__.'/../../stubs/');
 
     artisan(InstallMailbookCommand::class)
         ->expectsOutputToContain('Installing mailbook.')
-        ->expectsOutputToContain("Copying file [$stubsPath/route-file.php] to [routes/mailbook.php]")
-        ->expectsOutputToContain("Copying file [$stubsPath/MailbookMail.php] to [app/Mail/MailbookMail.php]")
-        ->expectsOutputToContain("Copying file [$stubsPath/mailbook.blade.php] to [resources/views/mail/mailbook.blade.php]")
+        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath . '/route-file.php'), 'routes/mailbook.php'))
+        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath . '/MailbookMail.php'), 'app/Mail/MailbookMail.php'))
+        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath . '/mailbook.blade.php'), 'resources/views/mail/mailbook.blade.php'))
         ->expectsOutputToContain('Mailbook has been installed.')
         ->assertSuccessful();
 
@@ -25,7 +25,7 @@ it('will not overwrite existing files', function () {
     @mkdir(dirname($path), 0755, true);
     file_put_contents($path, 'test');
 
-    $stubsPath = testFilepath(realpath(__DIR__.'/../../stubs/'));
+    $stubsPath = realpath(__DIR__.'/../../stubs/');
 
     artisan(InstallMailbookCommand::class)
         ->expectsOutputToContain('Installing mailbook.')
