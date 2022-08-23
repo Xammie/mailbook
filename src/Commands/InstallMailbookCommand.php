@@ -48,11 +48,11 @@ class InstallMailbookCommand extends Command
 
             $this->files->copy($from, $to);
 
-            $this->status($from, $to, 'file');
+            $this->status($from, $to);
         } else {
             $this->components->twoColumnDetail(sprintf(
                 'File [%s] already exists',
-                str_replace(base_path().'/', '', realpath($to)), // @phpstan-ignore-line
+                str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($to)), // @phpstan-ignore-line
             ), '<fg=yellow;options=bold>SKIPPED</>');
         }
     }
@@ -64,16 +64,16 @@ class InstallMailbookCommand extends Command
         }
     }
 
-    private function status(string $from, string $to, string $type): void
+    private function status(string $from, string $to): void
     {
-        $from = str_replace(base_path().'/', '', realpath($from)); // @phpstan-ignore-line
-        $to = str_replace(base_path().'/', '', realpath($to)); // @phpstan-ignore-line
+        $from = str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($from)); // @phpstan-ignore-line
+        $to = str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($to)); // @phpstan-ignore-line
 
+        dump(base_path());
         dump($from, $to);
 
         $this->components->task(sprintf(
-            'Copying %s [%s] to [%s]',
-            $type,
+            'Copying file [%s] to [%s]',
             $from,
             $to,
         ));
