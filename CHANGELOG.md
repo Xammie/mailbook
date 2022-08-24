@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 0.0.9 - 2022-08-24
+
+### What's Changed
+
+- Fixed loading of mailables by @Xammie in https://github.com/Xammie/mailbook/pull/6
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/0.0.8...0.0.9
+
 ## 0.0.8 - 2022-08-23
 
 ### What's Changed
