@@ -21,7 +21,7 @@ composer require --dev xammie/mailbook
 
 Next install mailbook into your application
 
-```php
+```bash
 php artisan mailbook:install
 ```
 
