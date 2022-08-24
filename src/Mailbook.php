@@ -13,6 +13,8 @@ class Mailbook
      */
     protected Collection $mailables;
 
+    protected bool $hasCollected = false;
+
     public function __construct()
     {
         $this->mailables = collect(); // @phpstan-ignore-line
@@ -39,10 +41,16 @@ class Mailbook
 
     private function collect(): void
     {
+        if ($this->hasCollected) {
+            return;
+        }
+
         $filename = base_path('routes/mailbook.php');
 
         if (file_exists($filename)) {
-            include_once $filename;
+            include $filename;
+
+            $this->hasCollected = true;
         }
     }
 }
