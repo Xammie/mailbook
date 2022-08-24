@@ -45,7 +45,17 @@ it('can collect mails from route file', function () {
 
     $mails = Mailbook::mailables();
 
-    expect($mails)->isNotEmpty();
+    expect($mails)->toHaveCount(1);
+});
+
+it('can will collect mails from route file once', function () {
+    artisan(InstallMailbookCommand::class)->assertSuccessful();
+    require_once base_path('app/Mail/MailbookMail.php');
+
+    Mailbook::mailables();
+    $mails = Mailbook::mailables();
+
+    expect($mails)->toHaveCount(1);
 });
 
 it('can render installable mail', function () {
