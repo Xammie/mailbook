@@ -1,4 +1,4 @@
-<div class="flex-col gap-2 w-[300px] overflow-y-hidden overflow-x-auto hidden xl:flex shadow-xl">
+<div class="flex-col justify-between gap-2 w-[300px] overflow-y-hidden overflow-x-auto hidden xl:flex shadow-xl">
     <div class="flex flex-col p-4 divide-y divide-gray-500">
         @if($subject)
             <div class="flex flex-col py-2">
@@ -88,5 +88,8 @@
                 </div>
             </div>
         @endif
+    </div>
+    <div class="text-gray-200 text-center text-xs p-2">
+        Created with <a href="https://github.com/Xammie/mailbook" target="_blank" class="text-white text-bold underline">mailbook</a>
     </div>
 </div>
