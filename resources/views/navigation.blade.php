@@ -1,17 +1,14 @@
-<div class="flex items-stretch">
-    <div class="flex flex-col justify-center gap-2 px-5 py-3 border-r border-b border-gray-500 border-solid w-[300px]">
-        @include('mailbook::logo')
-    </div>
-    <div class="flex flex-1 items-stretch justify-between border-l border-b border-gray-500 border-solid">
+<div class="flex items-stretch bg-[#151e2b] shadow-2xl z-20">
+    <div class="flex flex-1 items-stretch justify-between">
         <div class="flex flex-col justify-center px-5 py-1">
-            <div class="text-xs">
-                {{ $from }}
+            <div class="text-xs uppercase font-bold tracking-wide">
+                Subject
             </div>
-            <div class="text-xl font-bold">
+            <div class="text-xl ">
                 {{ $subject }}
             </div>
         </div>
-        <div class="flex">
+        <div class="hidden sm:flex">
             @if(config('mailbook.display_preview'))
                 <div class="p-2">
                     <a href="{{ request()->fullUrlWithQuery(['display' => 'phone']) }}"

@@ -22,6 +22,8 @@ class MailableItem
 
     private ?MailableResolver $resolver = null;
 
+    private ?string $content = null;
+
     public function __construct(public string|Closure|Mailable $closure)
     {
         $this->variants = collect(); // @phpstan-ignore-line
@@ -101,27 +103,70 @@ class MailableItem
         }
     }
 
-    public function from(): ?string
+    public function from(): array
     {
-        $items = collect($this->variantResolver()->instance()->from ?? []); // @phpstan-ignore-line
+        $items = $this->variantResolver()->instance()->from ?? [];
 
-        if ($items->isEmpty()) {
+        if (empty($items)) {
             $from = config('mail.from');
-        } else {
-            $from = $items->first();
+
+            if (is_array($from)) {
+                $items = [$from];
+            }
         }
 
-        if (! is_array($from)) {
-            return null;
-        }
+        return $this->listOfEmailAddresses($items);
+    }
 
-        return sprintf('%s <%s>', $from['name'], $from['address']);
+    public function to(): array
+    {
+        return $this->listOfEmailAddresses($this->variantResolver()->instance()->to ?? []);
+    }
+
+    public function cc(): array
+    {
+        return $this->listOfEmailAddresses($this->variantResolver()->instance()->cc ?? []);
+    }
+
+    public function bcc(): array
+    {
+        return $this->listOfEmailAddresses($this->variantResolver()->instance()->bcc ?? []);
+    }
+
+    public function listOfEmailAddresses(array $items): array
+    {
+        return collect($items)
+            ->map(fn (array $from) => sprintf('%s <%s>', $from['name'], $from['address']))
+            ->filter()
+            ->toArray();
     }
 
     public function content(): string
     {
+        if ($this->content) {
+            return $this->content;
+        }
+
         // @phpstan-ignore-next-line
-        return $this->variantResolver()->instance()->render();
+        return $this->content = $this->variantResolver()->instance()->render();
+    }
+
+    public function size(): string
+    {
+        return $this->formatBytes(strlen($this->content()));
+    }
+
+    public function formatBytes(int $bytes, int $precision = 2): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+
+        $bytes /= pow(1024, $pow);
+
+        return round($bytes, $precision).' '.$units[$pow];
     }
 
     /**

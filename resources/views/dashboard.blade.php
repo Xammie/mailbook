@@ -13,6 +13,7 @@
 <div class="flex flex-1">
     @include('mailbook::list')
     @include('mailbook::display')
+    @include('mailbook::details')
 </div>
 </body>
 </html>

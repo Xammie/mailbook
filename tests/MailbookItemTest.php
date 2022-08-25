@@ -112,17 +112,17 @@ it('can get variant resolver from default variant', function () {
 it('can get default from', function () {
     $item = Mailbook::add(TestMail::class);
 
-    expect($item->from())->toBe('Example <hello@example.com>');
+    expect($item->from())->toBe(['Example <hello@example.com>']);
 
     config()->set('mail.from', null);
 
-    expect($item->from())->toBe(null);
+    expect($item->from())->toBe([]);
 });
 
 it('can get from', function () {
     $item = Mailbook::add(OtherMail::class);
 
-    expect($item->from())->toBe('Harry Potter <harry@example.com>');
+    expect($item->from())->toBe(['Harry Potter <harry@example.com>']);
 });
 
 it('builds mailable resolved from instance', function () {
