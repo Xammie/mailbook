@@ -3,6 +3,7 @@
 namespace Xammie\Mailbook;
 
 use Closure;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Facades\App;
 use ReflectionFunction;
@@ -50,6 +51,8 @@ class MailableResolver
     public function instance(): Mailable
     {
         if ($this->mailable instanceof Mailable) {
+            Container::getInstance()->call([$this->mailable, 'build']); // @phpstan-ignore-line
+
             return $this->mailable;
         }
 
@@ -66,6 +69,8 @@ class MailableResolver
         if (! $instance instanceof Mailable) {
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
+
+        Container::getInstance()->call([$instance, 'build']); // // @phpstan-ignore-line
 
         return $this->instance = $instance;
     }

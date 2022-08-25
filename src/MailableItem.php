@@ -95,8 +95,7 @@ class MailableItem
     public function subject(): string
     {
         try {
-            // @phpstan-ignore-next-line
-            return $this->variantResolver()->instance()->build()->subject ?? 'NULL';
+            return $this->variantResolver()->instance()->subject ?? 'NULL';
         } catch (BindingResolutionException) {
             return '';
         }
@@ -104,7 +103,7 @@ class MailableItem
 
     public function from(): ?string
     {
-        $items = collect($this->variantResolver()->instance()->build()->from ?? []); // @phpstan-ignore-line
+        $items = collect($this->variantResolver()->instance()->from ?? []); // @phpstan-ignore-line
 
         if ($items->isEmpty()) {
             $from = config('mail.from');
@@ -123,6 +122,22 @@ class MailableItem
     {
         // @phpstan-ignore-next-line
         return $this->variantResolver()->instance()->render();
+    }
+
+    /**
+     * @return Collection<int, Attachment>
+     */
+    public function attachments(): Collection
+    {
+        /** @var \Illuminate\Mail\Mailable $mailable */
+        $mailable = $this->variantResolver()->instance();
+
+        // @phpstan-ignore-next-line
+        return collect()
+            ->concat($mailable->attachments)
+            ->concat($mailable->rawAttachments)
+            ->concat($mailable->diskAttachments)
+            ->map(fn (array $attachment) => new Attachment($attachment['name']));
     }
 
     public function is(MailableItem $target): bool

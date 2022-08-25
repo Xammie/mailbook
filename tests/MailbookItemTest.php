@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Mail\Mailable;
+use Xammie\Mailbook\Attachment;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestBinding;
 use Xammie\Mailbook\Tests\Mails\TestMail;
+use Xammie\Mailbook\Tests\Mails\WithAttachmentsMail;
 
 it('can render', function () {
     $html = Mailbook::add(TestMail::class)->content();
@@ -121,4 +123,19 @@ it('can get from', function () {
     $item = Mailbook::add(OtherMail::class);
 
     expect($item->from())->toBe('Harry Potter <harry@example.com>');
+});
+
+it('builds mailable resolved from instance', function () {
+    $item = Mailbook::add(new OtherMail());
+
+    expect($item->subject())->toBe('Hello!');
+});
+
+it('can get attachments', function () {
+    $item = Mailbook::add(WithAttachmentsMail::class);
+
+    expect($item->attachments()->toArray())->toEqual([
+        new Attachment('document.pdf'),
+        new Attachment('WithAttachmentsMail.php'),
+    ]);
 });

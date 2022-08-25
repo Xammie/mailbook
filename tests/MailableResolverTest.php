@@ -39,13 +39,13 @@ it('can get class from mailable', function () {
 it('can get instance from class', function () {
     $resolver = new MailableResolver(TestMail::class);
 
-    expect($resolver->instance())->toEqual(new TestMail());
+    expect($resolver->instance())->toBeInstanceOf(TestMail::class);
 });
 
 it('can get instance from closure', function () {
     $resolver = new MailableResolver(fn () => new TestMail());
 
-    expect($resolver->instance())->toEqual(new TestMail());
+    expect($resolver->instance())->toBeInstanceOf(TestMail::class);
 });
 
 it('cannot get instance from closure with invalid type', function () {
@@ -58,13 +58,13 @@ it('cannot get instance from closure with invalid type', function () {
 it('can get instance from closure with return type', function () {
     $resolver = new MailableResolver(fn (): TestMail => new TestMail());
 
-    expect($resolver->instance())->toEqual(new TestMail());
+    expect($resolver->instance())->toBeInstanceOf(TestMail::class);
 });
 
 it('can get instance from mailable', function () {
     $resolver = new MailableResolver(new TestMail());
 
-    expect($resolver->instance())->toEqual(new TestMail());
+    expect($resolver->instance())->toBeInstanceOf(TestMail::class);
 });
 
 it('can resolve dependencies from closure', function () {
