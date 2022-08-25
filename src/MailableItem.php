@@ -124,15 +124,17 @@ class MailableItem
         return $this->variantResolver()->instance()->render();
     }
 
-    public function attachments(): array
+    public function attachments(): Collection
     {
+        /** @var \Illuminate\Mail\Mailable $mailable */
         $mailable = $this->variantResolver()->instance();
 
-        if (! $mailable instanceof \Illuminate\Mail\Mailable) {
-            return [];
-        }
-
-        return $mailable->rawAttachments;
+        // @phpstan-ignore-next-line
+        return collect()
+            ->concat($mailable->attachments)
+            ->concat($mailable->rawAttachments)
+            ->concat($mailable->diskAttachments)
+            ->map(fn (array $attachment) => new Attachment($attachment['name']));
     }
 
     public function is(MailableItem $target): bool

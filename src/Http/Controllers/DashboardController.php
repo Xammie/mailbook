@@ -43,6 +43,7 @@ class DashboardController
             'current' => $item,
             'subject' => $item->subject(),
             'from' => $item->from(),
+            'attachments' => $item->attachments(),
             'mailables' => $mailables,
             'display' => $display,
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
