@@ -124,6 +124,9 @@ class MailableItem
         return $this->variantResolver()->instance()->render();
     }
 
+    /**
+     * @return Collection<int, Attachment>
+     */
     public function attachments(): Collection
     {
         /** @var \Illuminate\Mail\Mailable $mailable */
