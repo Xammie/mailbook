@@ -1,4 +1,4 @@
-<div class="hidden md:flex flex-col gap-2 w-[300px] shadow-xl">
+<div class="hidden md:flex flex-col gap-2 w-[300px]">
     <div class="flex flex-col p-2 gap-1">
         @foreach($mailables as $mailable)
             @if($mailable->hasVariants())
