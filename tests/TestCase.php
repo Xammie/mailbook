@@ -7,7 +7,7 @@ use Xammie\Mailbook\MailbookServiceProvider;
 
 class TestCase extends Orchestra
 {
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             MailbookServiceProvider::class,

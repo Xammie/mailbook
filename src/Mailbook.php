@@ -45,7 +45,7 @@ class Mailbook
             return;
         }
 
-        $filename = base_path('routes/mailbook.php');
+        $filename = base_path(config('mailbook.route_file', 'routes/mailbook.php'));
 
         if (file_exists($filename)) {
             include $filename;
