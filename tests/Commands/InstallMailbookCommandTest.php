@@ -59,7 +59,7 @@ it('can will collect mails from route file once', function () {
 });
 
 it('cannot collect mails from non existing route file', function () {
-    config()->set('mailbook.route_file', 'routes/unknown.php');
+    config()->set('mailbook.route_file', base_path('routes/unknown.php'));
 
     artisan(InstallMailbookCommand::class)->assertSuccessful();
     require_once base_path('app/Mail/MailbookMail.php');
