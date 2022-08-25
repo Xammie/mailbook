@@ -133,7 +133,7 @@ class MailableItem
         return $this->listOfEmailAddresses($this->variantResolver()->instance()->bcc ?? []);
     }
 
-    public function listOfEmailAddresses(array $items): array
+    private function listOfEmailAddresses(array $items): array
     {
         return collect($items)
             ->map(fn (array $from) => sprintf('%s <%s>', $from['name'], $from['address']))
@@ -151,12 +151,17 @@ class MailableItem
         return $this->content = $this->variantResolver()->instance()->render();
     }
 
-    public function size(): string
+    public function size(): int
     {
-        return $this->formatBytes(strlen($this->content()));
+        return strlen($this->content());
     }
 
-    public function formatBytes(int $bytes, int $precision = 2): string
+    public function sizeInHuman(): string
+    {
+        return $this->formatBytes($this->size());
+    }
+
+    public function formatBytes(int $bytes): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
 
@@ -166,7 +171,7 @@ class MailableItem
 
         $bytes /= pow(1024, $pow);
 
-        return round($bytes, $precision).' '.$units[$pow];
+        return round($bytes, 2).' '.$units[$pow];
     }
 
     /**
