@@ -58,6 +58,17 @@ it('can will collect mails from route file once', function () {
     expect($mails)->toHaveCount(1);
 });
 
+it('cannot collect mails from non existing route file', function () {
+    config()->set('mailbook.route_file', base_path('routes/unknown.php'));
+
+    artisan(InstallMailbookCommand::class)->assertSuccessful();
+    require_once base_path('app/Mail/MailbookMail.php');
+
+    $mails = Mailbook::mailables();
+
+    expect($mails)->toBeEmpty();
+});
+
 it('can render installable mail', function () {
     artisan(InstallMailbookCommand::class)->assertSuccessful();
     require_once base_path('app/Mail/MailbookMail.php');
