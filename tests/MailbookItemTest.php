@@ -122,3 +122,9 @@ it('can get from', function () {
 
     expect($item->from())->toBe('Harry Potter <harry@example.com>');
 });
+
+it('builds mailable resolved from instance', function () {
+    $item = Mailbook::add(new OtherMail());
+
+    expect($item->subject())->toBe('Hello!');
+});
