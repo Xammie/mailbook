@@ -1,10 +1,10 @@
-<div class="flex items-stretch bg-[#151e2b] z-20">
+<div class="flex items-stretch flex-shrink-0 flex-grow-0 bg-[#151e2b] z-20 h-16">
     <div class="flex flex-1 items-stretch justify-between">
         <div class="flex flex-col justify-center px-5 py-1">
             <div class="text-xs uppercase font-bold tracking-wide">
                 Subject
             </div>
-            <div class="text-xl ">
+            <div class="text-xl">
                 {{ $subject }}
             </div>
         </div>
