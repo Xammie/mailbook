@@ -1,4 +1,4 @@
-<div class="hidden md:flex flex-col gap-[2px] w-[300px] overflow-x-hidden overflow-y-auto p-3 max-w-full">
+<div class="hidden md:flex flex-col gap-[2px] w-[300px] overflow-x-hidden overflow-y-auto p-4 max-w-full">
     @foreach($mailables as $mailable)
         @if($mailable->hasVariants())
             <div class="uppercase tracking-wider font-bold text-white text-xs pt-2 pb-1 px-3">
