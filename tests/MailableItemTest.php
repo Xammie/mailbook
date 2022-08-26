@@ -112,18 +112,62 @@ it('can get variant resolver from default variant', function () {
 it('can get default from', function () {
     $item = Mailbook::add(TestMail::class);
 
-    expect($item->from())->toBe('Example <hello@example.com>');
+    expect($item->from())->toBe(['Example <hello@example.com>']);
 
     config()->set('mail.from', null);
 
-    expect($item->from())->toBe(null);
+    expect($item->from())->toBe([]);
 });
 
 it('can get from', function () {
     $item = Mailbook::add(OtherMail::class);
 
-    expect($item->from())->toBe('Harry Potter <harry@example.com>');
+    expect($item->from())->toBe(['Harry Potter <harry@example.com>']);
 });
+
+it('can get to', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->to())->toBe(['Mailbook <example@mailbook.dev>']);
+});
+
+it('can get cc', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->cc())->toBe(['Mailbook <cc@mailbook.dev>']);
+});
+
+it('can get bcc', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->bcc())->toBe(['Mailbook <bcc@mailbook.dev>']);
+});
+
+it('can get size', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->size())->toBe(20);
+});
+
+it('can get human readable size', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->sizeInHuman())->toBe('20 B');
+});
+
+it('can convert to human readable sizes', function ($bytes, $expected) {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->formatBytes($bytes))->toBe($expected);
+})
+    ->with([
+        [-10, '0 B'],
+        [1, '1 B'],
+        [64, '64 B'],
+        [64 * 64, '4 KB'],
+        [64 * 64 * 64, '256 KB'],
+        [64 * 64 * 64 * 64, '16 MB'],
+    ]);
 
 it('builds mailable resolved from instance', function () {
     $item = Mailbook::add(new OtherMail());

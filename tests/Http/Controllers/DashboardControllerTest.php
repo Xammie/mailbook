@@ -14,7 +14,18 @@ it('can render default', function () {
     get(route('mailbook.dashboard'))
         ->assertSuccessful()
         ->assertSeeText('Mailbook')
-        ->assertSeeText('Test email subject');
+        ->assertSeeText('Test email subject')
+        ->assertViewHas([
+            'subject' => 'Test email subject',
+            'size' => '9 B',
+            'from' => [
+                'Example <hello@example.com>',
+            ],
+            'to' => [],
+            'cc' => [],
+            'bcc' => [],
+            'attachments' => collect(),
+        ]);
 });
 
 it('can render selected', function () {
