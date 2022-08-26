@@ -2,6 +2,18 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.0.0 - 2022-08-26
+
+First stable release of mailbook 🎉
+
+### What's Changed
+
+- Attachments by @Xammie in https://github.com/Xammie/mailbook/pull/8
+- Added config option for changing the route file by @Xammie in https://github.com/Xammie/mailbook/pull/7
+- UI improvements by @Xammie in https://github.com/Xammie/mailbook/pull/9
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/0.0.9...1.0.0
+
 ## 0.0.9 - 2022-08-24
 
 ### What's Changed
