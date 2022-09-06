@@ -15,6 +15,21 @@
     @include('mailbook::display')
     @include('mailbook::details')
 </div>
+<script>
+    class SimpleShadowRoot extends HTMLElement {
+        constructor() {
+            super();
+
+            this.attachShadow({
+                mode: 'open'
+            });
+
+            this.shadowRoot.innerHTML = atob(this.getAttribute('content'));
+        }
+    }
+
+    window.customElements.define('simple-shadow-root', SimpleShadowRoot);
+</script>
 </body>
 </html>
 

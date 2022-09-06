@@ -48,6 +48,7 @@ class DashboardController
             'bcc' => $item->bcc(),
             'attachments' => $item->attachments(),
             'size' => $item->sizeInHuman(),
+            'content' => $item->content(),
             'mailables' => $mailables,
             'display' => $display,
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
