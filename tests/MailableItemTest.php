@@ -162,11 +162,17 @@ it('can convert to human readable sizes', function ($bytes, $expected) {
 })
     ->with([
         [-10, '0 B'],
+        [0, '0 B'],
         [1, '1 B'],
         [64, '64 B'],
-        [64 * 64, '4 KB'],
-        [64 * 64 * 64, '256 KB'],
-        [64 * 64 * 64 * 64, '16 MB'],
+        [1342, '1.31 KB'],
+        [pow(64, 2), '4 KB'],
+        [pow(64, 3), '256 KB'],
+        [pow(64, 4), '16 MB'],
+        [pow(64, 5), '1 GB'],
+        [pow(64, 6), '64 GB'],
+        [pow(64, 7), '4 TB'],
+        [pow(64, 8), '256 TB'],
     ]);
 
 it('builds mailable resolved from instance', function () {

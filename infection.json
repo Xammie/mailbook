@@ -20,7 +20,6 @@
         "@conditional_negotiation": true,
         "@equal": true,
         "@function_signature": true,
-        "IdenticalEqual": false,
         "@number": true,
         "@operator": true,
         "@regex": true,
@@ -30,6 +29,9 @@
         "@unwrap": true,
         "@loop": true,
         "@extensions": true,
-        "@default": true
+        "@default": true,
+        "IdenticalEqual": false,
+        "DecrementInteger": false,
+        "IncrementInteger": false
     }
 }
