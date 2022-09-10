@@ -1,9 +1,9 @@
-name: Build frontend assets
+name: Assets
 
 on: [push]
 
 jobs:
-  build-assets:
+  build:
     runs-on: ubuntu-latest
 
     steps:
