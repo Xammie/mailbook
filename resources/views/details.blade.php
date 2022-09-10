@@ -1,4 +1,4 @@
-<div class="flex-col justify-between gap-2 w-[300px] overflow-y-scroll overflow-x-hidden hidden xl:flex">
+<div class="flex-col justify-between gap-2 w-[300px] overflow-y-auto overflow-x-hidden hidden xl:flex">
     <div class="flex flex-col p-4 divide-y divide-gray-500">
         @if($subject)
             <div class="flex flex-col py-2">
