@@ -169,3 +169,19 @@ it('can get attachments', function () {
         new Attachment('WithAttachmentsMail.php'),
     ]);
 });
+
+it('executes the closure once', function () {
+    $executed = 0;
+
+    $mailable = Mailbook::add(function () use (&$executed) {
+        $executed++;
+
+        return new TestMail();
+    });
+
+    $mailable->subject();
+    $mailable->to();
+    $mailable->content();
+
+    expect($executed)->toBe(1);
+});

@@ -81,3 +81,37 @@ it('will resolve instance once', function () {
 
     expect($resolver->instance())->toBe($resolver->instance());
 });
+
+it('will execute closure once when resolving class from closure', function () {
+    $executed = 0;
+
+    $resolver = new MailableResolver(function () use (&$executed) {
+        $executed++;
+
+        return new TestMail();
+    });
+
+    $resolver->class();
+    $resolver->class();
+    $resolver->class();
+
+    expect($executed)->toEqual(1);
+});
+
+it('resolved instance has been build', function () {
+    $resolver = new MailableResolver(function () {
+        return new TestMail();
+    });
+
+    expect($resolver->instance()->subject)->toBe('Test email subject');
+});
+
+it('resolved class instance has been build', function () {
+    $resolver = new MailableResolver(function () {
+        return new TestMail();
+    });
+
+    $resolver->class();
+
+    expect(invade($resolver)->instance->subject)->toBe('Test email subject');
+});
