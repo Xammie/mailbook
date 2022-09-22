@@ -2,6 +2,17 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.1.0 - 2022-09-22
+
+### What's Changed
+
+- Build assets in action by @Xammie in https://github.com/Xammie/mailbook/pull/12
+- Add option to disable credits by @Xammie in https://github.com/Xammie/mailbook/pull/14
+- Add reply to info by @Xammie in https://github.com/Xammie/mailbook/pull/15
+- Optimized closure calls by @Xammie in https://github.com/Xammie/mailbook/pull/16
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.0.0...1.1.0
+
 ## 1.0.0 - 2022-08-26
 
 First stable release of mailbook 🎉
