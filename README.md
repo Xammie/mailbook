@@ -101,6 +101,7 @@ return [
     'refresh_button' => true,
     'route_prefix' => '/mailbook',
     'middlewares' => [Xammie\Mailbook\Http\Middlewares\RollbackDatabase::class],
+    'show_credits' => true,
 ];
 ```
 

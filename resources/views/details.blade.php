@@ -89,8 +89,10 @@
             </div>
         @endif
     </div>
-    <div class="text-gray-200 text-center text-xs p-2">
-        Created with <a href="https://github.com/Xammie/mailbook" target="_blank"
-                        class="text-white text-bold underline">mailbook</a>
-    </div>
+    @if(config('mailbook.show_credits'))
+        <div class="text-gray-200 text-center text-xs p-2">
+            Created with <a href="https://github.com/Xammie/mailbook" target="_blank"
+                            class="text-white text-bold underline">mailbook</a>
+        </div>
+    @endif
 </div>
