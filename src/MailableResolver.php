@@ -45,6 +45,10 @@ class MailableResolver
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
 
+        Container::getInstance()->call([$instance, 'build']); // @phpstan-ignore-line
+
+        $this->mailable = $instance;
+
         return get_class($instance);
     }
 
@@ -70,7 +74,7 @@ class MailableResolver
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
 
-        Container::getInstance()->call([$instance, 'build']); // // @phpstan-ignore-line
+        Container::getInstance()->call([$instance, 'build']); // @phpstan-ignore-line
 
         return $this->instance = $instance;
     }
