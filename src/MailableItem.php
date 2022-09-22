@@ -123,6 +123,11 @@ class MailableItem
         return $this->listOfEmailAddresses($this->variantResolver()->instance()->to ?? []);
     }
 
+    public function replyTo(): array
+    {
+        return $this->listOfEmailAddresses($this->variantResolver()->instance()->replyTo ?? []);
+    }
+
     public function cc(): array
     {
         return $this->listOfEmailAddresses($this->variantResolver()->instance()->cc ?? []);

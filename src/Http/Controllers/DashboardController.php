@@ -45,6 +45,7 @@ class DashboardController
             'subject' => $item->subject(),
             'from' => $item->from(),
             'to' => $item->to(),
+            'replyTo' => $item->replyTo(),
             'cc' => $item->cc(),
             'bcc' => $item->bcc(),
             'attachments' => $item->attachments(),

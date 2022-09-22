@@ -125,6 +125,12 @@ it('can get from', function () {
     expect($item->from())->toBe(['Harry Potter <harry@example.com>']);
 });
 
+it('can get reply to', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->replyTo())->toBe(['Support <questions@example.com>']);
+});
+
 it('can get to', function () {
     $item = Mailbook::add(OtherMail::class);
 
