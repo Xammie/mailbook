@@ -125,6 +125,12 @@ it('can get from', function () {
     expect($item->from())->toBe(['Harry Potter <harry@example.com>']);
 });
 
+it('can get reply to', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->replyTo())->toBe(['Support <questions@example.com>']);
+});
+
 it('can get to', function () {
     $item = Mailbook::add(OtherMail::class);
 
@@ -146,28 +152,8 @@ it('can get bcc', function () {
 it('can get size', function () {
     $item = Mailbook::add(OtherMail::class);
 
-    expect($item->size())->toBe(20);
+    expect($item->size())->toBe('20 B');
 });
-
-it('can get human readable size', function () {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->sizeInHuman())->toBe('20 B');
-});
-
-it('can convert to human readable sizes', function ($bytes, $expected) {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->formatBytes($bytes))->toBe($expected);
-})
-    ->with([
-        [-10, '0 B'],
-        [1, '1 B'],
-        [64, '64 B'],
-        [64 * 64, '4 KB'],
-        [64 * 64 * 64, '256 KB'],
-        [64 * 64 * 64 * 64, '16 MB'],
-    ]);
 
 it('builds mailable resolved from instance', function () {
     $item = Mailbook::add(new OtherMail());

@@ -5,8 +5,8 @@
             "src"
         ],
         "excludes": [
-            "AutowireServiceProvider.php",
-            "Console/"
+            "Commands/",
+            "Support/"
         ]
     },
     "logs": {

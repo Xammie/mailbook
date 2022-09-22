@@ -8,6 +8,7 @@ use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Xammie\Mailbook\Exceptions\MailbookException;
+use Xammie\Mailbook\Support\Format;
 
 class MailableItem
 {
@@ -123,6 +124,11 @@ class MailableItem
         return $this->listOfEmailAddresses($this->variantResolver()->instance()->to ?? []);
     }
 
+    public function replyTo(): array
+    {
+        return $this->listOfEmailAddresses($this->variantResolver()->instance()->replyTo ?? []);
+    }
+
     public function cc(): array
     {
         return $this->listOfEmailAddresses($this->variantResolver()->instance()->cc ?? []);
@@ -151,27 +157,9 @@ class MailableItem
         return $this->content = $this->variantResolver()->instance()->render();
     }
 
-    public function size(): int
+    public function size(): string
     {
-        return strlen($this->content());
-    }
-
-    public function sizeInHuman(): string
-    {
-        return $this->formatBytes($this->size());
-    }
-
-    public function formatBytes(int $bytes): string
-    {
-        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
-
-        $bytes = max($bytes, 0);
-        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow = min($pow, count($units) - 1);
-
-        $bytes /= pow(1024, $pow);
-
-        return round($bytes, 2).' '.$units[$pow];
+        return Format::bytesToHuman(strlen($this->content()));
     }
 
     /**

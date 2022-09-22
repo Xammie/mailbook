@@ -22,6 +22,18 @@
                 @endforeach
             </div>
         @endif
+        @if(!empty($replyTo))
+            <div class="flex flex-col py-2">
+                <div class="text-xs font-bold tracking-wide uppercase">
+                    Reply To
+                </div>
+                @foreach($replyTo as $mail)
+                    <div class="text-sm truncate" title="{{ $mail }}">
+                        {{ $mail }}
+                    </div>
+                @endforeach
+            </div>
+        @endif
         @if(!empty($to))
             <div class="flex flex-col py-2">
                 <div class="text-xs font-bold tracking-wide uppercase">
