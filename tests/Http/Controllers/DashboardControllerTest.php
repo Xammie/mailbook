@@ -96,3 +96,18 @@ it('can disable display preview', function () {
         ->assertSuccessful()
         ->assertViewHas('display', null);
 });
+
+it('executes the close once', function () {
+    $executed = 0;
+
+    Mailbook::add(function () use (&$executed) {
+        $executed++;
+
+        return new TestMail();
+    });
+
+    get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))
+        ->assertSuccessful();
+
+    expect($executed)->toBe(1);
+});

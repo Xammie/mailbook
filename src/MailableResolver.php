@@ -24,6 +24,10 @@ class MailableResolver
             return get_class($this->mailable);
         }
 
+        if ($this->instance instanceof Mailable) {
+            return get_class($this->instance);
+        }
+
         if (is_string($this->mailable)) {
             return $this->mailable;
         }
@@ -45,11 +49,11 @@ class MailableResolver
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
 
-        Container::getInstance()->call([$instance, 'build']); // @phpstan-ignore-line
+        $this->instance = $instance;
 
-        $this->mailable = $instance;
+        Container::getInstance()->call([$this->instance, 'build']); // @phpstan-ignore-line
 
-        return get_class($instance);
+        return get_class($this->instance);
     }
 
     public function instance(): Mailable
