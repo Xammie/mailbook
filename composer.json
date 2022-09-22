@@ -50,7 +50,7 @@
         "coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage",
         "format": "vendor/bin/pint",
         "pint": "vendor/bin/pint",
-        "infection": "XDEBUG_MODE=coverage vendor/bin/infection --test-framework=pest --threads=4 --min-covered-msi=90"
+        "infection": "XDEBUG_MODE=coverage vendor/bin/infection --test-framework=pest --threads=4 --min-covered-msi=100"
     },
     "config": {
         "sort-packages": true,

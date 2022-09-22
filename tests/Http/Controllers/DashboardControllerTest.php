@@ -21,6 +21,7 @@ it('can render default', function () {
             'from' => [
                 'Example <hello@example.com>',
             ],
+            'replyTo' => [],
             'to' => [],
             'cc' => [],
             'bcc' => [],
