@@ -1,12 +1,13 @@
 <?php
 
+use Symfony\Component\Console\Command\Command;
 use function Pest\Laravel\artisan;
 use Xammie\Mailbook\Commands\InstallMailbookCommand;
 use Xammie\Mailbook\Facades\Mailbook;
 
 it('can install mailbook', function () {
     artisan(InstallMailbookCommand::class)
-        ->assertOk()
+        ->assertExitCode(Command::SUCCESS)
         ->execute();
 
     expect(base_path('routes/mailbook.php'))->toBeFile()
@@ -20,7 +21,7 @@ it('will not overwrite existing files', function () {
     file_put_contents($path, 'test');
 
     artisan(InstallMailbookCommand::class)
-        ->assertOk()
+        ->assertExitCode(Command::SUCCESS)
         ->execute();
 
     expect($path)
