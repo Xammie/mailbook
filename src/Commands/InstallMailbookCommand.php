@@ -18,7 +18,10 @@ class InstallMailbookCommand extends Command
 
     public function handle(): int
     {
-        $this->components->info('Installing mailbook');
+        if (property_exists($this, 'components')) {
+            $this->components->info('Installing mailbook');
+        }
+        $this->info('Installing mailbook');
 
         $stubs = [
             'routes/mailbook.php' => 'route-file.php',
@@ -36,7 +39,11 @@ class InstallMailbookCommand extends Command
         $this->newLine();
 
         $url = route('mailbook.dashboard');
-        $this->components->info("Mailbook has been installed. Navigate to $url to view it");
+
+        if (property_exists($this, 'components')) {
+            $this->components->info("Mailbook has been installed. Navigate to $url to view it");
+        }
+        $this->info("Mailbook has been installed. Navigate to $url to view it");
 
         return self::SUCCESS;
     }
@@ -50,10 +57,18 @@ class InstallMailbookCommand extends Command
 
             $this->status($from, $to);
         } else {
-            $this->components->twoColumnDetail(sprintf(
+            $output = sprintf(
                 'File [%s] already exists',
-                str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($to)), // @phpstan-ignore-line
-            ), '<fg=yellow;options=bold>SKIPPED</>');
+                str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($to)) // @phpstan-ignore-line
+            );
+
+            if (property_exists($this, 'components')) {
+                $this->components->twoColumnDetail($output, '<fg=yellow;options=bold>SKIPPED</>');
+
+                return;
+            }
+
+            $this->info($output);
         }
     }
 
@@ -69,10 +84,13 @@ class InstallMailbookCommand extends Command
         $from = str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($from)); // @phpstan-ignore-line
         $to = str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($to)); // @phpstan-ignore-line
 
-        $this->components->task(sprintf(
-            'Copying file [%s] to [%s]',
-            $from,
-            $to,
-        ));
+        $output = sprintf('Copying file [%s] to [%s]', $from, $to);
+
+        if (property_exists($this, 'components')) {
+            $this->components->task($output);
+
+            return;
+        }
+        $this->info($output);
     }
 }
