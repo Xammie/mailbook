@@ -20,8 +20,9 @@ class InstallMailbookCommand extends Command
     {
         if (property_exists($this, 'components')) {
             $this->components->info('Installing mailbook');
+        } else {
+            $this->info('Installing mailbook');
         }
-        $this->info('Installing mailbook');
 
         $stubs = [
             'routes/mailbook.php' => 'route-file.php',
@@ -42,8 +43,9 @@ class InstallMailbookCommand extends Command
 
         if (property_exists($this, 'components')) {
             $this->components->info("Mailbook has been installed. Navigate to $url to view it");
+        } else {
+            $this->info("Mailbook has been installed. Navigate to $url to view it");
         }
-        $this->info("Mailbook has been installed. Navigate to $url to view it");
 
         return self::SUCCESS;
     }
