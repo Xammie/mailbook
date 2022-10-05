@@ -6,7 +6,7 @@ use Xammie\Mailbook\Facades\Mailbook;
 
 it('can install mailbook', function () {
     artisan(InstallMailbookCommand::class)
-        ->assertSuccessful()
+        ->assertOk()
         ->execute();
 
     expect(base_path('routes/mailbook.php'))->toBeFile()
@@ -20,7 +20,7 @@ it('will not overwrite existing files', function () {
     file_put_contents($path, 'test');
 
     artisan(InstallMailbookCommand::class)
-        ->assertSuccessful()
+        ->assertOk()
         ->execute();
 
     expect($path)
