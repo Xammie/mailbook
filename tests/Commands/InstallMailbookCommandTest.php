@@ -1,19 +1,12 @@
 <?php
 
 use function Pest\Laravel\artisan;
+use Symfony\Component\Console\Command\Command;
 use Xammie\Mailbook\Commands\InstallMailbookCommand;
 use Xammie\Mailbook\Facades\Mailbook;
 
 it('can install mailbook', function () {
-    $stubsPath = realpath(__DIR__.'/../../stubs/');
-
-    artisan(InstallMailbookCommand::class)
-        ->expectsOutputToContain('Installing mailbook.')
-        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath.'/route-file.php'), testFilepath('routes/mailbook.php')))
-        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath.'/MailbookMail.php'), testFilepath('app/Mail/MailbookMail.php')))
-        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath.'/mailbook.blade.php'), testFilepath('resources/views/mail/mailbook.blade.php')))
-        ->expectsOutputToContain('Mailbook has been installed.')
-        ->assertSuccessful();
+    artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
 
     expect(base_path('routes/mailbook.php'))->toBeFile()
         ->and(base_path('app/Mail/MailbookMail.php'))->toBeFile()
@@ -25,22 +18,16 @@ it('will not overwrite existing files', function () {
     @mkdir(dirname($path), 0755, true);
     file_put_contents($path, 'test');
 
-    $stubsPath = realpath(__DIR__.'/../../stubs/');
+    artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
 
-    artisan(InstallMailbookCommand::class)
-        ->expectsOutputToContain('Installing mailbook.')
-        ->expectsOutputToContain(testFilepath('File [routes/mailbook.php] already exists'))
-        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath.'/MailbookMail.php'), testFilepath('app/Mail/MailbookMail.php')))
-        ->expectsOutputToContain(sprintf('Copying file [%s] to [%s]', testFilepath($stubsPath.'/mailbook.blade.php'), testFilepath('resources/views/mail/mailbook.blade.php')))
-        ->expectsOutputToContain('Mailbook has been installed.')
-        ->assertSuccessful();
-
-    expect($path)->toBeFile()
+    expect($path)
+        ->toBeFile()
         ->and(file_get_contents($path))->toBe('test');
 });
 
 it('can collect mails from route file', function () {
-    artisan(InstallMailbookCommand::class)->assertSuccessful();
+    artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
+
     require_once base_path('app/Mail/MailbookMail.php');
 
     $mails = Mailbook::mailables();
@@ -49,7 +36,8 @@ it('can collect mails from route file', function () {
 });
 
 it('can will collect mails from route file once', function () {
-    artisan(InstallMailbookCommand::class)->assertSuccessful();
+    artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
+
     require_once base_path('app/Mail/MailbookMail.php');
 
     Mailbook::mailables();
@@ -61,7 +49,8 @@ it('can will collect mails from route file once', function () {
 it('cannot collect mails from non existing route file', function () {
     config()->set('mailbook.route_file', base_path('routes/unknown.php'));
 
-    artisan(InstallMailbookCommand::class)->assertSuccessful();
+    artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
+
     require_once base_path('app/Mail/MailbookMail.php');
 
     $mails = Mailbook::mailables();
@@ -70,7 +59,8 @@ it('cannot collect mails from non existing route file', function () {
 });
 
 it('can render installable mail', function () {
-    artisan(InstallMailbookCommand::class)->assertSuccessful();
+    artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
+
     require_once base_path('app/Mail/MailbookMail.php');
 
     $mails = Mailbook::mailables();
