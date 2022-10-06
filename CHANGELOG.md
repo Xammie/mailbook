@@ -2,6 +2,18 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.2.0 - 2022-10-06
+
+### What's Changed
+
+- Laravel 8 support by @ItsRD in https://github.com/Xammie/mailbook/pull/19
+
+### New Contributors
+
+- @ItsRD made their first contribution in https://github.com/Xammie/mailbook/pull/19
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.1.0...1.2.0
+
 ## 1.1.0 - 2022-09-22
 
 ### What's Changed
