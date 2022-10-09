@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.3.0 - 2022-10-09
+
+### What's Changed
+
+- Improved mailables list by @Xammie in https://github.com/Xammie/mailbook/pull/20
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.2.0...1.3.0
+
 ## 1.2.0 - 2022-10-06
 
 ### What's Changed
