@@ -2,9 +2,9 @@ name: PHPStan
 
 on:
   push:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   phpstan:
