@@ -5,6 +5,9 @@
                     'max-w-md' => $display === 'phone',
                     'max-w-3xl' => $display === 'tablet',
                 ])
+                sandbox
+                fetchpriority="high"
+                loading="eager"
                 src="{{ route('mailbook.content', ['class' => $current->class(), 'variant' => $current->currentVariant()?->slug]) }}"></iframe>
     </div>
 </div>
