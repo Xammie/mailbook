@@ -5,6 +5,7 @@ use function Pest\Laravel\get;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
+use Xammie\Mailbook\Tests\Mails\TranslatedMail;
 
 it('can render', function () {
     Mailbook::add(TestMail::class);
@@ -13,6 +14,16 @@ it('can render', function () {
     get(route('mailbook.content', ['class' => TestMail::class]))
         ->assertSuccessful()
         ->assertSeeText('Test mail');
+});
+
+it('can render different locale', function () {
+    app('translator')->addJsonPath(__DIR__.'/../../lang');
+
+    Mailbook::add(TranslatedMail::class);
+
+    get(route('mailbook.content', ['class' => TranslatedMail::class, 'locale' => 'nl']))
+        ->assertSuccessful()
+        ->assertSeeText('Dit is een test mail');
 });
 
 it('can render default variant', function () {

@@ -9,6 +9,23 @@
             </div>
         </div>
         <div class="hidden sm:flex">
+            @if($locales)
+                <div x-data="{ open: false }" class="relative">
+                    <button x-on:click="open = ! open" class="p-5 flex justify-center items-center gap-1">
+                        {{ $currentLocale }}
+                    </button>
+                    <div x-show="open" class="absolute top-[100%] bg-[#151e2b]" x-cloak>
+                        @foreach($locales as $locale)
+                            <a href="{{ request()->fullUrlWithQuery(['locale' => $locale]) }}"
+                               class="flex flex-col justify-center px-5 py-3 {{ $locale === $currentLocale ? 'bg-[#090816]' : '' }}">
+                                <div class="text-xs uppercase font-bold tracking-wide">
+                                    {{ $locale }}
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
             @if(config('mailbook.display_preview'))
                 <div class="p-2">
                     <a href="{{ request()->fullUrlWithQuery(['display' => 'phone']) }}"

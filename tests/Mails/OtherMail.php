@@ -8,10 +8,6 @@ use Illuminate\Mail\Mailable;
 
 final class OtherMail extends Mailable
 {
-    public function __construct()
-    {
-    }
-
     public function build(): self
     {
         return $this

@@ -8,6 +8,7 @@ use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Xammie\Mailbook\Exceptions\MailbookException;
+use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 use Xammie\Mailbook\Support\Format;
 
 class MailableItem
@@ -98,7 +99,9 @@ class MailableItem
     public function subject(): string
     {
         try {
-            return $this->variantResolver()->instance()->subject ?? 'NULL';
+            return MailbookFacade::withCurrentLocale(function () {
+                return $this->variantResolver()->instance()->subject ?? 'NULL';
+            });
         } catch (BindingResolutionException) {
             return '';
         }
@@ -153,8 +156,10 @@ class MailableItem
             return $this->content;
         }
 
-        // @phpstan-ignore-next-line
-        return $this->content = $this->variantResolver()->instance()->render();
+        return MailbookFacade::withCurrentLocale(function () {
+            // @phpstan-ignore-next-line
+            return $this->content = $this->variantResolver()->instance()->render();
+        });
     }
 
     public function size(): string
