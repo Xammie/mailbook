@@ -11,10 +11,9 @@ return [
     ],
     'show_credits' => true,
 
-    'localization' => [
-        'locales' => [
-            'en' => 'English',
-            'nl' => 'Dutch',
-        ],
+    'locales' => [
+        'en' => 'English',
+        'nl' => 'Dutch',
+        'de' => 'German',
     ],
 ];

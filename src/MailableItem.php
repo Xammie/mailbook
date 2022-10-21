@@ -99,9 +99,7 @@ class MailableItem
     public function subject(): string
     {
         try {
-            return MailbookFacade::withCurrentLocale(function () {
-                return $this->variantResolver()->instance()->subject ?? 'NULL';
-            });
+            return $this->variantResolver()->instance()->subject ?? 'NULL';
         } catch (BindingResolutionException) {
             return '';
         }
@@ -156,10 +154,12 @@ class MailableItem
             return $this->content;
         }
 
-        return MailbookFacade::withCurrentLocale(function () {
+        MailbookFacade::withCurrentLocale(function () {
             // @phpstan-ignore-next-line
-            return $this->content = $this->variantResolver()->instance()->render();
+            $this->content = $this->variantResolver()->instance()->render();
         });
+
+        return $this->content ?? '';
     }
 
     public function size(): string

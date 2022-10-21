@@ -6,6 +6,7 @@ use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
+use Xammie\Mailbook\Tests\Mails\TranslatedMail;
 
 it('can render default', function () {
     Mailbook::add(TestMail::class);
@@ -26,7 +27,16 @@ it('can render default', function () {
             'cc' => [],
             'bcc' => [],
             'attachments' => collect(),
+            'preview' => 'http://localhost/mailbook/content/Xammie%5CMailbook%5CTests%5CMails%5CTestMail?locale=en',
         ]);
+});
+
+it('can render without locales', function () {
+    Mailbook::add(TestMail::class);
+
+    config()->set('mailbook.locales', []);
+
+    get(route('mailbook.dashboard'))->assertSuccessful();
 });
 
 it('can render selected', function () {
@@ -37,6 +47,37 @@ it('can render selected', function () {
         ->assertSuccessful()
         ->assertSeeText('Mailbook')
         ->assertSeeText('Test email subject');
+});
+
+it('can render default locale', function () {
+    Mailbook::add(TranslatedMail::class);
+
+    get(route('mailbook.dashboard', ['selected' => TranslatedMail::class]))
+        ->assertSuccessful()
+        ->assertViewHas('subject', 'Example email subject')
+        ->assertViewHas('currentLocale', 'en')
+        ->assertViewHas('localeLabel', 'English');
+});
+
+it('can render locale', function () {
+    app('translator')->addJsonPath(__DIR__.'/../../lang');
+
+    Mailbook::add(TranslatedMail::class);
+
+    get(route('mailbook.dashboard', ['selected' => TranslatedMail::class, 'locale' => 'nl']))
+        ->assertSuccessful()
+        ->assertViewHas('subject', 'Voorbeeld e-mail onderwerp')
+        ->assertViewHas('currentLocale', 'nl')
+        ->assertViewHas('localeLabel', 'Dutch');
+});
+
+it('cannot render unknown locale', function () {
+    Mailbook::add(TranslatedMail::class);
+
+    get(route('mailbook.dashboard', ['selected' => TranslatedMail::class, 'locale' => 'be']))
+        ->assertSuccessful()
+        ->assertViewHas('currentLocale', 'en')
+        ->assertViewHas('localeLabel', 'English');
 });
 
 it('can render default variant', function () {

@@ -26,6 +26,14 @@ it('can render different locale', function () {
         ->assertSeeText('Dit is een test mail');
 });
 
+it('can render without locales', function () {
+    Mailbook::add(TranslatedMail::class);
+
+    config()->set('mailbook.locales', []);
+
+    get(route('mailbook.content', ['class' => TranslatedMail::class]))->assertSuccessful();
+});
+
 it('can render default variant', function () {
     Mailbook::add(TestMail::class)
         ->variant('First variant', fn (): TestMail => new TestMail())

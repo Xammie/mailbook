@@ -10,11 +10,7 @@ class MailContentController
 {
     public function __invoke(Request $request, string $class, ?string $variant = null): string
     {
-        $locale = $request->get('locale');
-
-        if (in_array($locale, array_keys(config('mailbook.localization.locales', [])), true)) {
-            Mailbook::setLocale($locale);
-        }
+        Mailbook::setLocale($request->get('locale'));
 
         $mailables = Mailbook::mailables();
 

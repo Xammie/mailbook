@@ -59,14 +59,33 @@ class Mailbook
         }
     }
 
-    public function setLocale(?string $locale): void
+    public function setLocale(mixed $locale): ?string
     {
-        $this->locale = $locale;
+        if (! is_string($locale)) {
+            return null;
+        }
+
+        if (! in_array($locale, $this->localeCodes(), true)) {
+            return null;
+        }
+
+        return $this->locale = $locale;
     }
 
     public function getLocale(): ?string
     {
         return $this->locale;
+    }
+
+    private function localeCodes(): array
+    {
+        $locales = config('mailbook.locales');
+
+        if (! is_array($locales)) {
+            return [];
+        }
+
+        return array_keys($locales);
     }
 
     public function withCurrentLocale(Closure $closure): mixed

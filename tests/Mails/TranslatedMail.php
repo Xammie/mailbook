@@ -10,6 +10,8 @@ final class TranslatedMail extends Mailable
 {
     public function build(): self
     {
-        return $this->html(__('This is a test mail'))->subject('Test email subject');
+        return $this
+            ->html(__('This is a test mail'))
+            ->subject(__('Example email subject'));
     }
 }
