@@ -45,7 +45,6 @@ class DashboardController
 
         $display = config('mailbook.display_preview') ? $request->get('display') : null;
 
-        // @phpstan-ignore-next-line
         return view('mailbook::dashboard', [
             'current' => $item,
             'subject' => $item->subject(),
