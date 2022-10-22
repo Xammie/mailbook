@@ -21,8 +21,8 @@ return [
     |
     */
     'locales' => [
-//        'en' => 'English',
-//        'nl' => 'Dutch',
-//        'de' => 'German',
+        //        'en' => 'English',
+        //        'nl' => 'Dutch',
+        //        'de' => 'German',
     ],
 ];
