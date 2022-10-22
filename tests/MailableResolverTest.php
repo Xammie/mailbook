@@ -3,6 +3,13 @@
 use Xammie\Mailbook\MailableResolver;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 
+it('can get class', function ($mailable) {
+    $resolver = new MailableResolver($mailable);
+
+    expect($resolver->class())->toEqual(TestMail::class);
+})
+    ->with('mailables');
+
 it('can get class from class', function () {
     $resolver = new MailableResolver(TestMail::class);
 
@@ -35,6 +42,13 @@ it('can get class from mailable', function () {
 
     expect($resolver->class())->toEqual(TestMail::class);
 });
+
+it('can get instance', function ($mailable) {
+    $resolver = new MailableResolver($mailable);
+
+    expect($resolver->instance())->toBeInstanceOf(TestMail::class);
+})
+    ->with('mailables');
 
 it('can get instance from class', function () {
     $resolver = new MailableResolver(TestMail::class);
