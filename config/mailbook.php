@@ -11,9 +11,18 @@ return [
     ],
     'show_credits' => true,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Localization
+    |--------------------------------------------------------------------------
+    |
+    | This option allows you to define in which languages you wish
+    | to use in mailbook.
+    |
+    */
     'locales' => [
-        'en' => 'English',
-        'nl' => 'Dutch',
-        'de' => 'German',
+//        'en' => 'English',
+//        'nl' => 'Dutch',
+//        'de' => 'German',
     ],
 ];
