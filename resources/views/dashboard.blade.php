@@ -7,6 +7,7 @@
     <title>{{ $subject }} - Mailbook</title>
     <style>{{ $style }}</style>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✉️</text></svg>">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-gray-900 text-white h-screen w-screen flex flex-col">
 @include('mailbook::navigation')

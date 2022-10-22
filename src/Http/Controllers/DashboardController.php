@@ -25,6 +25,12 @@ class DashboardController
             throw new MailbookException('No mailbook mailables registered');
         }
 
+        /** @var array $locales */
+        $locales = config('mailbook.locales', []);
+        $locale = Mailbook::setLocale($request->get('locale')) ?? config('app.locale');
+
+        $localeLabel = $locales[$locale] ?? $locale;
+
         /** @var MailableItem $item */
         $item = $mailables->first();
 
@@ -39,7 +45,6 @@ class DashboardController
 
         $display = config('mailbook.display_preview') ? $request->get('display') : null;
 
-        // @phpstan-ignore-next-line
         return view('mailbook::dashboard', [
             'current' => $item,
             'subject' => $item->subject(),
@@ -52,6 +57,14 @@ class DashboardController
             'size' => $item->size(),
             'mailables' => $mailables,
             'display' => $display,
+            'locales' => $locales,
+            'localeLabel' => $localeLabel,
+            'currentLocale' => $locale,
+            'preview' => route('mailbook.content', [
+                'class' => $item->class(),
+                'variant' => $item->currentVariant()?->slug,
+                'locale' => $locale,
+            ]),
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
         ]);
     }

@@ -5,15 +5,20 @@ namespace Xammie\Mailbook;
 use Closure;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Localizable;
 
 class Mailbook
 {
+    use Localizable;
+
     /**
      * @var Collection<int, MailableItem>
      */
     protected Collection $mailables;
 
     protected bool $hasCollected = false;
+
+    protected ?string $locale = null;
 
     public function __construct()
     {
@@ -52,5 +57,39 @@ class Mailbook
 
             $this->hasCollected = true;
         }
+    }
+
+    public function setLocale(mixed $locale): ?string
+    {
+        if (! is_string($locale)) {
+            return null;
+        }
+
+        if (! in_array($locale, $this->localeCodes(), true)) {
+            return null;
+        }
+
+        return $this->locale = $locale;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    private function localeCodes(): array
+    {
+        $locales = config('mailbook.locales');
+
+        if (! is_array($locales)) {
+            return [];
+        }
+
+        return array_keys($locales);
+    }
+
+    public function withCurrentLocale(Closure $closure): mixed
+    {
+        return $this->withLocale($this->getLocale(), $closure); // @phpstan-ignore-line
     }
 }

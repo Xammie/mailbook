@@ -11,7 +11,7 @@
                     {{ $mailable->getLabel() }}
                 </div>
                 @foreach($mailable->getVariants() as $variant)
-                    <a href="{{ route('mailbook.dashboard', ['selected' => $mailable->class(), 'variant' => $variant->slug, 'display' => $display]) }}"
+                    <a href="{{ route('mailbook.dashboard', ['selected' => $mailable->class(), 'variant' => $variant->slug, 'display' => $display, 'locale' => $currentLocale]) }}"
                         @class([
                              'px-3 pl-8 py-[3px] text-sm flex gap-1 items-center transition-colors duration-100',
                               $mailable->is($current) && $variant->slug === $current->currentVariant()?->slug
@@ -37,7 +37,7 @@
                     </a>
                 @endforeach
             @else
-                <a href="{{ route('mailbook.dashboard', ['selected' => $mailable->class(), 'display' => $display]) }}"
+                <a href="{{ route('mailbook.dashboard', ['selected' => $mailable->class(), 'display' => $display, 'locale' => $currentLocale]) }}"
                     @class([
                         'px-3 py-[3px] text-sm flex gap-1 items-center',
                         'bg-gray-600 text-white group flex items-center' => $mailable->is($current),

@@ -8,10 +8,6 @@ use Illuminate\Mail\Mailable;
 
 final class TestMail extends Mailable
 {
-    public function __construct()
-    {
-    }
-
     public function build(): self
     {
         return $this->html('Test mail')->subject('Test email subject');

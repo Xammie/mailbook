@@ -8,6 +8,6 @@
                 sandbox
                 fetchpriority="high"
                 loading="eager"
-                src="{{ route('mailbook.content', ['class' => $current->class(), 'variant' => $current->currentVariant()?->slug]) }}"></iframe>
+                src="{{ $preview }}"></iframe>
     </div>
 </div>

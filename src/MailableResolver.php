@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\App;
 use ReflectionFunction;
 use ReflectionNamedType;
 use UnexpectedValueException;
+use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 
 class MailableResolver
 {
@@ -49,9 +50,7 @@ class MailableResolver
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
 
-        $this->instance = $instance;
-
-        Container::getInstance()->call([$this->instance, 'build']); // @phpstan-ignore-line
+        $this->instance = $this->build($instance);
 
         return get_class($this->instance);
     }
@@ -59,9 +58,7 @@ class MailableResolver
     public function instance(): Mailable
     {
         if ($this->mailable instanceof Mailable) {
-            Container::getInstance()->call([$this->mailable, 'build']); // @phpstan-ignore-line
-
-            return $this->mailable;
+            return $this->build($this->mailable);
         }
 
         if ($this->instance instanceof Mailable) {
@@ -78,8 +75,15 @@ class MailableResolver
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
 
-        Container::getInstance()->call([$instance, 'build']); // @phpstan-ignore-line
+        return $this->instance = $this->build($instance);
+    }
 
-        return $this->instance = $instance;
+    protected function build(Mailable $instance): Mailable
+    {
+        MailbookFacade::withCurrentLocale(function () use ($instance) {
+            Container::getInstance()->call([$instance, 'build']); // @phpstan-ignore-line
+        });
+
+        return $instance;
     }
 }

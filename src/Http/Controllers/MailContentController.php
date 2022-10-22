@@ -2,13 +2,16 @@
 
 namespace Xammie\Mailbook\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\MailableItem;
 
 class MailContentController
 {
-    public function __invoke(string $class, ?string $variant = null): string
+    public function __invoke(Request $request, string $class, ?string $variant = null): string
     {
+        Mailbook::setLocale($request->get('locale'));
+
         $mailables = Mailbook::mailables();
 
         if ($mailables->isEmpty()) {
