@@ -50,6 +50,12 @@ it('can render selected', function () {
 });
 
 it('can render default locale', function () {
+    config()->set('mailbook.locales', [
+        'en' => 'English',
+        'nl' => 'Dutch',
+        'de' => 'German',
+    ]);
+
     Mailbook::add(TranslatedMail::class);
 
     get(route('mailbook.dashboard', ['selected' => TranslatedMail::class]))
@@ -60,6 +66,12 @@ it('can render default locale', function () {
 });
 
 it('can render locale', function () {
+    config()->set('mailbook.locales', [
+        'en' => 'English',
+        'nl' => 'Dutch',
+        'de' => 'German',
+    ]);
+
     app('translator')->addJsonPath(__DIR__.'/../../lang');
 
     Mailbook::add(TranslatedMail::class);
@@ -72,6 +84,12 @@ it('can render locale', function () {
 });
 
 it('cannot render unknown locale', function () {
+    config()->set('mailbook.locales', [
+        'en' => 'English',
+        'nl' => 'Dutch',
+        'de' => 'German',
+    ]);
+
     Mailbook::add(TranslatedMail::class);
 
     get(route('mailbook.dashboard', ['selected' => TranslatedMail::class, 'locale' => 'be']))
