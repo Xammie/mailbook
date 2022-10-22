@@ -78,7 +78,7 @@ class MailableResolver
         return $this->instance = $this->build($instance);
     }
 
-    protected function build(Mailable $instance): Mailable
+    private function build(Mailable $instance): Mailable
     {
         MailbookFacade::withCurrentLocale(function () use ($instance) {
             Container::getInstance()->call([$instance, 'build']); // @phpstan-ignore-line
