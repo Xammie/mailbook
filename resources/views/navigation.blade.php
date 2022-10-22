@@ -11,23 +11,22 @@
         <div class="hidden sm:flex">
             @if($locales)
                 <div x-data="{ open: false }" class="relative flex">
-                    <button x-on:click="open = ! open" class="p-5 h-full flex justify-center items-center gap-1">
+                    <button x-on:click="open = ! open"
+                            class="p-5 h-full flex justify-center items-center gap-1 hover:bg-gray-700">
                         <div class="text-xs uppercase font-bold tracking-wide">
                             {{ $localeLabel }}
                         </div>
                     </button>
                     <div x-show="open" class="absolute top-[100%] bg-[#151e2b] z-10" x-cloak>
                         @foreach($locales as $key => $locale)
-                            <a href="{{ request()->fullUrlWithQuery(['locale' => $key]) }}"
-                                @class([
-                                    'flex flex-col justify-center px-5 py-3',
-                                    'bg-gray-600' => $key === $currentLocale,
-                                ])
-                            >
-                                <div class="text-xs uppercase font-bold tracking-wide">
-                                    {{ $locale }}
-                                </div>
-                            </a>
+                            @if($key !== $currentLocale)
+                                <a href="{{ request()->fullUrlWithQuery(['locale' => $key]) }}"
+                                   class="flex flex-col justify-center px-5 py-3 hover:bg-gray-700">
+                                    <div class="text-xs uppercase font-bold tracking-wide">
+                                        {{ $locale }}
+                                    </div>
+                                </a>
+                            @endif
                         @endforeach
                     </div>
                 </div>
