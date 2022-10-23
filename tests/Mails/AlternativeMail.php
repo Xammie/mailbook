@@ -22,7 +22,7 @@ final class AlternativeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            text: 'Test mail content',
+            html: 'Test mail content',
         );
     }
 }
