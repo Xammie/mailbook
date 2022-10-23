@@ -4,7 +4,7 @@ use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\AlternativeMail;
 use Xammie\Mailbook\Tests\Mails\ClassicMail;
 
-it('can get mail information', function ($mailable) {
+it('can get mail content', function ($mailable) {
     $item = Mailbook::add($mailable);
 
     expect($item->subject())->toBe('Invoice Paid')
