@@ -19,15 +19,35 @@ it('can render default', function () {
         ->assertViewHas([
             'subject' => 'Test email subject',
             'size' => '9 B',
-            'from' => [
-                'Example <hello@example.com>',
+            'meta' => [
+                'Subject' => 'Test email subject',
+                'From' => [
+                    'Example <hello@example.com>',
+                ],
             ],
-            'replyTo' => [],
-            'to' => [],
-            'cc' => [],
-            'bcc' => [],
             'attachments' => collect(),
             'preview' => 'http://localhost/mailbook/content/Xammie%5CMailbook%5CTests%5CMails%5CTestMail?locale=en',
+        ]);
+});
+
+it('can get meta', function () {
+    Mailbook::add(OtherMail::class);
+
+    get(route('mailbook.dashboard'))
+        ->assertSuccessful()
+        ->assertViewHas([
+            'subject' => 'Hello!',
+            'size' => '20 B',
+            'meta' => [
+                'Subject' => 'Hello!',
+                'From' => ['Harry Potter <harry@example.com>'],
+                'To' => ['Mailbook <example@mailbook.dev>'],
+                'Reply To' => ['Support <questions@example.com>'],
+                'Cc' => ['Mailbook <cc@mailbook.dev>'],
+                'Bcc' => ['Mailbook <bcc@mailbook.dev>'],
+            ],
+            'attachments' => collect(),
+            'preview' => 'http://localhost/mailbook/content/Xammie%5CMailbook%5CTests%5CMails%5COtherMail?locale=en',
         ]);
 });
 

@@ -3,7 +3,6 @@
 namespace Xammie\Mailbook;
 
 use Closure;
-use Illuminate\Container\Container;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Facades\App;
 use ReflectionFunction;
@@ -14,6 +13,8 @@ use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 class MailableResolver
 {
     private ?Mailable $instance = null;
+
+    private ?string $content = null;
 
     public function __construct(public string|Closure|Mailable $mailable)
     {
@@ -78,11 +79,27 @@ class MailableResolver
         return $this->instance = $this->build($instance);
     }
 
+    public function content(): string
+    {
+        if ($this->content) {
+            return $this->content;
+        }
+
+        $this->instance();
+
+        return $this->content ?? '';
+    }
+
     private function build(Mailable $instance): Mailable
     {
-        MailbookFacade::withCurrentLocale(function () use ($instance) {
-            Container::getInstance()->call([$instance, 'build']); // @phpstan-ignore-line
-        });
+        $locale = MailbookFacade::getLocale();
+
+        if ($locale) {
+            $instance->locale($locale);
+        }
+
+        /** @var \Illuminate\Mail\Mailable $instance */
+        $this->content = $instance->render();
 
         return $instance;
     }

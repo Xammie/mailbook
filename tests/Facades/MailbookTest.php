@@ -40,3 +40,11 @@ it('cannot set unknown locale', function () {
 
     expect(Mailbook::getLocale())->toBeNull();
 });
+
+it('cannot set locales when none are set', function () {
+    config()->set('mailbook.locales', null);
+
+    Mailbook::setLocale('be');
+
+    expect(Mailbook::getLocale())->toBeNull();
+});

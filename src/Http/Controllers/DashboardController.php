@@ -48,11 +48,6 @@ class DashboardController
         return view('mailbook::dashboard', [
             'current' => $item,
             'subject' => $item->subject(),
-            'from' => $item->from(),
-            'to' => $item->to(),
-            'replyTo' => $item->replyTo(),
-            'cc' => $item->cc(),
-            'bcc' => $item->bcc(),
             'attachments' => $item->attachments(),
             'size' => $item->size(),
             'mailables' => $mailables,
@@ -60,6 +55,7 @@ class DashboardController
             'locales' => $locales,
             'localeLabel' => $localeLabel,
             'currentLocale' => $locale,
+            'meta' => $item->meta(),
             'preview' => route('mailbook.content', [
                 'class' => $item->class(),
                 'variant' => $item->currentVariant()?->slug,
