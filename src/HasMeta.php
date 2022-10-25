@@ -18,4 +18,3 @@ trait HasMeta
         ]);
     }
 }
-
