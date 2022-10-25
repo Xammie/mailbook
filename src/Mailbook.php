@@ -87,9 +87,4 @@ class Mailbook
 
         return array_keys($locales);
     }
-
-    public function withCurrentLocale(Closure $closure): mixed
-    {
-        return $this->withLocale($this->getLocale(), $closure); // @phpstan-ignore-line
-    }
 }

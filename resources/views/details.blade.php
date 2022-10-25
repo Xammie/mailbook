@@ -1,75 +1,23 @@
 <div class="flex-col justify-between gap-2 w-[300px] overflow-y-auto overflow-x-hidden hidden xl:flex">
     <div class="flex flex-col p-4 divide-y divide-gray-500">
-        @if($subject)
+        @foreach($meta as $label => $values)
             <div class="flex flex-col py-2">
                 <div class="text-xs font-bold tracking-wide uppercase">
-                    Subject
+                    {{ $label }}
                 </div>
-                <div class="text-sm">
-                    {{ $subject }}
-                </div>
-            </div>
-        @endif
-        @if(!empty($from))
-            <div class="flex flex-col py-2">
-                <div class="text-xs font-bold tracking-wide uppercase">
-                    From
-                </div>
-                @foreach($from as $mail)
-                    <div class="text-sm truncate" title="{{ $mail }}">
-                        {{ $mail }}
+                @if(is_array($values))
+                    @foreach($values as $mail)
+                        <div class="text-sm truncate" title="{{ $mail }}">
+                            {{ $mail }}
+                        </div>
+                    @endforeach
+                @else
+                    <div class="text-sm">
+                        {{ $values }}
                     </div>
-                @endforeach
+                @endif
             </div>
-        @endif
-        @if(!empty($replyTo))
-            <div class="flex flex-col py-2">
-                <div class="text-xs font-bold tracking-wide uppercase">
-                    Reply To
-                </div>
-                @foreach($replyTo as $mail)
-                    <div class="text-sm truncate" title="{{ $mail }}">
-                        {{ $mail }}
-                    </div>
-                @endforeach
-            </div>
-        @endif
-        @if(!empty($to))
-            <div class="flex flex-col py-2">
-                <div class="text-xs font-bold tracking-wide uppercase">
-                    To
-                </div>
-                @foreach($to as $mail)
-                    <div class="text-sm truncate" title="{{ $mail }}">
-                        {{ $mail }}
-                    </div>
-                @endforeach
-            </div>
-        @endif
-        @if(!empty($cc))
-            <div class="flex flex-col py-2">
-                <div class="text-xs font-bold tracking-wide uppercase">
-                    Cc
-                </div>
-                @foreach($cc as $mail)
-                    <div class="text-sm truncate" title="{{ $mail }}">
-                        {{ $mail }}
-                    </div>
-                @endforeach
-            </div>
-        @endif
-        @if(!empty($bcc))
-            <div class="flex flex-col py-2">
-                <div class="text-xs font-bold tracking-wide uppercase">
-                    Bcc
-                </div>
-                @foreach($bcc as $mail)
-                    <div class="text-sm truncate" title="{{ $mail }}">
-                        {{ $mail }}
-                    </div>
-                @endforeach
-            </div>
-        @endif
+        @endforeach
         @if($attachments->isNotEmpty())
             <div class="flex flex-col py-2 gap-2">
                 <div class="text-xs font-bold tracking-wide uppercase">

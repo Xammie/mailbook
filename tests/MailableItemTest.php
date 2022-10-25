@@ -48,7 +48,7 @@ it('cannot get missing subject', function () {
     {
         public function build(): self
         {
-            return $this->markdown('mailbook::test-email');
+            return $this->html('Test email content');
         }
     };
 
@@ -125,6 +125,14 @@ it('can get from', function () {
     expect($item->from())->toBe(['Harry Potter <harry@example.com>']);
 });
 
+it('can get from after rendering', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    $item->content();
+
+    expect($item->from())->toBe(['Harry Potter <harry@example.com>']);
+});
+
 it('can get reply to', function () {
     $item = Mailbook::add(OtherMail::class);
 
@@ -184,4 +192,32 @@ it('executes the closure once', function () {
     $mailable->content();
 
     expect($executed)->toBe(1);
+});
+
+it('can get default theme', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->theme())->toBeNull();
+});
+
+it('can get theme', function () {
+    $mail = new OtherMail();
+    $mail->theme = 'shop';
+    $item = Mailbook::add($mail);
+
+    expect($item->theme())->toBe('shop');
+});
+
+it('can get default mailer', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->mailer())->toBeNull();
+});
+
+it('can get mailer', function () {
+    $mail = new OtherMail();
+    $mail->mailer = 'mailgun';
+    $item = Mailbook::add($mail);
+
+    expect($item->mailer())->toBe('mailgun');
 });
