@@ -16,6 +16,8 @@ class MailableResolver
 
     private ?string $content = null;
 
+    private bool $hasBuild = false;
+
     public function __construct(public string|Closure|Mailable $mailable)
     {
     }
@@ -92,6 +94,12 @@ class MailableResolver
 
     private function build(Mailable $instance): Mailable
     {
+        if ($this->hasBuild) {
+            return $instance;
+        }
+
+        $this->hasBuild = true;
+
         $locale = MailbookFacade::getLocale();
 
         if ($locale) {
