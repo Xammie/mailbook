@@ -2,6 +2,17 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.4.0 - 2022-10-26
+
+### What's Changed
+
+- Preview localization  by @Xammie in https://github.com/Xammie/mailbook/pull/21
+- Remove refresh button by @Xammie in https://github.com/Xammie/mailbook/pull/22
+- Add extra details by @Xammie in https://github.com/Xammie/mailbook/pull/24
+- Support alternative mail syntax by @Xammie in https://github.com/Xammie/mailbook/pull/23
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.3.0...1.4.0
+
 ## 1.3.0 - 2022-10-09
 
 ### What's Changed
