@@ -5,7 +5,8 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/xammie/mailbook/Check%20&%20fix%20styling?label=code%20style)](https://github.com/xammie/mailbook/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/xammie/mailbook.svg?style=flat-square)](https://packagist.org/packages/xammie/mailbook)
 
-Mailbook is a Laravel package that lets you easily inspect your mails without having to actually trigger it in your application.
+Mailbook is a Laravel package that lets you easily inspect your mails without having to actually trigger it in your
+application.
 
 ![Example screenshot](./screenshot.png)
 
@@ -27,7 +28,8 @@ php artisan mailbook:install
 
 ## Usage
 
-The install command will create a route file named `routes/mailbook.php`. In this file you can register your emails.
+The `mailbook:install` command will create a route file named `routes/mailbook.php`. In this file you can register your
+emails.
 
 ```php
 // This will use dependency injection if your mailable has parameters
@@ -59,6 +61,24 @@ Mailbook::add(OrderCreatedMail::class)
     ->variant('1 item', fn () => new OrderCreatedMail(Order::factory()->withOneProduct()->create()))
     ->variant('2 items', fn () => new OrderCreatedMail(Order::factory()->withTwoProducts()->create()));
 ```
+
+## Localization
+
+When your application supports multiple languages, you also want to preview them in these languages. To enable this
+feature you have to add the following code to the `mailbook.php` config file.
+
+```php
+'locales' => [
+    'en' => 'English',
+    'nl' => 'Dutch',
+    'de' => 'German',
+    'es' => 'Spanish'
+],
+```
+
+This will display a dropdown in mailbook which you can use to switch to a different language.
+
+![Localization](./docs/localization.png)
 
 ## Using the database
 
