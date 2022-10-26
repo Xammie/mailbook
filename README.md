@@ -64,8 +64,8 @@ Mailbook::add(OrderCreatedMail::class)
 
 ## Localization
 
-When your application supports multiple languages, you also want to preview them in these languages. To enable this
-feature you have to add the following code to the `mailbook.php` config file.
+When your application supports multiple languages you need to easily preview your mails in these languages. To enable
+this feature you have to add the following code to the `mailbook.php` config file.
 
 ```php
 'locales' => [
