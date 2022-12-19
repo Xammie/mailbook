@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Mail\Mailable;
 use Xammie\Mailbook\Attachment;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
+use Xammie\Mailbook\Tests\Mails\NotificationMail;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestBinding;
 use Xammie\Mailbook\Tests\Mails\TestMail;
@@ -44,17 +44,9 @@ it('cannot get subject with container binding error', function () {
 });
 
 it('cannot get missing subject', function () {
-    $class = new class() extends Mailable
-    {
-        public function build(): self
-        {
-            return $this->html('Test email content');
-        }
-    };
+    $subject = Mailbook::add(NotificationMail::class)->subject();
 
-    $subject = Mailbook::add(fn () => $class)->subject();
-
-    expect($subject)->toEqual('NULL');
+    expect($subject)->toEqual('Notification Mail');
 });
 
 it('can render multiple times', function () {
@@ -99,30 +91,26 @@ it('will resolve once', function () {
 it('can get variant resolver without variants', function () {
     $item = Mailbook::add(TestMail::class);
 
-    expect($item->variantResolver()->class())->toEqual(TestMail::class);
+    expect($item->variantResolver()->className())->toEqual(TestMail::class);
 });
 
 it('can get variant resolver from default variant', function () {
     $item = Mailbook::add(TestMail::class)
         ->variant('Other one', fn () => new OtherMail());
 
-    expect($item->variantResolver()->class())->toEqual(OtherMail::class);
+    expect($item->variantResolver()->className())->toEqual(OtherMail::class);
 });
 
 it('can get default from', function () {
     $item = Mailbook::add(TestMail::class);
 
-    expect($item->from())->toBe(['Example <hello@example.com>']);
-
-    config()->set('mail.from', null);
-
-    expect($item->from())->toBe([]);
+    expect($item->from())->toBe(['"Example" <hello@example.com>']);
 });
 
 it('can get from', function () {
     $item = Mailbook::add(OtherMail::class);
 
-    expect($item->from())->toBe(['Harry Potter <harry@example.com>']);
+    expect($item->from())->toBe(['"Harry Potter" <harry@example.com>']);
 });
 
 it('can get from after rendering', function () {
@@ -130,31 +118,31 @@ it('can get from after rendering', function () {
 
     $item->content();
 
-    expect($item->from())->toBe(['Harry Potter <harry@example.com>']);
+    expect($item->from())->toBe(['"Harry Potter" <harry@example.com>']);
 });
 
 it('can get reply to', function () {
     $item = Mailbook::add(OtherMail::class);
 
-    expect($item->replyTo())->toBe(['Support <questions@example.com>']);
+    expect($item->replyTo())->toBe(['"Support" <questions@example.com>']);
 });
 
 it('can get to', function () {
     $item = Mailbook::add(OtherMail::class);
 
-    expect($item->to())->toBe(['Mailbook <example@mailbook.dev>']);
+    expect($item->to())->toBe(['"Mailbook" <example@mailbook.dev>']);
 });
 
 it('can get cc', function () {
     $item = Mailbook::add(OtherMail::class);
 
-    expect($item->cc())->toBe(['Mailbook <cc@mailbook.dev>']);
+    expect($item->cc())->toBe(['"Mailbook" <cc@mailbook.dev>']);
 });
 
 it('can get bcc', function () {
     $item = Mailbook::add(OtherMail::class);
 
-    expect($item->bcc())->toBe(['Mailbook <bcc@mailbook.dev>']);
+    expect($item->bcc())->toBe(['"Mailbook" <bcc@mailbook.dev>']);
 });
 
 it('can get size', function () {
@@ -174,7 +162,7 @@ it('can get attachments', function () {
 
     expect($item->attachments()->toArray())->toEqual([
         new Attachment('document.pdf'),
-        new Attachment('WithAttachmentsMail.php'),
+        new Attachment('rows.csv'),
     ]);
 });
 
@@ -206,18 +194,4 @@ it('can get theme', function () {
     $item = Mailbook::add($mail);
 
     expect($item->theme())->toBe('shop');
-});
-
-it('can get default mailer', function () {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->mailer())->toBeNull();
-});
-
-it('can get mailer', function () {
-    $mail = new OtherMail();
-    $mail->mailer = 'mailgun';
-    $item = Mailbook::add($mail);
-
-    expect($item->mailer())->toBe('mailgun');
 });

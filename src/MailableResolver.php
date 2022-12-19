@@ -4,7 +4,11 @@ namespace Xammie\Mailbook;
 
 use Closure;
 use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 use ReflectionFunction;
 use ReflectionNamedType;
 use UnexpectedValueException;
@@ -12,19 +16,19 @@ use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 
 class MailableResolver
 {
-    private ?Mailable $instance = null;
-
-    private ?string $content = null;
+    private Mailable|Notification|null $instance = null;
 
     private bool $hasBuild = false;
 
-    public function __construct(public string|Closure|Mailable $mailable)
+    private ?ResolvedMail $resolved = null;
+
+    public function __construct(public string|Closure|Mailable|Notification $mailable)
     {
     }
 
-    public function class(): string
+    public function className(): string
     {
-        if ($this->mailable instanceof Mailable) {
+        if ($this->mailable instanceof Mailable || $this->mailable instanceof Notification) {
             return get_class($this->mailable);
         }
 
@@ -49,7 +53,7 @@ class MailableResolver
 
         $instance = App::call($this->mailable);
 
-        if (! $instance instanceof Mailable) {
+        if (! $instance instanceof Mailable && ! $instance instanceof Notification) {
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
 
@@ -58,7 +62,7 @@ class MailableResolver
         return get_class($this->instance);
     }
 
-    public function instance(): Mailable
+    public function instance(): Mailable|Notification
     {
         if ($this->mailable instanceof Mailable) {
             return $this->build($this->mailable);
@@ -74,25 +78,44 @@ class MailableResolver
             $instance = app($this->mailable);
         }
 
-        if (! $instance instanceof Mailable) {
+        if (! $instance instanceof Mailable && ! $instance instanceof Notification) {
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
 
         return $this->instance = $this->build($instance);
     }
 
-    public function content(): string
+    public function resolve(): ResolvedMail
     {
-        if ($this->content) {
-            return $this->content;
+        if ($this->resolved instanceof ResolvedMail) {
+            return $this->resolved;
         }
 
-        $this->instance();
+        $instance = $this->instance();
 
-        return $this->content ?? '';
+        $locale = MailbookFacade::getLocale();
+
+        if ($locale) {
+            $instance->locale($locale);
+        }
+
+        Config::set('mail.mailers.mailbook', ['transport' => 'mailbook']);
+        Config::set('mail.default', 'mailbook');
+
+        if ($instance instanceof Notification) {
+            NotificationFacade::route('mail', 'remove@mailbook.dev')->notifyNow($instance);
+        } else {
+            Mail::to('remove@mailbook.dev')->send($instance);
+        }
+
+        $mail = MailbookFacade::getMessage();
+
+        MailbookFacade::clearMessage();
+
+        return $this->resolved = new ResolvedMail($mail);
     }
 
-    private function build(Mailable $instance): Mailable
+    private function build(Mailable|Notification $instance): Mailable|Notification
     {
         if ($this->hasBuild) {
             return $instance;
@@ -105,9 +128,6 @@ class MailableResolver
         if ($locale) {
             $instance->locale($locale);
         }
-
-        /** @var \Illuminate\Mail\Mailable $instance */
-        $this->content = $instance->render();
 
         return $instance;
     }

@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Localizable;
+use Symfony\Component\Mime\Email;
 
 class Mailbook
 {
@@ -19,6 +20,8 @@ class Mailbook
     protected bool $hasCollected = false;
 
     protected ?string $locale = null;
+
+    protected ?Email $message;
 
     public function __construct()
     {
@@ -86,5 +89,24 @@ class Mailbook
         }
 
         return array_keys($locales);
+    }
+
+    public function getMessage(): ?Email
+    {
+        return $this->message;
+    }
+
+    public function setMessage(Email $message): self
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    public function clearMessage(): self
+    {
+        $this->message = null;
+
+        return $this;
     }
 }

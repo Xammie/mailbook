@@ -5,6 +5,7 @@ namespace Xammie\Mailbook;
 use Closure;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Xammie\Mailbook\Exceptions\MailbookException;
@@ -43,7 +44,7 @@ class MailableItem
             return $this->label;
         }
 
-        return Str::title(Str::snake(class_basename($this->resolver()->class()), ' '));
+        return Str::title(Str::snake(class_basename($this->resolver()->className()), ' '));
     }
 
     public function variant(string $label, Closure $variant): self
@@ -98,7 +99,7 @@ class MailableItem
     public function subject(): string
     {
         try {
-            return $this->resolveInstance()->subject ?? 'NULL';
+            return $this->resolve()->subject();
         } catch (BindingResolutionException) {
             return '';
         }
@@ -106,37 +107,27 @@ class MailableItem
 
     public function from(): array
     {
-        $items = $this->resolveInstance()->from ?? [];
-
-        if (empty($items)) {
-            $from = config('mail.from');
-
-            if (is_array($from)) {
-                $items = [$from];
-            }
-        }
-
-        return $this->listOfEmailAddresses($items);
+        return $this->resolve()->from();
     }
 
     public function to(): array
     {
-        return $this->listOfEmailAddresses($this->resolveInstance()->to ?? []);
+        return $this->resolve()->to();
     }
 
     public function replyTo(): array
     {
-        return $this->listOfEmailAddresses($this->resolveInstance()->replyTo ?? []);
+        return $this->resolve()->replyTo();
     }
 
     public function cc(): array
     {
-        return $this->listOfEmailAddresses($this->resolveInstance()->cc ?? []);
+        return $this->resolve()->cc();
     }
 
     public function bcc(): array
     {
-        return $this->listOfEmailAddresses($this->resolveInstance()->bcc ?? []);
+        return $this->resolve()->bcc();
     }
 
     private function listOfEmailAddresses(array $items): array
@@ -152,14 +143,9 @@ class MailableItem
         return $this->resolveInstance()->theme ?? null;
     }
 
-    public function mailer(): ?string
-    {
-        return $this->resolveInstance()->mailer ?? null;
-    }
-
     public function content(): string
     {
-        return $this->variantResolver()->content();
+        return $this->variantResolver()->resolve()->content();
     }
 
     public function size(): string
@@ -172,15 +158,7 @@ class MailableItem
      */
     public function attachments(): Collection
     {
-        /** @var \Illuminate\Mail\Mailable $mailable */
-        $mailable = $this->resolveInstance();
-
-        // @phpstan-ignore-next-line
-        return collect()
-            ->concat($mailable->attachments)
-            ->concat($mailable->rawAttachments)
-            ->concat($mailable->diskAttachments)
-            ->map(fn (array $attachment) => new Attachment($attachment['name']));
+        return $this->resolve()->attachments();
     }
 
     public function is(MailableItem $target): bool
@@ -206,6 +184,11 @@ class MailableItem
         return $this->resolver = $this->resolver ?? new MailableResolver($this->closure);
     }
 
+    public function resolve(): ResolvedMail
+    {
+        return $this->variantResolver()->resolve();
+    }
+
     public function variantResolver(): MailableResolver
     {
         $current = $this->currentVariant();
@@ -223,13 +206,13 @@ class MailableItem
         return $this->resolver();
     }
 
-    private function resolveInstance(): Mailable
+    private function resolveInstance(): Mailable|Notification
     {
         return $this->variantResolver()->instance();
     }
 
     public function class(): string
     {
-        return $this->resolver()->class();
+        return $this->resolver()->className();
     }
 }
