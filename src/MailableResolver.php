@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use ReflectionFunction;
 use ReflectionNamedType;
+use RuntimeException;
+use Symfony\Component\Mime\Email;
 use UnexpectedValueException;
 use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 
@@ -64,7 +66,7 @@ class MailableResolver
 
     public function instance(): Mailable|Notification
     {
-        if ($this->mailable instanceof Mailable) {
+        if ($this->mailable instanceof Mailable || $this->mailable instanceof Notification) {
             return $this->build($this->mailable);
         }
 
@@ -109,6 +111,10 @@ class MailableResolver
         }
 
         $mail = MailbookFacade::getMessage();
+
+        if (! $mail instanceof Email) {
+            throw new RuntimeException('no mail was sent');
+        }
 
         MailbookFacade::clearMessage();
 

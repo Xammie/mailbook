@@ -19,7 +19,7 @@ class MailbookServiceProvider extends PackageServiceProvider
             ->hasCommand(InstallMailbookCommand::class);
     }
 
-    public function bootingPackage()
+    public function bootingPackage(): void
     {
         Mail::extend('mailbook', fn () => new MailbookTransport());
     }

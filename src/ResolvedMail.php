@@ -2,7 +2,6 @@
 
 namespace Xammie\Mailbook;
 
-use Illuminate\Support\Collection;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;
@@ -56,16 +55,21 @@ class ResolvedMail
             ->toArray();
     }
 
-    public function content(): string
+    public function content(): ?string
     {
-        return $this->message->getHtmlBody();
+        $html = $this->message->getHtmlBody();
+
+        if (is_resource($html)) {
+            return stream_get_contents($html) ?: null;
+        }
+
+        return $html;
     }
 
-    public function attachments(): Collection
+    public function attachments(): array
     {
         return collect($this->message->getAttachments())
-            ->map(function (DataPart $part) {
-                return new Attachment($part->getName());
-            });
+            ->map(fn (DataPart $part) => $part->getName())
+            ->toArray();
     }
 }

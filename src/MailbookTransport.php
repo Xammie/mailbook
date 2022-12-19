@@ -4,6 +4,7 @@ namespace Xammie\Mailbook;
 
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractTransport;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\MessageConverter;
 use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 
@@ -11,7 +12,10 @@ class MailbookTransport extends AbstractTransport
 {
     protected function doSend(SentMessage $message): void
     {
-        $email = MessageConverter::toEmail($message->getOriginalMessage());
+        /** @var Message $originalMessage */
+        $originalMessage = $message->getOriginalMessage();
+
+        $email = MessageConverter::toEmail($originalMessage);
 
         MailbookFacade::setMessage($email);
     }

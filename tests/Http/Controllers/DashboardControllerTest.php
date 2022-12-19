@@ -25,7 +25,7 @@ it('can render default', function () {
                     '"Example" <hello@example.com>',
                 ],
             ],
-            'attachments' => collect(),
+            'attachments' => [],
             'preview' => 'http://localhost/mailbook/content/Xammie%5CMailbook%5CTests%5CMails%5CTestMail?locale=en',
         ]);
 });
@@ -46,7 +46,7 @@ it('can get meta', function () {
                 'Cc' => ['"Mailbook" <cc@mailbook.dev>'],
                 'Bcc' => ['"Mailbook" <bcc@mailbook.dev>'],
             ],
-            'attachments' => collect(),
+            'attachments' => [],
             'preview' => 'http://localhost/mailbook/content/Xammie%5CMailbook%5CTests%5CMails%5COtherMail?locale=en',
         ]);
 });

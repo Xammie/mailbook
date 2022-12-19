@@ -1,6 +1,5 @@
 <?php
 
-use Xammie\Mailbook\Attachment;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\NotificationMail;
@@ -160,9 +159,9 @@ it('builds mailable resolved from instance', function () {
 it('can get attachments', function () {
     $item = Mailbook::add(WithAttachmentsMail::class);
 
-    expect($item->attachments()->toArray())->toEqual([
-        new Attachment('document.pdf'),
-        new Attachment('rows.csv'),
+    expect($item->attachments())->toEqual([
+        'document.pdf',
+        'rows.csv',
     ]);
 });
 

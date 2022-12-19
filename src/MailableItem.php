@@ -96,12 +96,12 @@ class MailableItem
         return $this;
     }
 
-    public function subject(): string
+    public function subject(): ?string
     {
         try {
             return $this->resolve()->subject();
         } catch (BindingResolutionException) {
-            return '';
+            return null;
         }
     }
 
@@ -130,14 +130,6 @@ class MailableItem
         return $this->resolve()->bcc();
     }
 
-    private function listOfEmailAddresses(array $items): array
-    {
-        return collect($items)
-            ->map(fn (array $from) => sprintf('%s <%s>', $from['name'], $from['address']))
-            ->filter()
-            ->toArray();
-    }
-
     public function theme(): ?string
     {
         return $this->resolveInstance()->theme ?? null;
@@ -145,7 +137,7 @@ class MailableItem
 
     public function content(): string
     {
-        return $this->variantResolver()->resolve()->content();
+        return $this->variantResolver()->resolve()->content() ?? '';
     }
 
     public function size(): string
@@ -153,10 +145,7 @@ class MailableItem
         return Format::bytesToHuman(strlen($this->content()));
     }
 
-    /**
-     * @return Collection<int, Attachment>
-     */
-    public function attachments(): Collection
+    public function attachments(): array
     {
         return $this->resolve()->attachments();
     }
