@@ -2,16 +2,26 @@
 
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Event;
+use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\MailableResolver;
 use Xammie\Mailbook\Tests\Mails\NotificationMail;
+use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
+use Xammie\Mailbook\Tests\Mails\TestNotification;
 
-it('can get class', function ($mailable) {
+it('can get class from mailable', function ($mailable) {
     $resolver = new MailableResolver($mailable);
 
     expect($resolver->className())->toEqual(TestMail::class);
 })
     ->with('mailables');
+
+it('can get class from notification', function ($mailable) {
+    $resolver = new MailableResolver($mailable);
+
+    expect($resolver->className())->toEqual(TestNotification::class);
+})
+    ->with('notifications');
 
 it('can get class from class', function () {
     $resolver = new MailableResolver(TestMail::class);
@@ -40,18 +50,19 @@ it('can get class from closure with return type', function () {
     expect($resolver->className())->toEqual(TestMail::class);
 });
 
-it('can get class from mailable', function () {
-    $resolver = new MailableResolver(new TestMail());
-
-    expect($resolver->className())->toEqual(TestMail::class);
-});
-
-it('can get instance', function ($mailable) {
+it('can get instance from mailables', function ($mailable) {
     $resolver = new MailableResolver($mailable);
 
     expect($resolver->instance())->toBeInstanceOf(TestMail::class);
 })
     ->with('mailables');
+
+it('can get instance from notifications', function ($mailable) {
+    $resolver = new MailableResolver($mailable);
+
+    expect($resolver->instance())->toBeInstanceOf(TestNotification::class);
+})
+    ->with('notifications');
 
 it('can get instance from class', function () {
     $resolver = new MailableResolver(TestMail::class);
@@ -146,4 +157,23 @@ it('can resolve mail from notification', function () {
     );
 
     Event::assertDispatched(MessageSending::class);
+
+    expect(Mailbook::getMessage())->toBeNull();
+});
+
+it('can resolve mail once', function () {
+    Event::fake();
+
+    $resolver = new MailableResolver(NotificationMail::class);
+
+    $resolver->resolve()->content();
+    $resolver->resolve()->content();
+
+    Event::assertDispatchedTimes(MessageSending::class);
+});
+
+it('can resolve mail to', function () {
+    $resolver = new MailableResolver(OtherMail::class);
+
+    expect($resolver->resolve()->to())->toEqual(['"Mailbook" <example@mailbook.dev>']);
 });

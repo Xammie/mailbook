@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use ReflectionFunction;
 use ReflectionNamedType;
-use RuntimeException;
 use Symfony\Component\Mime\Email;
 use UnexpectedValueException;
 use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
@@ -59,7 +58,7 @@ class MailableResolver
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
 
-        $this->instance = $this->build($instance);
+        $this->instance = $instance;
 
         return get_class($this->instance);
     }
@@ -67,7 +66,7 @@ class MailableResolver
     public function instance(): Mailable|Notification
     {
         if ($this->mailable instanceof Mailable || $this->mailable instanceof Notification) {
-            return $this->build($this->mailable);
+            return $this->mailable;
         }
 
         if ($this->instance instanceof Mailable) {
@@ -84,7 +83,7 @@ class MailableResolver
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
         }
 
-        return $this->instance = $this->build($instance);
+        return $this->instance = $instance;
     }
 
     public function resolve(): ResolvedMail
@@ -94,7 +93,6 @@ class MailableResolver
         }
 
         $instance = $this->instance();
-
         $locale = MailbookFacade::getLocale();
 
         if ($locale) {
@@ -110,31 +108,11 @@ class MailableResolver
             Mail::to('remove@mailbook.dev')->send($instance);
         }
 
+        /** @var Email $mail */
         $mail = MailbookFacade::getMessage();
-
-        if (! $mail instanceof Email) {
-            throw new RuntimeException('no mail was sent');
-        }
 
         MailbookFacade::clearMessage();
 
         return $this->resolved = new ResolvedMail($mail);
-    }
-
-    private function build(Mailable|Notification $instance): Mailable|Notification
-    {
-        if ($this->hasBuild) {
-            return $instance;
-        }
-
-        $this->hasBuild = true;
-
-        $locale = MailbookFacade::getLocale();
-
-        if ($locale) {
-            $instance->locale($locale);
-        }
-
-        return $instance;
     }
 }

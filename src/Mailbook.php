@@ -21,7 +21,7 @@ class Mailbook
 
     protected ?string $locale = null;
 
-    protected ?Email $message;
+    protected ?Email $message = null;
 
     public function __construct()
     {

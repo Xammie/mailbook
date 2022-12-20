@@ -21,6 +21,7 @@
         "@equal": true,
         "@function_signature": true,
         "IdenticalEqual": false,
+        "NotIdenticalNotEqual": false,
         "@number": true,
         "@operator": true,
         "@regex": true,

@@ -69,7 +69,13 @@ class ResolvedMail
     public function attachments(): array
     {
         return collect($this->message->getAttachments())
-            ->map(fn (DataPart $part) => $part->getName())
+            ->map(function (DataPart $part) {
+                if (method_exists($part, 'getName')) {
+                    return $part->getName();
+                }
+
+                return $part->getPreparedHeaders()->getHeaderParameter('content-type', 'name');
+            })
             ->toArray();
     }
 }
