@@ -9,7 +9,7 @@ use Symfony\Component\Mime\Part\DataPart;
 class ResolvedMail
 {
     public function __construct(
-        private readonly Email $message
+        private Email $message
     ) {
     }
 

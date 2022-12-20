@@ -19,8 +19,6 @@ class MailableResolver
 {
     private Mailable|Notification|null $instance = null;
 
-    private bool $hasBuild = false;
-
     private ?ResolvedMail $resolved = null;
 
     public function __construct(public string|Closure|Mailable|Notification $mailable)
