@@ -137,7 +137,7 @@ class MailableItem
 
     public function content(): string
     {
-        return $this->variantResolver()->resolve()->content() ?? '';
+        return $this->resolve()->content() ?? '';
     }
 
     public function size(): string
@@ -173,7 +173,7 @@ class MailableItem
         return $this->resolver = $this->resolver ?? new MailableResolver($this->closure);
     }
 
-    public function resolve(): ResolvedMail
+    private function resolve(): ResolvedMail
     {
         return $this->variantResolver()->resolve();
     }

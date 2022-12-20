@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Mail\Events\MessageSending;
+use Illuminate\Support\Facades\Event;
 use Xammie\Mailbook\MailableResolver;
 use Xammie\Mailbook\Tests\Mails\NotificationMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
@@ -121,11 +123,27 @@ it('resolved class instance can be built', function () {
     expect($resolver->resolve()->subject())->toBe('Test email subject');
 });
 
+it('can resolve className from notification class', function () {
+    $resolver = new MailableResolver(NotificationMail::class);
+
+    expect($resolver->className())->toBe(NotificationMail::class);
+});
+
+it('can resolve className from notification closure', function () {
+    $resolver = new MailableResolver(fn () => new NotificationMail());
+
+    expect($resolver->className())->toBe(NotificationMail::class);
+});
+
 it('can resolve mail from notification', function () {
+    Event::fake();
+
     $resolver = new MailableResolver(NotificationMail::class);
 
     expect($resolver->resolve()->content())->toContain(
         'The introduction to the notification.',
         'Thank you for using our application!',
     );
+
+    Event::assertDispatched(MessageSending::class);
 });
