@@ -1,14 +1,14 @@
 # Mailbook
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/xammie/mailbook.svg?style=flat-square)](https://packagist.org/packages/xammie/mailbook)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/xammie/mailbook/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/xammie/mailbook/pint.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/xammie/mailbook/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/xammie/mailbook/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/xammie/mailbook/pint.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/xammie/mailbook/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/xammie/mailbook.svg?style=flat-square)](https://packagist.org/packages/xammie/mailbook)
 
 Mailbook is a Laravel package that lets you easily inspect your mails without having to actually trigger it in your
 application.
 
-![Example screenshot](./screenshot.png)
+[![Example screenshot](./screenshot.png)](https://mailbook.dev)
 
 <p align="center"><a href="https://mailbook.dev/">View demo</a></p>
 
