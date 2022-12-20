@@ -26,6 +26,7 @@
         "laravel/pint": "^0.2.3",
         "nunomaduro/collision": "^6.0",
         "nunomaduro/larastan": "^2.2",
+        "nunomaduro/phpinsights": "^2.6",
         "orchestra/testbench": "^7.0",
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-laravel": "^1.1",
@@ -58,7 +59,8 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true,
-            "infection/extension-installer": true
+            "infection/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "extra": {
