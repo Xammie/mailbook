@@ -16,25 +16,25 @@ class MailableResolver
 
     private ?ResolvedMail $resolved = null;
 
-    public function __construct(public string|Closure|Mailable|Notification $mailable)
+    public function __construct(public string|Closure|Mailable|Notification $subject)
     {
     }
 
     public function className(): string
     {
-        if ($this->mailable instanceof Mailable || $this->mailable instanceof Notification) {
-            return get_class($this->mailable);
+        if ($this->subject instanceof Mailable || $this->subject instanceof Notification) {
+            return get_class($this->subject);
         }
 
         if ($this->instance instanceof Mailable) {
             return get_class($this->instance);
         }
 
-        if (is_string($this->mailable)) {
-            return $this->mailable;
+        if (is_string($this->subject)) {
+            return $this->subject;
         }
 
-        $reflection = new ReflectionFunction($this->mailable);
+        $reflection = new ReflectionFunction($this->subject);
         $reflectionType = $reflection->getReturnType();
 
         if ($reflectionType instanceof ReflectionNamedType) {
@@ -45,7 +45,7 @@ class MailableResolver
             }
         }
 
-        $instance = App::call($this->mailable);
+        $instance = App::call($this->subject);
 
         if (! $instance instanceof Mailable && ! $instance instanceof Notification) {
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));
@@ -58,18 +58,18 @@ class MailableResolver
 
     public function instance(): Mailable|Notification
     {
-        if ($this->mailable instanceof Mailable || $this->mailable instanceof Notification) {
-            return $this->mailable;
+        if ($this->subject instanceof Mailable || $this->subject instanceof Notification) {
+            return $this->subject;
         }
 
         if ($this->instance instanceof Mailable) {
             return $this->instance;
         }
 
-        if (is_callable($this->mailable)) {
-            $instance = App::call($this->mailable);
+        if (is_callable($this->subject)) {
+            $instance = App::call($this->subject);
         } else {
-            $instance = app($this->mailable);
+            $instance = app($this->subject);
         }
 
         if (! $instance instanceof Mailable && ! $instance instanceof Notification) {
