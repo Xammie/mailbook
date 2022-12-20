@@ -4,6 +4,7 @@ namespace Xammie\Mailbook;
 
 use Closure;
 use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Localizable;
 use Symfony\Component\Mime\Email;
@@ -28,7 +29,7 @@ class Mailbook
         $this->mailables = collect(); // @phpstan-ignore-line
     }
 
-    public function add(string|Closure|Mailable $class): MailableItem
+    public function add(string|Closure|Mailable|Notification $class): MailableItem
     {
         $item = new MailableItem($class);
 

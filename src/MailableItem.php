@@ -26,7 +26,7 @@ class MailableItem
 
     private ?MailableResolver $resolver = null;
 
-    public function __construct(public string|Closure|Mailable $closure)
+    public function __construct(public string|Closure|Mailable|Notification $closure)
     {
         $this->variants = collect(); // @phpstan-ignore-line
     }
@@ -170,7 +170,7 @@ class MailableItem
 
     public function resolver(): MailableResolver
     {
-        return $this->resolver = $this->resolver ?? new MailableResolver($this->closure);
+        return $this->resolver ??= new MailableResolver($this->closure);
     }
 
     private function resolve(): ResolvedMail
