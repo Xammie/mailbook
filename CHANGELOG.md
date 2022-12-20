@@ -2,6 +2,16 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.4.1 - 2022-12-20
+
+### What's Changed
+
+- Bump dependabot/fetch-metadata from 1.3.4 to 1.3.5 by @dependabot in https://github.com/Xammie/mailbook/pull/26
+- Bump ramsey/composer-install from 1 to 2 by @dependabot in https://github.com/Xammie/mailbook/pull/28
+- Fixed shrinking icons #31 by @Xammie in https://github.com/Xammie/mailbook/pull/32
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.4.0...1.4.1
+
 ## 1.4.0 - 2022-10-26
 
 ### What's Changed
