@@ -20,11 +20,21 @@ it('can collect mail', function () {
     Event::assertDispatched(MessageSent::class);
 });
 
+it('will add new mailer', function () {
+    $mailableSender = new MailableSender(new TestMail());
+    $mailableSender->collect();
+
+    expect(config('mail.mailers.mailbook'))->toBe([
+        'transport' => 'mailbook',
+    ]);
+});
+
 it('will cleanup driver', function () {
     $mailableSender = new MailableSender(new TestMail());
     $mailableSender->collect();
 
-    expect(config('mail.default'))->not()->toBe('mailbook');
+    expect(config('mail.default'))->not()->toBe('mailbook')
+        ->and(config('mail.driver'))->not()->toBe('mailbook');
 });
 
 it('will cleanup message', function () {

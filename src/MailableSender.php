@@ -36,6 +36,7 @@ class MailableSender
     {
         $this->originalDriver = Config::get('mail.default');
         Config::set('mail.default', 'mailbook');
+        Config::set('mail.driver', 'mailbook');
         Config::set('mail.mailers.mailbook', ['transport' => 'mailbook']);
     }
 
@@ -44,6 +45,7 @@ class MailableSender
         MailbookFacade::clearMessage();
 
         Config::set('mail.default', $this->originalDriver);
+        Config::set('mail.driver', $this->originalDriver);
     }
 
     private function useLocale(): void
