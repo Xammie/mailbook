@@ -6,13 +6,10 @@ use Closure;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Traits\Localizable;
 use Symfony\Component\Mime\Email;
 
 class Mailbook
 {
-    use Localizable;
-
     /**
      * @var Collection<int, MailableItem>
      */

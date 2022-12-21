@@ -43,3 +43,17 @@ it('will cleanup message', function () {
 
     expect(Mailbook::getMessage())->toBeNull();
 });
+
+it('will inject driver config', function () {
+    $mailableSender = new MailableSender(new TestMail());
+    invade($mailableSender)->injectDriver();
+
+    expect(config('mail.default'))->toBe('mailbook');
+});
+
+it('will inject old driver config', function () {
+    $mailableSender = new MailableSender(new TestMail());
+    invade($mailableSender)->injectDriver();
+
+    expect(config('mail.driver'))->toBe('mailbook');
+});

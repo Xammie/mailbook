@@ -41,11 +41,6 @@ Mailbook::add(function () {
 
     return new VerificationMail($user, '/example/url')
 });
-
-// You can also use dependency injection in the closure
-Mailbook::add(function (User $user) {
-    return new VerificationMail($user, '/example/url');
-});
 ```
 
 Next head over to `/mailbook` to preview the mailables.
