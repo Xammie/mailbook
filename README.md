@@ -61,14 +61,14 @@ You can also use dependency injection in the closure.
 ```php
 // With dependency injection
 Mailbook::add(function (VerificationService $verificationService): VerificationMail {
-    return new VerificationMail($user, '/example/url');
+    return new VerificationMail($verificationService, '/example/url');
 });
 
 // Without dependency injection
 Mailbook::add(function (): VerificationMail {
     $verificationService = app(VerificationService::class);
     
-    return new VerificationMail($user, '/example/url');
+    return new VerificationMail($verificationService, '/example/url');
 });
 ```
 
