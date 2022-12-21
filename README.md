@@ -36,7 +36,7 @@ emails.
 Mailbook::add(VerificationMail::class);
 
 // Use a closure to customize the parameters of the mail instance
-Mailbook::add(function () {
+Mailbook::add(function (): VerificationMail {
     $user = User::factory()->make();
 
     return new VerificationMail($user, '/example/url')
@@ -44,6 +44,33 @@ Mailbook::add(function () {
 ```
 
 Next head over to `/mailbook` to preview the mailables.
+
+## Registering mails
+
+You can both register mailables that live in `App\Mails` and email notifications in `App\Notifications`.
+```php
+// Mailable
+Mailbook::add(VerificationMail::class);
+
+// Notification
+Mailbook::add(InvoiceCreatedNotification::class);
+```
+
+You can also use dependency injection in the closure.
+
+```php
+// With dependency injection
+Mailbook::add(function (VerificationService $verificationService): VerificationMail {
+    return new VerificationMail($user, '/example/url');
+});
+
+// Without dependency injection
+Mailbook::add(function (): VerificationMail {
+    $verificationService = app(VerificationService::class);
+    
+    return new VerificationMail($user, '/example/url');
+});
+```
 
 ## Variants
 
