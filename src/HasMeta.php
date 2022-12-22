@@ -14,7 +14,6 @@ trait HasMeta
             'Cc' => $this->cc(),
             'Bcc' => $this->bcc(),
             'Theme' => $this->theme(),
-            'Mailer' => $this->mailer(),
         ]);
     }
 }

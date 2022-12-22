@@ -2,7 +2,6 @@
 
 namespace Xammie\Mailbook\Http\Controllers;
 
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -14,7 +13,6 @@ use Xammie\Mailbook\MailableItem;
 class DashboardController
 {
     /**
-     * @throws FileNotFoundException
      * @throws MailbookException
      */
     public function __invoke(Request $request): View
@@ -40,7 +38,10 @@ class DashboardController
         }
 
         if ($request->has('variant')) {
-            $item->selectVariant(strval($request->get('variant')));
+            /** @var string $variant */
+            $variant = $request->get('variant');
+
+            $item->selectVariant($variant);
         }
 
         $display = config('mailbook.display_preview') ? $request->get('display') : null;

@@ -6,6 +6,7 @@ use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 use Xammie\Mailbook\Tests\Mails\TranslatedMail;
+use Xammie\Mailbook\Tests\Mails\TranslatedNotification;
 
 it('can render', function () {
     Mailbook::add(TestMail::class);
@@ -16,7 +17,7 @@ it('can render', function () {
         ->assertSeeText('Test mail');
 });
 
-it('can render different locale', function () {
+it('can render different locale mailable', function () {
     config()->set('mailbook.locales', [
         'en' => 'English',
         'nl' => 'Dutch',
@@ -28,6 +29,22 @@ it('can render different locale', function () {
     Mailbook::add(TranslatedMail::class);
 
     get(route('mailbook.content', ['class' => TranslatedMail::class, 'locale' => 'nl']))
+        ->assertSuccessful()
+        ->assertSeeText('Dit is een test mail');
+});
+
+it('can render different locale notification', function () {
+    config()->set('mailbook.locales', [
+        'en' => 'English',
+        'nl' => 'Dutch',
+        'de' => 'German',
+    ]);
+
+    app('translator')->addJsonPath(__DIR__.'/../../lang');
+
+    Mailbook::add(TranslatedNotification::class);
+
+    get(route('mailbook.content', ['class' => TranslatedNotification::class, 'locale' => 'nl']))
         ->assertSuccessful()
         ->assertSeeText('Dit is een test mail');
 });

@@ -22,10 +22,10 @@ it('can render default', function () {
             'meta' => [
                 'Subject' => 'Test email subject',
                 'From' => [
-                    'Example <hello@example.com>',
+                    '"Example" <hello@example.com>',
                 ],
             ],
-            'attachments' => collect(),
+            'attachments' => [],
             'preview' => 'http://localhost/mailbook/content/Xammie%5CMailbook%5CTests%5CMails%5CTestMail?locale=en',
         ]);
 });
@@ -40,13 +40,13 @@ it('can get meta', function () {
             'size' => '20 B',
             'meta' => [
                 'Subject' => 'Hello!',
-                'From' => ['Harry Potter <harry@example.com>'],
-                'To' => ['Mailbook <example@mailbook.dev>'],
-                'Reply To' => ['Support <questions@example.com>'],
-                'Cc' => ['Mailbook <cc@mailbook.dev>'],
-                'Bcc' => ['Mailbook <bcc@mailbook.dev>'],
+                'From' => ['"Harry Potter" <harry@example.com>'],
+                'To' => ['"Mailbook" <example@mailbook.dev>'],
+                'Reply To' => ['"Support" <questions@example.com>'],
+                'Cc' => ['"Mailbook" <cc@mailbook.dev>'],
+                'Bcc' => ['"Mailbook" <bcc@mailbook.dev>'],
             ],
-            'attachments' => collect(),
+            'attachments' => [],
             'preview' => 'http://localhost/mailbook/content/Xammie%5CMailbook%5CTests%5CMails%5COtherMail?locale=en',
         ]);
 });

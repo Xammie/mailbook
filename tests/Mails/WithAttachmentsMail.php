@@ -14,6 +14,6 @@ final class WithAttachmentsMail extends Mailable
             ->html('This mail has attachments')
             ->subject('Test email subject')
             ->attachData('test attachment', 'document.pdf')
-            ->attachFromStorage(__DIR__.'/WithAttachmentsMail.php');
+            ->attachData('test attachment', 'rows.csv');
     }
 }
