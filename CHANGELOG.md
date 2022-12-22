@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.5.0 - 2022-12-22
+
+### What's Changed
+
+- Support notification mails by @Xammie in https://github.com/Xammie/mailbook/pull/30
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.4.1...1.5.0
+
 ## 1.4.1 - 2022-12-20
 
 ### What's Changed
