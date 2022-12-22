@@ -19,4 +19,4 @@ it('can get mail subject and content', function ($mailable) {
         new ClassicMail(),
         new AlternativeMail(),
     ])
-    ->skip(! class_exists('Illuminate\Mail\Mailables\Envelope'), 'Alternative mailables are not available in this version of Laravel');
+    ->skip(! class_exists(\Illuminate\Mail\Mailables\Envelope::class), 'Alternative mailables are not available in this version of Laravel');

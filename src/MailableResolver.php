@@ -23,11 +23,11 @@ class MailableResolver
     public function className(): string
     {
         if ($this->subject instanceof Mailable || $this->subject instanceof Notification) {
-            return get_class($this->subject);
+            return $this->subject::class;
         }
 
         if ($this->instance instanceof Mailable) {
-            return get_class($this->instance);
+            return $this->instance::class;
         }
 
         if (is_string($this->subject)) {
@@ -53,7 +53,7 @@ class MailableResolver
 
         $this->instance = $instance;
 
-        return get_class($this->instance);
+        return $this->instance::class;
     }
 
     public function instance(): Mailable|Notification
@@ -66,11 +66,7 @@ class MailableResolver
             return $this->instance;
         }
 
-        if (is_callable($this->subject)) {
-            $instance = App::call($this->subject);
-        } else {
-            $instance = app($this->subject);
-        }
+        $instance = is_callable($this->subject) ? App::call($this->subject) : app($this->subject);
 
         if (! $instance instanceof Mailable && ! $instance instanceof Notification) {
             throw new UnexpectedValueException(sprintf('Unexpected value returned from mailbook closure expected instance of %s but got %s', Mailable::class, gettype($instance)));

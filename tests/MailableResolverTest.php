@@ -127,9 +127,7 @@ it('will execute closure once when resolving class from closure', function () {
 });
 
 it('resolved class instance can be built', function () {
-    $resolver = new MailableResolver(function () {
-        return new TestMail();
-    });
+    $resolver = new MailableResolver(fn () => new TestMail());
 
     expect($resolver->resolve()->subject())->toBe('Test email subject');
 });

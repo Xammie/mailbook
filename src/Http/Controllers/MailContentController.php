@@ -18,10 +18,9 @@ class MailContentController
             abort(500);
         }
 
-        /** @var MailableItem|null $current */
         $current = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $class);
 
-        if (! $current) {
+        if (! $current instanceof MailableItem) {
             abort(400);
         }
 

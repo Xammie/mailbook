@@ -7,7 +7,7 @@ use Illuminate\Contracts\Mail\Mailable;
 
 class MailableVariant
 {
-    private ?MailableResolver $resolver;
+    private ?MailableResolver $resolver = null;
 
     public function __construct(
         public string $label,
@@ -18,6 +18,6 @@ class MailableVariant
 
     public function resolver(): MailableResolver
     {
-        return $this->resolver = $this->resolver ?? new MailableResolver($this->closure);
+        return $this->resolver ??= new MailableResolver($this->closure);
     }
 }
