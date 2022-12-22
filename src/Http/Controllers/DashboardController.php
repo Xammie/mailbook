@@ -38,7 +38,7 @@ class DashboardController
         }
 
         if ($request->has('variant')) {
-            $item->selectVariant((string) $request->get('variant'));
+            $item->selectVariant($request->string('variant'));
         }
 
         $display = config('mailbook.display_preview') ? $request->get('display') : null;
