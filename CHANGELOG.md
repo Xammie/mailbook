@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.5.1 - 2023-01-05
+
+### What's Changed
+
+- Fixed root level icons shrinking by @Xammie in https://github.com/Xammie/mailbook/pull/34
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.5.0...1.5.1
+
 ## 1.5.0 - 2022-12-22
 
 ### What's Changed
