@@ -132,7 +132,10 @@ class MailableItem
 
     public function theme(): ?string
     {
-        return $this->resolveInstance()->theme ?? null; // @phpstan-ignore-line
+        /** @var object $instance */
+        $instance = $this->resolveInstance();
+
+        return $instance->theme ?? null;
     }
 
     public function content(): string
