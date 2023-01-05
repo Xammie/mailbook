@@ -28,7 +28,7 @@ class MailableItem
 
     public function __construct(public string|Closure|Mailable|Notification $closure)
     {
-        $this->variants = collect(); // @phpstan-ignore-line
+        $this->variants = collect();
     }
 
     public function label(string $label): self
@@ -132,7 +132,7 @@ class MailableItem
 
     public function theme(): ?string
     {
-        return $this->resolveInstance()->theme ?? null;
+        return $this->resolveInstance()->theme ?? null; // @phpstan-ignore-line
     }
 
     public function content(): string

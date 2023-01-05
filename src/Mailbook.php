@@ -23,7 +23,7 @@ class Mailbook
 
     public function __construct()
     {
-        $this->mailables = collect(); // @phpstan-ignore-line
+        $this->mailables = collect();
     }
 
     public function add(string|Closure|Mailable|Notification $class): MailableItem
