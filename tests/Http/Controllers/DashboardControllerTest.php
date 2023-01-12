@@ -26,7 +26,7 @@ it('can render default', function () {
                 ],
             ],
             'attachments' => [],
-            'preview' => 'http://localhost/mailbook/content/Xammie%5CMailbook%5CTests%5CMails%5CTestMail?locale=en',
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5CTestMail&locale=en',
         ]);
 });
 
@@ -47,7 +47,7 @@ it('can get meta', function () {
                 'Bcc' => ['"Mailbook" <bcc@mailbook.dev>'],
             ],
             'attachments' => [],
-            'preview' => 'http://localhost/mailbook/content/Xammie%5CMailbook%5CTests%5CMails%5COtherMail?locale=en',
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5COtherMail&locale=en',
         ]);
 });
 

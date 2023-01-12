@@ -17,6 +17,13 @@ it('can render', function () {
         ->assertSeeText('Test mail');
 });
 
+it('cannot render without class', function () {
+    Mailbook::add(OtherMail::class);
+
+    get(route('mailbook.content'))
+        ->assertStatus(404);
+});
+
 it('can render different locale mailable', function () {
     config()->set('mailbook.locales', [
         'en' => 'English',

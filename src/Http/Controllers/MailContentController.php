@@ -8,8 +8,17 @@ use Xammie\Mailbook\MailableItem;
 
 class MailContentController
 {
-    public function __invoke(Request $request, string $class, ?string $variant = null): string
+    public function __invoke(Request $request): string
     {
+        $class = $request->get('class');
+
+        if (! is_string($class)) {
+            abort(404);
+        }
+
+        /** @var ?string $variant */
+        $variant = $request->get('variant') ?? null;
+
         Mailbook::setLocale($request->get('locale'));
 
         $mailables = Mailbook::mailables();
