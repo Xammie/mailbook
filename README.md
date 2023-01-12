@@ -105,7 +105,7 @@ This will display a dropdown in mailbook which you can use to switch to a differ
 ## Using the database
 
 Most of the time your mailables will need database models. Sometimes you will even preform queries when rendering these
-mailables. Mailbook can automatically rollback database changes after rendering. You can enable it the config with.
+mailables. Mailbook can automatically rollback database changes after rendering. You can enable it in the config with.
 
 ```php
 'database_rollback' => true,
