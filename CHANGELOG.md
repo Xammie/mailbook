@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.5.2 - 2023-01-13
+
+### What's Changed
+
+- Fixed laragon 404 error by @Xammie in https://github.com/Xammie/mailbook/pull/37
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.5.1...1.5.2
+
 ## 1.5.1 - 2023-01-05
 
 ### What's Changed
