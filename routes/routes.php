@@ -9,6 +9,6 @@ if (config('mailbook.enabled')) {
         ->middleware(config('mailbook.middlewares'))
         ->group(function () {
             Route::get('/', DashboardController::class)->name('mailbook.dashboard');
-            Route::get('/content/{class}/{variant?}', MailContentController::class)->name('mailbook.content');
+            Route::get('/content', MailContentController::class)->name('mailbook.content');
         });
 }
