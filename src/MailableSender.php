@@ -4,7 +4,6 @@ namespace Xammie\Mailbook;
 
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Symfony\Component\Mime\Email;
@@ -12,15 +11,16 @@ use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 
 class MailableSender
 {
-    private mixed $originalDriver = null;
+    private ConfigInjector $injector;
 
     public function __construct(private Mailable|Notification $subject)
     {
+        $this->injector = new ConfigInjector();
     }
 
     public function collect(): ResolvedMail
     {
-        $this->injectDriver();
+        $this->inject();
         $this->useLocale();
         $this->send();
 
@@ -32,20 +32,20 @@ class MailableSender
         return new ResolvedMail($mail);
     }
 
-    private function injectDriver(): void
+    private function inject(): void
     {
-        $this->originalDriver = Config::get('mail.default');
-        Config::set('mail.default', 'mailbook');
-        Config::set('mail.driver', 'mailbook');
-        Config::set('mail.mailers.mailbook', ['transport' => 'mailbook']);
+        $this->injector
+            ->set('mail.default', 'mailbook')
+            ->set('mail.driver', 'mailbook')
+            ->set('mail.mailers.mailbook', ['transport' => 'mailbook'])
+            ->set('queue.default', 'sync');
     }
 
     private function cleanup(): void
     {
         MailbookFacade::clearMessage();
 
-        Config::set('mail.default', $this->originalDriver);
-        Config::set('mail.driver', $this->originalDriver);
+        $this->injector->revert();
     }
 
     private function useLocale(): void
