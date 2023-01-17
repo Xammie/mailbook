@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.5.3 - 2023-01-17
+
+### What's Changed
+
+- Fix queue driver with ShouldQueue mailables by @Xammie in https://github.com/Xammie/mailbook/pull/39
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.5.2...1.5.3
+
 ## 1.5.2 - 2023-01-13
 
 ### What's Changed
