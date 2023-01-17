@@ -6,7 +6,7 @@ namespace Xammie\Mailbook\Tests\Mails;
 
 use Illuminate\Mail\Mailable;
 
-final class WithAttachmentsMail extends Mailable
+class WithAttachmentsMail extends Mailable
 {
     public function build(): self
     {

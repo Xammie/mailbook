@@ -22,7 +22,7 @@ it('can collect mail', function () {
 
 it('will add new mailer', function () {
     $mailableSender = new MailableSender(new TestMail());
-    $mailableSender->collect();
+    invade($mailableSender)->inject();
 
     expect(config('mail.mailers.mailbook'))->toBe([
         'transport' => 'mailbook',
@@ -46,14 +46,14 @@ it('will cleanup message', function () {
 
 it('will inject driver config', function () {
     $mailableSender = new MailableSender(new TestMail());
-    invade($mailableSender)->injectDriver();
+    invade($mailableSender)->inject();
 
     expect(config('mail.default'))->toBe('mailbook');
 });
 
 it('will inject old driver config', function () {
     $mailableSender = new MailableSender(new TestMail());
-    invade($mailableSender)->injectDriver();
+    invade($mailableSender)->inject();
 
     expect(config('mail.driver'))->toBe('mailbook');
 });

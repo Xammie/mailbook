@@ -6,7 +6,7 @@ namespace Xammie\Mailbook\Tests\Mails;
 
 use Illuminate\Mail\Mailable;
 
-final class TranslatedMail extends Mailable
+class TranslatedMail extends Mailable
 {
     public function build(): self
     {

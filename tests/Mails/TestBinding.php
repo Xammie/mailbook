@@ -6,7 +6,7 @@ namespace Xammie\Mailbook\Tests\Mails;
 
 use Illuminate\Mail\Mailable;
 
-final class TestBinding extends Mailable
+class TestBinding extends Mailable
 {
     public function __construct(string $random)
     {
