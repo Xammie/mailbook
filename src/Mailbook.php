@@ -10,10 +10,7 @@ use Symfony\Component\Mime\Email;
 
 class Mailbook
 {
-    /**
-     * @var Collection<int, MailableItem>
-     */
-    protected Collection $mailables;
+    protected MailCollection $collection;
 
     protected bool $hasCollected = false;
 
@@ -21,29 +18,35 @@ class Mailbook
 
     protected ?Email $message = null;
 
-    protected mixed $notifiable = null;
+    protected ?MailRegistrar $registrar = null;
 
     public function __construct()
     {
-        $this->mailables = collect();
+        $this->collection = new MailCollection();
     }
 
-    public function via(mixed $notifiable): self
+    private function registrar(): MailRegistrar
     {
-        $this->notifiable = $notifiable;
+        if ($this->registrar instanceof MailRegistrar) {
+            return $this->registrar;
+        }
 
-        return $this;
+        return MailRegistrar::make($this->collection);
+    }
+
+    public function label(string $label): MailRegistrar
+    {
+        return $this->registrar()->label($label);
+    }
+
+    public function to(mixed $notifiable): MailRegistrar
+    {
+        return $this->registrar()->to($notifiable);
     }
 
     public function add(string|Closure|Mailable|Notification $class): MailableItem
     {
-        $item = new MailableItem($class, $this->notifiable);
-
-        $this->mailables->push($item);
-
-        $this->notifiable = null;
-
-        return $item;
+        return $this->registrar()->add($class);
     }
 
     /**
@@ -53,7 +56,7 @@ class Mailbook
     {
         $this->collect();
 
-        return $this->mailables;
+        return $this->collection->all();
     }
 
     private function collect(): void
@@ -117,5 +120,15 @@ class Mailbook
         $this->message = null;
 
         return $this;
+    }
+
+    public function setRegistrar(MailRegistrar $registrar): void
+    {
+        $this->registrar = $registrar;
+    }
+
+    public function clearRegistrar(): void
+    {
+        $this->registrar = null;
     }
 }

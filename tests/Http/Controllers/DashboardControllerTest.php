@@ -194,7 +194,7 @@ it('executes the close once', function () {
 });
 
 it('can render mailable with notifiable', function () {
-    Mailbook::via(new User(['email' => 'test@mailbook.dev']))->add(TestMail::class);
+    Mailbook::to(new User(['email' => 'test@mailbook.dev']))->add(TestMail::class);
 
     get(route('mailbook.dashboard'))
         ->assertSuccessful()
@@ -202,7 +202,7 @@ it('can render mailable with notifiable', function () {
 });
 
 it('can render notification with notifiable', function () {
-    Mailbook::via(new User(['email' => 'test@mailbook.dev']))->add(TestNotification::class);
+    Mailbook::to(new User(['email' => 'test@mailbook.dev']))->add(TestNotification::class);
 
     get(route('mailbook.dashboard'))
         ->assertSuccessful()
