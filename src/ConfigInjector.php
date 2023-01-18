@@ -22,5 +22,7 @@ class ConfigInjector
         foreach ($this->replaced as $key => $value) {
             Config::set($key, $value);
         }
+
+        $this->replaced = [];
     }
 }

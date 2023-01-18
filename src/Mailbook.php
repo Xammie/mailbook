@@ -21,16 +21,27 @@ class Mailbook
 
     protected ?Email $message = null;
 
+    protected mixed $notifiable = null;
+
     public function __construct()
     {
         $this->mailables = collect();
     }
 
+    public function via(mixed $notifiable): self
+    {
+        $this->notifiable = $notifiable;
+
+        return $this;
+    }
+
     public function add(string|Closure|Mailable|Notification $class): MailableItem
     {
-        $item = new MailableItem($class);
+        $item = new MailableItem($class, $this->notifiable);
 
         $this->mailables->push($item);
+
+        $this->notifiable = null;
 
         return $item;
     }

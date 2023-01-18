@@ -16,7 +16,7 @@ class MailableResolver
 
     private ?ResolvedMail $resolved = null;
 
-    public function __construct(public string|Closure|Mailable|Notification $subject)
+    public function __construct(public string|Closure|Mailable|Notification $subject, public mixed $notifiable = null)
     {
     }
 
@@ -81,7 +81,7 @@ class MailableResolver
             return $this->resolved;
         }
 
-        $sender = new MailableSender($this->instance());
+        $sender = new MailableSender($this->instance(), $this->notifiable);
 
         return $this->resolved = $sender->collect();
     }

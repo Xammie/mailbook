@@ -194,3 +194,16 @@ it('can get theme', function () {
 
     expect($item->theme())->toBe('shop');
 });
+
+it('can pass notifiable', function () {
+    $item = Mailbook::via('test@mailbook.dev')->add(TestMail::class);
+
+    expect($item->to())->toBe(['test@mailbook.dev']);
+});
+
+it('will reset notifiable', function () {
+    Mailbook::via('test@mailbook.dev')->add(OtherMail::class);
+    $item = Mailbook::add(TestMail::class);
+
+    expect($item->to())->toBe([]);
+});
