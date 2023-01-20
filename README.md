@@ -72,6 +72,33 @@ Mailbook::add(function (): VerificationMail {
 });
 ```
 
+## Sending to a user
+
+A notification will most of the time need a user (also called `notifiable` in the notification class).
+You can set the desired user with the `::to()` method.
+
+```php
+Mailbook::to($user)->add(WelcomeNotification::class);
+```
+
+If you don't need a user you can also pass an e-mail address.
+
+```php
+Mailbook::to('example@mailbook.dev')->add(WelcomeNotification::class)
+```
+
+## Grouping multiple mails
+
+To avoid having to pass the same `::to()` to every mailable that needs it you can use the `::group()` method. This will
+automatically pass the notifiable to every mailable inside the group.
+
+```php
+Mailbook::to('example@mailbook.dev')->group(function () {
+    Mailbook::add(WelcomeNotification::class);
+    Mailbook::add(TrialEndedNotification::class);
+});
+```
+
 ## Variants
 
 When creating mails you might have a couple of different scenario's that you want to test for one mail, you can use
