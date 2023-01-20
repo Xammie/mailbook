@@ -81,7 +81,7 @@ class MailableResolver
             return $this->resolved;
         }
 
-        $sender = new MailableSender($this->instance(), $this->notifiable);
+        $sender = new MailableSender($this->instance(), value($this->notifiable));
 
         return $this->resolved = $sender->collect();
     }
