@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
-final class AlternativeMail extends Mailable
+class AlternativeMail extends Mailable
 {
     public function envelope(): Envelope
     {
