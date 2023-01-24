@@ -19,11 +19,17 @@ class MailSendController
         /** @var string $item */
         $item = $request->get('item');
 
-        if (! is_subclass_of($item, Mailable::class)) {
-            abort(422);
+        if (! is_string($item)) {
+            abort(404);
         }
+
         /** @var MailableItem $mailableItem */
         $mailableItem = Mailbook::mailables()->first(fn (MailableItem $mailableItem) => $mailableItem->class() === $item);
+
+        if (! $mailableItem instanceof MailableItem) {
+            abort(422);
+        }
+
         /** @var Mailable $mailable */
         $mailable = $mailableItem->resolver()->instance();
 
