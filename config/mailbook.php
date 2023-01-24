@@ -9,6 +9,7 @@ return [
         Xammie\Mailbook\Http\Middlewares\RollbackDatabase::class,
     ],
     'show_credits' => true,
+    'enable_send' => true,
 
     /*
     |--------------------------------------------------------------------------

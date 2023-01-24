@@ -48,6 +48,32 @@
                 </div>
             </div>
         @endif
+        @if(config('mailbook.enable_send'))
+            <div class="flex flex-col py-2">
+                <div class="text-xs font-bold tracking-wide uppercase">
+                    send to
+                </div>
+                <div class="text-xs py-2">
+                    <form action="{{ route('mailbook.send') }}" method="POST" class="flex">
+                        <input type="hidden" id="item" name="item" value="{{ $current->class() }}">
+                        <input type="text" id="email" name="email" placeholder="example@mail.com" class="text-black rounded-lg p-1 mr-1 flex-1" />
+                        <button class="text-xs font-bold tracking-wide uppercase bg-blue-600 rounded-lg py-1 px-2">Send</button>
+                    </form>
+                    @if(session('success'))
+                        <div class="text-xs text-green-500">
+                            <div class="text-white bg-green-500 mt-1 p-1 rounded-lg">{{session('success')}}</div>
+                        </div>
+                    @endif
+                    @if(isset($errors) && $errors->any())
+                        <div class="text-xs text-red-500">
+                            @foreach ($errors->all() as $error)
+                                <div class="text-white bg-red-500 mt-1 p-1 rounded-lg">{{ $error }}</div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif()
     </div>
     @if(config('mailbook.show_credits'))
         <div class="text-gray-200 text-center text-xs p-2">
