@@ -64,7 +64,7 @@ it('cannot send with invalid email', function () {
     $mock->mockery_verify();
     Mockery::close();
 });
-it('cannot send with empty email', function () {
+it('cannot send without email', function () {
     Mailbook::add(TestMail::class);
     $mailable = Mailbook::mailables()->first();
 
@@ -90,8 +90,24 @@ it('cannot send with invalid MailableItem', function () {
     $mock->shouldNotReceive('send');
     app()->instance(Illuminate\Mail\Mailer::class, $mock);
 
-    post(route('mailbook.send', ['email' => 'example@mail.com', 'item' => '::invalid-mailable-item']))
+    post(route('mailbook.send', ['email' => 'example@mail.com', 'item' => '::invalid-mailable-item::']))
         ->assertStatus(422);
+
+    $mock->mockery_verify();
+    Mockery::close();
+});
+it('cannot send without MailableItem', function () {
+    Mailbook::add(TestMail::class);
+
+    $mock = Mockery::mock(Illuminate\Mail\Mailer::class);
+    $mock->shouldNotReceive('to')
+        ->andReturn($mock);
+    $mock->shouldNotReceive('send');
+    app()->instance(Illuminate\Mail\Mailer::class, $mock);
+
+    post(route('mailbook.send', ['email' => 'example@mail.com']))
+        ->assertInvalid()
+        ->assertSessionHasErrorsIn('item');
 
     $mock->mockery_verify();
     Mockery::close();
