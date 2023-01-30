@@ -126,14 +126,18 @@ Mailbook::add(function (): OrderShippedMail {
 Database rollback is disabled by default.
 
 ## Sending Mails
+
 Testing your mails outside the browser is important if you want to make sure that everything is displayed correctly.
 You can use Mailbook to send mails to an email address of your choice using your default mail driver.
-To do that you can enable sending mails within the config file:
+
+![img.png](docs/send_mail.png)
+
+You can enable this by setting `send` to `true` in the config file.
 
 ```php
-'enable_send' => true,
+'send' => true,
 ```
-![img.png](docs/send_mail.png)
+
 ## Customization
 
 You can publish the config file with:
@@ -152,6 +156,7 @@ return [
     'route_prefix' => '/mailbook',
     'middlewares' => [Xammie\Mailbook\Http\Middlewares\RollbackDatabase::class],
     'show_credits' => true,
+    'send' => false, 
 ];
 ```
 
