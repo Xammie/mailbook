@@ -38,11 +38,11 @@ return [
     | This option allows you to define which languages you want
     | to preview in mailbook.
     */
-//    'locales' => [
-//        'en' => 'English',
-//        'nl' => 'Dutch',
-//        'de' => 'German',
-//    ],
+    //    'locales' => [
+    //        'en' => 'English',
+    //        'nl' => 'Dutch',
+    //        'de' => 'German',
+    //    ],
 
     /*
    |--------------------------------------------------------------------------
