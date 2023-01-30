@@ -7,6 +7,8 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Str;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Support\Format;
@@ -206,5 +208,16 @@ class MailableItem
     public function class(): string
     {
         return $this->resolver()->className();
+    }
+
+    public function send(string $email): void
+    {
+        $instance = $this->variantResolver()->instance();
+
+        if ($instance instanceof Notification) {
+            NotificationFacade::route('mail', $email)->notifyNow($instance);
+        } else {
+            Mail::to($email)->send($instance);
+        }
     }
 }

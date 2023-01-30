@@ -62,6 +62,7 @@ class DashboardController
                 'variant' => $item->currentVariant()?->slug,
                 'locale' => $locale,
             ]),
+            'send' => config('mailbook.send'),
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
         ]);
     }

@@ -208,3 +208,22 @@ it('can render notification with notifiable', function () {
         ->assertSuccessful()
         ->assertSeeText('test@mailbook.dev');
 });
+
+it('cannot see mail form by default', function () {
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertDontSeeText('send to')
+        ->assertDontSee('example@mail.com');
+});
+
+it('can see mail form', function () {
+    config()->set('mailbook.send', true);
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertSeeText('send to')
+        ->assertSee('example@mail.com');
+});
