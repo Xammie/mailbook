@@ -3,38 +3,54 @@
 namespace Xammie\Mailbook\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailer;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\MailableItem;
 
 class MailSendController
 {
-    public function __invoke(Mailer $mailer, Request $request): string
+    public function __invoke(Request $request): string
     {
-        $request->validate([
-            'email' => 'email|required',
-            'item' => 'required',
-        ]);
-        /** @var string $item */
-        $item = $request->get('item');
-
-        if (! is_string($item)) {
+        if (! config('mailbook.send')) {
             abort(404);
         }
 
-        /** @var MailableItem $mailableItem */
-        $mailableItem = Mailbook::mailables()->first(fn (MailableItem $mailableItem) => $mailableItem->class() === $item);
+        $email = $request->get('email');
 
-        if (! $mailableItem instanceof MailableItem) {
-            abort(422);
+        if (! is_string($email)) {
+            abort(404);
         }
 
-        /** @var Mailable $mailable */
-        $mailable = $mailableItem->resolver()->instance();
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            abort(400);
+        }
 
-        $mailer->to($request->email)->send($mailable);
+        $class = $request->get('class');
 
-        return redirect()->back()->withSuccess('Successfully sent!');
+        if (! is_string($class)) {
+            abort(404);
+        }
+
+        /** @var ?string $variant */
+        $variant = $request->get('variant') ?? null;
+
+        Mailbook::setLocale($request->get('locale'));
+
+        $mailables = Mailbook::mailables();
+
+        $current = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $class);
+
+        if (! $current instanceof MailableItem) {
+            abort(400);
+        }
+
+        if (! is_null($variant)) {
+            $current->selectVariant($variant);
+        }
+
+        $current->send($email);
+
+        return redirect()
+            ->back()
+            ->withSuccess('Successfully sent!');
     }
 }

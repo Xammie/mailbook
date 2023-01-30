@@ -54,13 +54,13 @@ return [
     'send' => false,
 
     /*
-   |--------------------------------------------------------------------------
-   | Route prefix
-   |--------------------------------------------------------------------------
-   |
-   | This option allows you to define the route prefix that will be used on
-   | every route defined by mailbook.
-   */
+    |--------------------------------------------------------------------------
+    | Route prefix
+    |--------------------------------------------------------------------------
+    |
+    | This option allows you to define the route prefix that will be used on
+    | every route defined by mailbook.
+    */
     'route_prefix' => '/mailbook',
 
     /*

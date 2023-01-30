@@ -1,114 +1,78 @@
 <?php
 
-use function Pest\Laravel\get;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use function Pest\Laravel\post;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\TestMail;
+use Xammie\Mailbook\Tests\Mails\TestNotification;
 
-it('can disable', function () {
-    config()->set('mailbook.enable_send', false);
-    Mailbook::add(TestMail::class);
-
-    get(route('mailbook.dashboard', ['class' => TestMail::class]))
-        ->assertSuccessful()
-        ->assertDontSeeText('send to')
-        ->assertDontSee('example@mail.com');
+beforeEach(function () {
+    Mail::fake();
+    Notification::fake();
+    config()->set('mailbook.send', true);
 });
-it('can enable', function () {
-    config()->set('mailbook.enable_send', true);
+
+it('cannot send mails when disabled', function () {
+    config()->set('mailbook.send', false);
+
     Mailbook::add(TestMail::class);
 
-    get(route('mailbook.dashboard', ['class' => TestMail::class]))
-        ->assertSuccessful()
-        ->assertSeeText('send to')
-        ->assertSee('example@mail.com');
+    post(route('mailbook.send', ['class' => TestMail::class]))
+        ->assertStatus(404);
+
+    Mail::assertNothingSent();
+    Notification::assertNothingSent();
 });
-it('can send', function () {
+
+it('can send mailable', function () {
     Mailbook::add(TestMail::class);
-    $mailable = Mailbook::mailables()->first()->class();
-    $email = 'test@mail.com';
 
-    $mock = Mockery::mock(Illuminate\Mail\Mailer::class);
-    $mock->shouldReceive('to')
-        ->once()
-        ->with($email)
-        ->andReturn($mock);
-    $mock->shouldReceive('send')
-        ->once();
-
-    app()->instance(Illuminate\Mail\Mailer::class, $mock);
-
-    post(route('mailbook.send', ['email' => $email, 'item' => $mailable]))
-        ->assertSuccessful()
+    post(route('mailbook.send', ['email' => 'test@mail.com', 'class' => TestMail::class]))
         ->assertStatus(200)
         ->assertSessionHas('success');
 
-    $mock->mockery_verify();
-    Mockery::close();
+    Mail::assertSent(TestMail::class);
+    Notification::assertNothingSent();
 });
+
+it('can send notification', function () {
+    Mailbook::add(TestNotification::class);
+
+    post(route('mailbook.send', ['email' => 'test@mail.com', 'class' => TestNotification::class]))
+        ->assertStatus(200)
+        ->assertSessionHas('success');
+
+    Notification::assertSentTimes(TestNotification::class, 1);
+    Mail::assertNothingSent();
+});
+
 it('cannot send with invalid email', function () {
     Mailbook::add(TestMail::class);
     $mailable = Mailbook::mailables()->first()->class();
     $email = '::invalid-email::';
 
-    $mock = Mockery::mock(Illuminate\Mail\Mailer::class);
-    $mock->shouldNotReceive('to')
-        ->andReturn($mock);
-    $mock->shouldNotReceive('send');
-    app()->instance(Illuminate\Mail\Mailer::class, $mock);
-
-    post(route('mailbook.send', ['email' => $email, 'item' => $mailable]))
-        ->assertInvalid()
-        ->assertSessionHasErrorsIn('email');
-
-    $mock->mockery_verify();
-    Mockery::close();
+    post(route('mailbook.send', ['email' => $email, 'class' => $mailable]))
+        ->assertStatus(400);
 });
+
 it('cannot send without email', function () {
     Mailbook::add(TestMail::class);
-    $mailable = Mailbook::mailables()->first();
 
-    $mock = Mockery::mock(Illuminate\Mail\Mailer::class);
-    $mock->shouldNotReceive('to')
-        ->andReturn($mock);
-    $mock->shouldNotReceive('send');
-    app()->instance(Illuminate\Mail\Mailer::class, $mock);
-
-    post(route('mailbook.send', ['item' => $mailable->class()]))
-        ->assertInvalid()
-        ->assertSessionHasErrorsIn('email');
-
-    $mock->mockery_verify();
-    Mockery::close();
+    post(route('mailbook.send', ['class' => TestMail::class]))
+        ->assertStatus(404);
 });
-it('cannot send with invalid MailableItem', function () {
+
+it('cannot send with invalid class', function () {
     Mailbook::add(TestMail::class);
 
-    $mock = Mockery::mock(Illuminate\Mail\Mailer::class);
-    $mock->shouldNotReceive('to')
-        ->andReturn($mock);
-    $mock->shouldNotReceive('send');
-    app()->instance(Illuminate\Mail\Mailer::class, $mock);
-
-    post(route('mailbook.send', ['email' => 'example@mail.com', 'item' => '::invalid-mailable-item::']))
-        ->assertStatus(422);
-
-    $mock->mockery_verify();
-    Mockery::close();
+    post(route('mailbook.send', ['email' => 'example@mail.com', 'class' => '::invalid-mailable-item::']))
+        ->assertStatus(400);
 });
-it('cannot send without MailableItem', function () {
-    Mailbook::add(TestMail::class);
 
-    $mock = Mockery::mock(Illuminate\Mail\Mailer::class);
-    $mock->shouldNotReceive('to')
-        ->andReturn($mock);
-    $mock->shouldNotReceive('send');
-    app()->instance(Illuminate\Mail\Mailer::class, $mock);
+it('cannot send without class', function () {
+    Mailbook::add(TestMail::class);
 
     post(route('mailbook.send', ['email' => 'example@mail.com']))
-        ->assertInvalid()
-        ->assertSessionHasErrorsIn('item');
-
-    $mock->mockery_verify();
-    Mockery::close();
+        ->assertStatus(404);
 });

@@ -190,3 +190,22 @@ it('executes the close once', function () {
 
     expect($executed)->toBe(1);
 });
+
+it('cannot see mail form by default', function () {
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertDontSeeText('send to')
+        ->assertDontSee('example@mail.com');
+});
+
+it('can see mail form', function () {
+    config()->set('mailbook.send', true);
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertSeeText('send to')
+        ->assertSee('example@mail.com');
+});
