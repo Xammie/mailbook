@@ -153,10 +153,11 @@ return [
     'enabled' => env('APP_ENV') === 'local',
     'database_rollback' => false,
     'display_preview' => true,
+    'locales' => [],
+    'send' => false, 
     'route_prefix' => '/mailbook',
     'middlewares' => [Xammie\Mailbook\Http\Middlewares\RollbackDatabase::class],
     'show_credits' => true,
-    'send' => false, 
 ];
 ```
 
