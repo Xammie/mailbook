@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Str;
 use Xammie\Mailbook\Exceptions\MailbookException;
+use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 use Xammie\Mailbook\Support\Format;
 
 class MailableItem
@@ -89,9 +90,9 @@ class MailableItem
         return $this->variants->isNotEmpty();
     }
 
-    public function selectVariant(string $variant): self
+    public function selectVariant(?string $variant): self
     {
-        if ($this->hasVariant($variant)) {
+        if ($variant && $this->hasVariant($variant)) {
             $this->selectedVariant = $variant;
         }
 
@@ -213,6 +214,11 @@ class MailableItem
     public function send(string $email): void
     {
         $instance = $this->variantResolver()->instance();
+        $locale = MailbookFacade::getLocale();
+
+        if (is_string($locale)) {
+            $instance->locale($locale);
+        }
 
         if ($instance instanceof Notification) {
             NotificationFacade::route('mail', $email)->notifyNow($instance);

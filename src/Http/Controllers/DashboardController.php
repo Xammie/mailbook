@@ -19,47 +19,34 @@ class DashboardController
     {
         $mailables = Mailbook::mailables();
 
-        if ($mailables->isEmpty()) {
-            throw new MailbookException('No mailbook mailables registered');
-        }
+        /** @var MailableItem $current */
+        $current = Mailbook::retrieve(
+            class: strval($request->get('selected')) ?: null,
+            variant: strval($request->get('variant')) ?: null,
+            locale: strval($request->get('locale')) ?: null,
+        );
 
         /** @var array $locales */
         $locales = config('mailbook.locales', []);
-        $locale = Mailbook::setLocale($request->get('locale')) ?? config('app.locale');
-
+        $locale = Mailbook::getLocale() ?? config('app.locale');
         $localeLabel = $locales[$locale] ?? $locale;
-
-        /** @var MailableItem $item */
-        $item = $mailables->first();
-
-        if ($request->has('selected')) {
-            $selected = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $request->get('selected'));
-            $item = $selected ?: $item;
-        }
-
-        if ($request->has('variant')) {
-            /** @var string $variant */
-            $variant = $request->get('variant');
-
-            $item->selectVariant($variant);
-        }
 
         $display = config('mailbook.display_preview') ? $request->get('display') : null;
 
         return view('mailbook::dashboard', [
-            'current' => $item,
-            'subject' => $item->subject(),
-            'attachments' => $item->attachments(),
-            'size' => $item->size(),
+            'current' => $current,
+            'subject' => $current->subject(),
+            'attachments' => $current->attachments(),
+            'size' => $current->size(),
             'mailables' => $mailables,
             'display' => $display,
             'locales' => $locales,
             'localeLabel' => $localeLabel,
             'currentLocale' => $locale,
-            'meta' => $item->meta(),
+            'meta' => $current->meta(),
             'preview' => route('mailbook.content', [
-                'class' => $item->class(),
-                'variant' => $item->currentVariant()?->slug,
+                'class' => $current->class(),
+                'variant' => $current->currentVariant()?->slug,
                 'locale' => $locale,
             ]),
             'send' => config('mailbook.send'),

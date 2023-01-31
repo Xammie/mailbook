@@ -7,6 +7,7 @@ use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Symfony\Component\Mime\Email;
+use Xammie\Mailbook\Exceptions\MailbookException;
 
 class Mailbook
 {
@@ -130,5 +131,32 @@ class Mailbook
     public function clearRegistrar(): void
     {
         $this->registrar = null;
+    }
+
+    public function retrieve(?string $class, ?string $variant, ?string $locale, bool $fallback = true): ?MailableItem
+    {
+        $mailables = $this->mailables();
+
+        if ($mailables->isEmpty()) {
+            throw new MailbookException('No mailbook mailables registered');
+        }
+
+        if ($class) {
+            $selected = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $class);
+        } elseif ($fallback) {
+            $selected = $mailables->first();
+        } else {
+            $selected = null;
+        }
+
+        if (! $selected instanceof MailableItem) {
+            return null;
+        }
+
+        $selected->selectVariant($variant);
+
+        $this->setLocale($locale ?? config('app.locale'));
+
+        return $selected;
     }
 }
