@@ -48,7 +48,7 @@
                 </div>
             </div>
         @endif
-        @if(config('mailbook.send'))
+        @if($send)
             <div class="flex flex-col py-2">
                 <div class="text-xs font-bold tracking-wide uppercase">
                     send to
