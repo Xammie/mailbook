@@ -68,7 +68,7 @@ it('cannot send with invalid class', function () {
     Mailbook::add(TestMail::class);
 
     post(route('mailbook.send', ['email' => 'test@example.com', 'class' => '::invalid-mailable-item::']))
-        ->assertStatus(400);
+        ->assertStatus(404);
 });
 
 it('cannot send without class', function () {

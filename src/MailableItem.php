@@ -90,9 +90,9 @@ class MailableItem
         return $this->variants->isNotEmpty();
     }
 
-    public function selectVariant(string $variant): self
+    public function selectVariant(?string $variant): self
     {
-        if ($this->hasVariant($variant)) {
+        if ($variant && $this->hasVariant($variant)) {
             $this->selectedVariant = $variant;
         }
 
