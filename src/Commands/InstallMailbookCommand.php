@@ -18,11 +18,7 @@ class InstallMailbookCommand extends Command
 
     public function handle(): int
     {
-        if (property_exists($this, 'components')) {
-            $this->components->info('Installing mailbook');
-        } else {
-            $this->info('Installing mailbook');
-        }
+        $this->components->info('Installing mailbook');
 
         $stubs = [
             'routes/mailbook.php' => 'route-file.php',
@@ -41,11 +37,7 @@ class InstallMailbookCommand extends Command
 
         $url = route('mailbook.dashboard');
 
-        if (property_exists($this, 'components')) {
-            $this->components->info("Mailbook has been installed. Navigate to $url to view it");
-        } else {
-            $this->info("Mailbook has been installed. Navigate to $url to view it");
-        }
+        $this->components->info("Mailbook has been installed. Navigate to $url to view it");
 
         return self::SUCCESS;
     }
@@ -64,13 +56,7 @@ class InstallMailbookCommand extends Command
                 str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($to)) // @phpstan-ignore-line
             );
 
-            if (property_exists($this, 'components')) {
-                $this->components->twoColumnDetail($output, '<fg=yellow;options=bold>SKIPPED</>');
-
-                return;
-            }
-
-            $this->info($output);
+            $this->components->twoColumnDetail($output, '<fg=yellow;options=bold>SKIPPED</>');
         }
     }
 
@@ -88,11 +74,6 @@ class InstallMailbookCommand extends Command
 
         $output = sprintf('Copying file [%s] to [%s]', $from, $to);
 
-        if (property_exists($this, 'components')) {
-            $this->components->task($output);
-
-            return;
-        }
-        $this->info($output);
+        $this->components->task($output);
     }
 }
