@@ -175,7 +175,7 @@ it('can disable display preview', function () {
 
     get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))
         ->assertSuccessful()
-        ->assertViewHas('display', null);
+        ->assertViewHas('display', fn ($value) => $value === null);
 });
 
 it('executes the close once', function () {
@@ -214,8 +214,7 @@ it('cannot see mail form by default', function () {
 
     get(route('mailbook.dashboard', ['class' => TestMail::class]))
         ->assertSuccessful()
-        ->assertDontSeeText('send to')
-        ->assertDontSee('example@mail.com');
+        ->assertDontSee('Send');
 });
 
 it('can see mail form', function () {
@@ -224,6 +223,5 @@ it('can see mail form', function () {
 
     get(route('mailbook.dashboard', ['class' => TestMail::class]))
         ->assertSuccessful()
-        ->assertSeeText('send to')
-        ->assertSee('example@mail.com');
+        ->assertSee('Send');
 });

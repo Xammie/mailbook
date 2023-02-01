@@ -49,9 +49,20 @@ return [
     | Send
     |--------------------------------------------------------------------------
     |
-    | This option allows you to enable a mail form.
+    | This option allows you to enable the send mail button.
     */
     'send' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Send to
+    |--------------------------------------------------------------------------
+    |
+    | This option allows you to specify where the mails should be sent to.
+    */
+    'send_to' => [
+        'test@mailbook.dev',
+    ],
 
     /*
     |--------------------------------------------------------------------------

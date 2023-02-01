@@ -2,42 +2,31 @@
 
 namespace Xammie\Mailbook\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Xammie\Mailbook\Facades\Mailbook;
+use Xammie\Mailbook\Http\Requests\MailbookRequest;
+use Xammie\Mailbook\MailableItem;
 
 class MailSendController
 {
-    public function __invoke(Request $request): string
+    public function __invoke(MailbookRequest $request): RedirectResponse
     {
         if (! config('mailbook.send')) {
             abort(404);
         }
 
-        $email = $request->get('email');
-
-        if (! is_string($email)) {
-            abort(404);
-        }
-
-        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            abort(400);
-        }
-
         $current = Mailbook::retrieve(
-            class: strval($request->get('class')) ?: null,
-            variant: strval($request->get('variant')) ?: null,
-            locale: strval($request->get('locale')) ?: null,
-            fallback: false,
+            class: $request->class(),
+            variant: $request->variant(),
+            locale: $request->locale(),
         );
 
-        if (! $current) {
+        if (! $current instanceof MailableItem) {
             abort(404);
         }
 
-        $current->send($email);
+        $current->send(config('mailbook.send_to'));
 
-        return redirect()
-            ->back()
-            ->withSuccess('Successfully sent!');
+        return redirect()->back();
     }
 }

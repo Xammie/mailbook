@@ -11,6 +11,6 @@ if (config('mailbook.enabled')) {
         ->group(function () {
             Route::get('/', DashboardController::class)->name('mailbook.dashboard');
             Route::get('/content', MailContentController::class)->name('mailbook.content');
-            Route::post('/send', MailSendController::class)->name('mailbook.send');
+            Route::get('/send', MailSendController::class)->name('mailbook.send');
         });
 }

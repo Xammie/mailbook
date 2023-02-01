@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
-use function Pest\Laravel\post;
+use function Pest\Laravel\get;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
@@ -20,7 +20,7 @@ it('cannot send mails when disabled', function () {
 
     Mailbook::add(TestMail::class);
 
-    post(route('mailbook.send', ['class' => TestMail::class, 'email' => 'test@example.com']))
+    get(route('mailbook.send', ['class' => TestMail::class]))
         ->assertStatus(404);
 
     Mail::assertNothingSent();
@@ -30,9 +30,8 @@ it('cannot send mails when disabled', function () {
 it('can send mailable', function () {
     Mailbook::add(TestMail::class);
 
-    post(route('mailbook.send', ['email' => 'test@example.com', 'class' => TestMail::class]))
-        ->assertStatus(200)
-        ->assertSessionHas('success');
+    get(route('mailbook.send', ['class' => TestMail::class]))
+        ->assertRedirect();
 
     Mail::assertSent(TestMail::class);
     Notification::assertNothingSent();
@@ -41,40 +40,24 @@ it('can send mailable', function () {
 it('can send notification', function () {
     Mailbook::add(TestNotification::class);
 
-    post(route('mailbook.send', ['email' => 'test@example.com', 'class' => TestNotification::class]))
-        ->assertStatus(200)
-        ->assertSessionHas('success');
+    get(route('mailbook.send', ['class' => TestNotification::class]))
+        ->assertRedirect();
 
     Notification::assertSentTimes(TestNotification::class, 1);
     Mail::assertNothingSent();
 });
 
-it('cannot send with invalid email', function () {
-    Mailbook::add(TestMail::class);
-    $mailable = Mailbook::mailables()->first()->class();
-
-    post(route('mailbook.send', ['email' => 'example.com', 'class' => $mailable]))
-        ->assertStatus(400);
-});
-
-it('cannot send without email', function () {
-    Mailbook::add(TestMail::class);
-
-    post(route('mailbook.send', ['class' => TestMail::class]))
-        ->assertStatus(404);
-});
-
 it('cannot send with invalid class', function () {
     Mailbook::add(TestMail::class);
 
-    post(route('mailbook.send', ['email' => 'test@example.com', 'class' => '::invalid-mailable-item::']))
+    get(route('mailbook.send', ['class' => '::invalid-mailable-item::']))
         ->assertStatus(404);
 });
 
 it('cannot send without class', function () {
     Mailbook::add(TestMail::class);
 
-    post(route('mailbook.send', ['email' => 'test@example.com']))
+    get(route('mailbook.send'))
         ->assertStatus(404);
 });
 
@@ -89,11 +72,58 @@ it('can send different locale mailable', function () {
 
     Mailbook::add(TranslatedMail::class);
 
-    post(route('mailbook.send', ['email' => 'test@example.com', 'class' => TranslatedMail::class, 'locale' => 'nl']))
-        ->assertSuccessful();
+    get(route('mailbook.send', ['class' => TranslatedMail::class, 'locale' => 'nl']))
+        ->assertRedirect();
 
-    Mail::assertSent(TranslatedMail::class, function (TranslatedMail $mail) {
+    Mail::assertSent(TranslatedMail::class, function (TranslatedMail $mail): bool {
         $this->assertEquals('nl', $mail->locale);
+
+        return true;
+    });
+});
+
+it('can send to one', function () {
+    config()->set('mailbook.send_to', 'test@mailbook.dev');
+
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.send', ['class' => TestMail::class]))
+        ->assertRedirect();
+
+    Mail::assertSent(TestMail::class, function (TestMail $mail): bool {
+        $this->assertEquals([
+            [
+                'name' => null,
+                'address' => 'test@mailbook.dev',
+            ],
+        ], $mail->to);
+
+        return true;
+    });
+});
+
+it('can send to multiple', function () {
+    config()->set('mailbook.send_to', [
+        'test@mailbook.dev',
+        'example@mailbook.dev',
+    ]);
+
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.send', ['class' => TestMail::class]))
+        ->assertRedirect();
+
+    Mail::assertSent(TestMail::class, function (TestMail $mail): bool {
+        $this->assertEquals([
+            [
+                'name' => null,
+                'address' => 'test@mailbook.dev',
+            ],
+            [
+                'name' => null,
+                'address' => 'example@mailbook.dev',
+            ],
+        ], $mail->to);
 
         return true;
     });
@@ -104,8 +134,8 @@ it('can send variant', function () {
         ->variant('wrong variant', fn () => new OtherMail())
         ->variant('Test variant', fn () => new TestMail());
 
-    post(route('mailbook.send', ['email' => 'test@example.com', 'class' => TestMail::class, 'variant' => 'test-variant']))
-        ->assertSuccessful();
+    get(route('mailbook.send', ['class' => TestMail::class, 'variant' => 'test-variant']))
+        ->assertRedirect();
 
     Mail::assertSent(TestMail::class);
 });
