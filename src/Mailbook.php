@@ -109,7 +109,7 @@ class Mailbook
         return $this;
     }
 
-    public function retrieve(?string $class, ?string $variant, ?string $locale, bool $fallback = true): ?MailableItem
+    public function retrieve(?string $class, ?string $variant, ?string $locale, bool $fallback = false): ?MailableItem
     {
         $mailables = $this->mailables();
 

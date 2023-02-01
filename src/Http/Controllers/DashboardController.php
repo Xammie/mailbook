@@ -3,27 +3,24 @@
 namespace Xammie\Mailbook\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\HtmlString;
-use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
+use Xammie\Mailbook\Http\Requests\MailbookRequest;
 use Xammie\Mailbook\MailableItem;
 
 class DashboardController
 {
-    /**
-     * @throws MailbookException
-     */
-    public function __invoke(Request $request): View
+    public function __invoke(MailbookRequest $request): View
     {
         $mailables = Mailbook::mailables();
 
         /** @var MailableItem $current */
         $current = Mailbook::retrieve(
-            class: strval($request->get('selected')) ?: null,
-            variant: strval($request->get('variant')) ?: null,
-            locale: strval($request->get('locale')) ?: null,
+            class: $request->class(),
+            variant: $request->variant(),
+            locale: $request->locale(),
+            fallback: true
         );
 
         /** @var array $locales */

@@ -92,7 +92,7 @@ it('can send different locale mailable', function () {
     post(route('mailbook.send', ['email' => 'test@example.com', 'class' => TranslatedMail::class, 'locale' => 'nl']))
         ->assertSuccessful();
 
-    Mail::assertSent(TranslatedMail::class, function (TranslatedMail $mail) {
+    Mail::assertSent(TranslatedMail::class, function (TranslatedMail $mail): bool {
         $this->assertEquals('nl', $mail->locale);
 
         return true;
