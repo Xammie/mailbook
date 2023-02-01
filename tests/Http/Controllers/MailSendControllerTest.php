@@ -8,6 +8,8 @@ use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 use Xammie\Mailbook\Tests\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Mails\TranslatedMail;
+use Xammie\Mailbook\Tests\Mails\TranslatedNotification;
+use Xammie\Mailbook\Tests\Support\User;
 
 beforeEach(function () {
     Mail::fake();
@@ -43,7 +45,17 @@ it('can send notification', function () {
     get(route('mailbook.send', ['class' => TestNotification::class]))
         ->assertRedirect();
 
-    Notification::assertSentTimes(TestNotification::class, 1);
+    Notification::assertSentOnDemand(TestNotification::class);
+    Mail::assertNothingSent();
+});
+
+it('can send notification with notifiable', function () {
+    Mailbook::to(new User(['email' => 'notifiable@mailbook.dev']))->add(TestNotification::class);
+
+    get(route('mailbook.send', ['class' => TestNotification::class]))
+        ->assertRedirect();
+
+    Notification::assertSentOnDemand(TestNotification::class);
     Mail::assertNothingSent();
 });
 
@@ -80,6 +92,28 @@ it('can send different locale mailable', function () {
 
         return true;
     });
+});
+
+it('can send different locale notification', function () {
+    config()->set('mailbook.locales', [
+        'en' => 'English',
+        'nl' => 'Dutch',
+        'de' => 'German',
+    ]);
+
+    app('translator')->addJsonPath(__DIR__.'/../../lang');
+
+    Mailbook::add(TranslatedNotification::class);
+
+    get(route('mailbook.send', ['class' => TranslatedNotification::class, 'locale' => 'nl']))
+        ->assertRedirect();
+
+    Notification::assertSentOnDemand(TranslatedNotification::class, function (TranslatedNotification $notification): bool {
+        $this->assertSame('nl', $notification->locale);
+
+        return true;
+    });
+    Mail::assertNothingSent();
 });
 
 it('can send to one', function () {
