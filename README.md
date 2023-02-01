@@ -48,6 +48,7 @@ Next head over to `/mailbook` to preview the mailables.
 ## Registering mails
 
 You can both register mailables that live in `App\Mails` and email notifications in `App\Notifications`.
+
 ```php
 // Mailable
 Mailbook::add(VerificationMail::class);
@@ -69,6 +70,33 @@ Mailbook::add(function (): VerificationMail {
     $verificationService = app(VerificationService::class);
     
     return new VerificationMail($verificationService, '/example/url');
+});
+```
+
+## Sending to a user
+
+A notification will most of the time need a user (also called `notifiable` in the notification class).
+You can set the desired user with the `::to()` method.
+
+```php
+Mailbook::to($user)->add(WelcomeNotification::class);
+```
+
+If you don't need a user you can also pass an e-mail address.
+
+```php
+Mailbook::to('example@mailbook.dev')->add(WelcomeNotification::class)
+```
+
+## Grouping multiple mails
+
+To avoid having to pass the same `::to()` to every mailable that needs it you can use the `::group()` method. This will
+automatically pass the notifiable to every mailable inside the group.
+
+```php
+Mailbook::to('example@mailbook.dev')->group(function () {
+    Mailbook::add(WelcomeNotification::class);
+    Mailbook::add(TrialEndedNotification::class);
 });
 ```
 
@@ -125,25 +153,26 @@ Mailbook::add(function (): OrderShippedMail {
 
 Database rollback is disabled by default.
 
+## Sending Mails
+
+Testing your mails outside the browser is important if you want to make sure that everything is displayed correctly.
+You can use Mailbook to send mails to an email address of your choice using your default mail driver. This will show a
+button in the top-right corner which when pressed will send the currently selected email to the speecified addresses.
+You can enable this in the config:
+
+```php
+'send' => true,
+'send_to' => [
+    'test@mailbook.dev',
+],
+```
+
 ## Customization
 
 You can publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="mailbook-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-    'enabled' => env('APP_ENV') === 'local',
-    'database_rollback' => false,
-    'display_preview' => true,
-    'route_prefix' => '/mailbook',
-    'middlewares' => [Xammie\Mailbook\Http\Middlewares\RollbackDatabase::class],
-    'show_credits' => true,
-];
 ```
 
 Optionally, you can publish the views using

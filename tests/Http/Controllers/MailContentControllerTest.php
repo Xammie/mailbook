@@ -111,7 +111,7 @@ it('cannot render with unknown mailable', function () {
     Mailbook::add(TestMail::class);
 
     get(route('mailbook.content', ['class' => 'test-mail']))
-        ->assertStatus(400);
+        ->assertStatus(404);
 });
 
 it('rolls back database changes', function () {

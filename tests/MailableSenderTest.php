@@ -7,6 +7,8 @@ use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\MailableSender;
 use Xammie\Mailbook\ResolvedMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
+use Xammie\Mailbook\Tests\Mails\TestNotification;
+use Xammie\Mailbook\Tests\Support\User;
 
 it('can collect mail', function () {
     Event::fake();
@@ -56,4 +58,32 @@ it('will inject old driver config', function () {
     invade($mailableSender)->inject();
 
     expect(config('mail.driver'))->toBe('mailbook');
+});
+
+it('can send mailable with email', function () {
+    $mailableSender = new MailableSender(new TestMail(), 'test@mailbook.dev');
+    $mail = $mailableSender->collect();
+
+    expect($mail->to())->toBe(['test@mailbook.dev']);
+});
+
+it('can send mailable with notifiable', function () {
+    $mailableSender = new MailableSender(new TestNotification(), new User(['email' => 'test@mailbook.dev']));
+    $mail = $mailableSender->collect();
+
+    expect($mail->to())->toBe(['test@mailbook.dev']);
+});
+
+it('can send notification with email', function () {
+    $mailableSender = new MailableSender(new TestNotification(), 'test@mailbook.dev');
+    $mail = $mailableSender->collect();
+
+    expect($mail->to())->toBe(['test@mailbook.dev']);
+});
+
+it('can send notification with notifiable', function () {
+    $mailableSender = new MailableSender(new TestNotification(), new User(['email' => 'test@mailbook.dev']));
+    $mail = $mailableSender->collect();
+
+    expect($mail->to())->toBe(['test@mailbook.dev']);
 });

@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "tailwindcss": "^3.2.1"
+    "tailwindcss": "^3.2.4"
   },
   "scripts": {
     "watch": "tailwindcss --input ./resources/css/mailbook.css --output ./resources/dist/mailbook.css --watch",

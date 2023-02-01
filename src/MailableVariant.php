@@ -12,12 +12,13 @@ class MailableVariant
     public function __construct(
         public string $label,
         public string $slug,
-        public string|Mailable|Closure $closure
+        public string|Mailable|Closure $closure,
+        public mixed $notifiable = null,
     ) {
     }
 
     public function resolver(): MailableResolver
     {
-        return $this->resolver ??= new MailableResolver($this->closure);
+        return $this->resolver ??= new MailableResolver($this->closure, $this->notifiable);
     }
 }

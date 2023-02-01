@@ -7,8 +7,11 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Str;
 use Xammie\Mailbook\Exceptions\MailbookException;
+use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 use Xammie\Mailbook\Support\Format;
 
 class MailableItem
@@ -26,7 +29,7 @@ class MailableItem
 
     private ?MailableResolver $resolver = null;
 
-    public function __construct(public string|Closure|Mailable|Notification $closure)
+    public function __construct(public string|Closure|Mailable|Notification $closure, public mixed $notifiable = null)
     {
         $this->variants = collect();
     }
@@ -55,7 +58,7 @@ class MailableItem
             throw new MailbookException(sprintf('Variant %s (%s) already exists', $label, $slug));
         }
 
-        $this->variants->push(new MailableVariant($label, $slug, $variant));
+        $this->variants->push(new MailableVariant($label, $slug, $variant, $this->notifiable));
 
         return $this;
     }
@@ -87,9 +90,9 @@ class MailableItem
         return $this->variants->isNotEmpty();
     }
 
-    public function selectVariant(string $variant): self
+    public function selectVariant(?string $variant): self
     {
-        if ($this->hasVariant($variant)) {
+        if ($variant && $this->hasVariant($variant)) {
             $this->selectedVariant = $variant;
         }
 
@@ -173,7 +176,7 @@ class MailableItem
 
     public function resolver(): MailableResolver
     {
-        return $this->resolver ??= new MailableResolver($this->closure);
+        return $this->resolver ??= new MailableResolver($this->closure, $this->notifiable);
     }
 
     private function resolve(): ResolvedMail
@@ -206,5 +209,21 @@ class MailableItem
     public function class(): string
     {
         return $this->resolver()->className();
+    }
+
+    public function send(mixed $email): void
+    {
+        $instance = $this->variantResolver()->instance();
+        $locale = MailbookFacade::getLocale();
+
+        if (is_string($locale)) {
+            $instance->locale($locale);
+        }
+
+        if ($instance instanceof Notification) {
+            NotificationFacade::route('mail', $email)->notifyNow($instance);
+        } else {
+            Mail::to($email)->send($instance);
+        }
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
+use Xammie\Mailbook\Support\Format;
+
 it('can convert to human readable sizes', function ($bytes, $expected) {
-    expect(\Xammie\Mailbook\Support\Format::bytesToHuman($bytes))->toBe($expected);
+    expect(Format::bytesToHuman($bytes))->toBe($expected);
 })
     ->with([
         [-10, '0 B'],

@@ -7,13 +7,11 @@ use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Symfony\Component\Mime\Email;
+use Xammie\Mailbook\Exceptions\MailbookException;
 
 class Mailbook
 {
-    /**
-     * @var Collection<int, MailableItem>
-     */
-    protected Collection $mailables;
+    protected MailCollection $collection;
 
     protected bool $hasCollected = false;
 
@@ -21,18 +19,35 @@ class Mailbook
 
     protected ?Email $message = null;
 
+    protected ?MailRegistrar $registrar = null;
+
     public function __construct()
     {
-        $this->mailables = collect();
+        $this->collection = new MailCollection();
+    }
+
+    private function registrar(): MailRegistrar
+    {
+        if ($this->registrar instanceof MailRegistrar) {
+            return $this->registrar;
+        }
+
+        return MailRegistrar::make($this->collection);
+    }
+
+    public function label(string $label): MailRegistrar
+    {
+        return $this->registrar()->label($label);
+    }
+
+    public function to(mixed $notifiable): MailRegistrar
+    {
+        return $this->registrar()->to($notifiable);
     }
 
     public function add(string|Closure|Mailable|Notification $class): MailableItem
     {
-        $item = new MailableItem($class);
-
-        $this->mailables->push($item);
-
-        return $item;
+        return $this->registrar()->add($class);
     }
 
     /**
@@ -42,7 +57,7 @@ class Mailbook
     {
         $this->collect();
 
-        return $this->mailables;
+        return $this->collection->all();
     }
 
     private function collect(): void
@@ -106,5 +121,42 @@ class Mailbook
         $this->message = null;
 
         return $this;
+    }
+
+    public function setRegistrar(MailRegistrar $registrar): void
+    {
+        $this->registrar = $registrar;
+    }
+
+    public function clearRegistrar(): void
+    {
+        $this->registrar = null;
+    }
+
+    public function retrieve(?string $class, ?string $variant, ?string $locale, bool $fallback = false): ?MailableItem
+    {
+        $mailables = $this->mailables();
+
+        if ($mailables->isEmpty()) {
+            throw new MailbookException('No mailbook mailables registered');
+        }
+
+        if ($class) {
+            $selected = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $class);
+        } elseif ($fallback) {
+            $selected = $mailables->first();
+        } else {
+            $selected = null;
+        }
+
+        if (! $selected instanceof MailableItem) {
+            return null;
+        }
+
+        $selected->selectVariant($variant);
+
+        $this->setLocale($locale ?? config('app.locale'));
+
+        return $selected;
     }
 }

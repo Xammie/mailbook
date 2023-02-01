@@ -6,7 +6,9 @@ use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
+use Xammie\Mailbook\Tests\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Mails\TranslatedMail;
+use Xammie\Mailbook\Tests\Support\User;
 
 it('can render default', function () {
     Mailbook::add(TestMail::class);
@@ -173,7 +175,7 @@ it('can disable display preview', function () {
 
     get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))
         ->assertSuccessful()
-        ->assertViewHas('display', null);
+        ->assertViewHas('display', fn ($value) => $value === null);
 });
 
 it('executes the close once', function () {
@@ -189,4 +191,37 @@ it('executes the close once', function () {
         ->assertSuccessful();
 
     expect($executed)->toBe(1);
+});
+
+it('can render mailable with notifiable', function () {
+    Mailbook::to(new User(['email' => 'test@mailbook.dev']))->add(TestMail::class);
+
+    get(route('mailbook.dashboard'))
+        ->assertSuccessful()
+        ->assertSeeText('test@mailbook.dev');
+});
+
+it('can render notification with notifiable', function () {
+    Mailbook::to(new User(['email' => 'test@mailbook.dev']))->add(TestNotification::class);
+
+    get(route('mailbook.dashboard'))
+        ->assertSuccessful()
+        ->assertSeeText('test@mailbook.dev');
+});
+
+it('cannot see mail form by default', function () {
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertDontSee('Send');
+});
+
+it('can see mail form', function () {
+    config()->set('mailbook.send', true);
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['class' => TestMail::class]))
+        ->assertSuccessful()
+        ->assertSee('Send');
 });
