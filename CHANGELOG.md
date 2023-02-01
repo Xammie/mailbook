@@ -2,6 +2,21 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.6.0 - 2023-02-01
+
+### What's Changed
+
+- Support laravel 10 by @Xammie in https://github.com/Xammie/mailbook/pull/35
+- Update config by @Xammie in https://github.com/Xammie/mailbook/pull/46
+- Send Mail feature by @niboko in https://github.com/Xammie/mailbook/pull/44
+- Define the notifiable using `::to()` by @Xammie in https://github.com/Xammie/mailbook/pull/42
+
+### New Contributors
+
+- @niboko made their first contribution in https://github.com/Xammie/mailbook/pull/44
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.5.3...1.6.0
+
 ## 1.5.3 - 2023-01-17
 
 ### What's Changed
