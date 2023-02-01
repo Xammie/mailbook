@@ -211,7 +211,7 @@ class MailableItem
         return $this->resolver()->className();
     }
 
-    public function send(string $email): void
+    public function send(mixed $email): void
     {
         $instance = $this->variantResolver()->instance();
         $locale = MailbookFacade::getLocale();

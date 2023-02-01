@@ -43,19 +43,4 @@ class MailbookRequest extends FormRequest
 
         return null;
     }
-
-    public function email(): string
-    {
-        $email = $this->get('email');
-
-        if (! is_string($email)) {
-            abort(404);
-        }
-
-        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            abort(400);
-        }
-
-        return $email;
-    }
 }

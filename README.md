@@ -48,6 +48,7 @@ Next head over to `/mailbook` to preview the mailables.
 ## Registering mails
 
 You can both register mailables that live in `App\Mails` and email notifications in `App\Notifications`.
+
 ```php
 // Mailable
 Mailbook::add(VerificationMail::class);
@@ -128,14 +129,15 @@ Database rollback is disabled by default.
 ## Sending Mails
 
 Testing your mails outside the browser is important if you want to make sure that everything is displayed correctly.
-You can use Mailbook to send mails to an email address of your choice using your default mail driver.
-
-![img.png](docs/send_mail.png)
-
-You can enable this by setting `send` to `true` in the config file.
+You can use Mailbook to send mails to an email address of your choice using your default mail driver. This will show a
+button in the top-right corner which when pressed will send the currently selected email to the speecified addresses.
+You can enable this in the config:
 
 ```php
 'send' => true,
+'send_to' => [
+    'test@mailbook.dev',
+],
 ```
 
 ## Customization
@@ -144,21 +146,6 @@ You can publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="mailbook-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-    'enabled' => env('APP_ENV') === 'local',
-    'database_rollback' => false,
-    'display_preview' => true,
-    'locales' => [],
-    'send' => false, 
-    'route_prefix' => '/mailbook',
-    'middlewares' => [Xammie\Mailbook\Http\Middlewares\RollbackDatabase::class],
-    'show_credits' => true,
-];
 ```
 
 Optionally, you can publish the views using
