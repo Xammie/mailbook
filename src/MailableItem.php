@@ -29,7 +29,7 @@ class MailableItem
 
     private ?MailableResolver $resolver = null;
 
-    public function __construct(public string|Closure|Mailable|Notification $closure)
+    public function __construct(public string|Closure|Mailable|Notification $closure, public mixed $notifiable = null)
     {
         $this->variants = collect();
     }
@@ -58,7 +58,7 @@ class MailableItem
             throw new MailbookException(sprintf('Variant %s (%s) already exists', $label, $slug));
         }
 
-        $this->variants->push(new MailableVariant($label, $slug, $variant));
+        $this->variants->push(new MailableVariant($label, $slug, $variant, $this->notifiable));
 
         return $this;
     }
@@ -176,7 +176,7 @@ class MailableItem
 
     public function resolver(): MailableResolver
     {
-        return $this->resolver ??= new MailableResolver($this->closure);
+        return $this->resolver ??= new MailableResolver($this->closure, $this->notifiable);
     }
 
     private function resolve(): ResolvedMail

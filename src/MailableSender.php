@@ -13,7 +13,7 @@ class MailableSender
 {
     private ConfigInjector $injector;
 
-    public function __construct(private Mailable|Notification $subject)
+    public function __construct(private Mailable|Notification $subject, public mixed $notifiable = null)
     {
         $this->injector = new ConfigInjector();
     }
@@ -52,19 +52,23 @@ class MailableSender
     {
         $locale = MailbookFacade::getLocale();
 
-        if (! $locale) {
-            return;
+        if ($locale) {
+            $this->subject->locale($locale);
         }
-
-        $this->subject->locale($locale);
     }
 
     private function send(): void
     {
-        if ($this->subject instanceof Notification) {
-            NotificationFacade::route('mail', 'remove@mailbook.dev')->notifyNow($this->subject);
+        if (! $this->subject instanceof Notification) {
+            Mail::to($this->notifiable ?? 'remove@mailbook.dev')->send($this->subject);
+
+            return;
+        }
+
+        if (is_object($this->notifiable) && method_exists($this->notifiable, 'notify')) {
+            NotificationFacade::sendNow($this->notifiable, $this->subject);
         } else {
-            Mail::to('remove@mailbook.dev')->send($this->subject);
+            NotificationFacade::route('mail', $this->notifiable ?? 'remove@mailbook.dev')->notifyNow($this->subject);
         }
     }
 }
