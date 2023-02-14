@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.6.1 - 2023-02-14
+
+### What's Changed
+
+- fix: Mailable could not be found by @Xammie in https://github.com/Xammie/mailbook/pull/49
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.6.0...1.6.1
+
 ## 1.6.0 - 2023-02-01
 
 ### What's Changed
