@@ -142,7 +142,7 @@ class Mailbook
         }
 
         if ($class) {
-            $selected = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $class);
+            $selected = $mailables->first(fn (MailableItem $mailable) => mb_strtolower($mailable->class()) === mb_strtolower($class));
         } elseif ($fallback) {
             $selected = $mailables->first();
         } else {
