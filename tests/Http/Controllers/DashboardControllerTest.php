@@ -225,3 +225,17 @@ it('can see mail form', function () {
         ->assertSuccessful()
         ->assertSee('Send');
 });
+
+it('can fallback to unknown clas', function () {
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['selected' => 'random']))
+        ->assertSuccessful();
+});
+
+it('can render lower case mailable', function () {
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.dashboard', ['selected' => mb_strtolower(TestMail::class)]))
+        ->assertSuccessful();
+});
