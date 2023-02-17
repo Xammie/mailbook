@@ -29,6 +29,7 @@
         "@unwrap": true,
         "@loop": true,
         "@extensions": true,
-        "@default": true
+        "@default": true,
+        "MBString": false
     }
 }

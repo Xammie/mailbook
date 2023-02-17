@@ -141,12 +141,14 @@ class Mailbook
             throw new MailbookException('No mailbook mailables registered');
         }
 
+        $selected = null;
+
         if ($class) {
-            $selected = $mailables->first(fn (MailableItem $mailable) => $mailable->class() === $class);
-        } elseif ($fallback) {
+            $selected = $mailables->first(fn (MailableItem $mailable) => mb_strtolower($mailable->class()) === mb_strtolower($class));
+        }
+
+        if (! $selected instanceof MailableItem && $fallback) {
             $selected = $mailables->first();
-        } else {
-            $selected = null;
         }
 
         if (! $selected instanceof MailableItem) {
