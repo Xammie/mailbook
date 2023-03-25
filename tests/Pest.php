@@ -2,8 +2,6 @@
 
 use Xammie\Mailbook\Tests\TestCase;
 
-uses()->compact();
-
 uses(TestCase::class)
     ->beforeEach(fn () => cleanInstallFiles())
     ->afterEach(fn () => cleanInstallFiles())

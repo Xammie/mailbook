@@ -45,6 +45,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          composer remove tomasvotruba/bladestan --dev --no-interaction --no-update --ignore-platform-reqs
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update --ignore-platform-reqs
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
