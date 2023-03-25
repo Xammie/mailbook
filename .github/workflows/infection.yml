@@ -27,9 +27,7 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Install dependencies
-        run: |
-          composer require "laravel/framework:9.*" "orchestra/testbench:7.*" --no-interaction --no-update
-          composer update --prefer-stable --prefer-dist --no-interaction
+        run: composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Execute tests
         run: vendor/bin/infection --test-framework=pest --threads=4 --min-covered-msi=100
