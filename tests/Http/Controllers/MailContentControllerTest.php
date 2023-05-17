@@ -12,7 +12,7 @@ it('can render', function () {
     Mailbook::add(TestMail::class);
     Mailbook::add(OtherMail::class);
 
-    get(route('mailbook.content', ['class' => TestMail::class]))
+    get(route('mailbook.content', ['class' => TestMail::class, 's' => '123']))
         ->assertSuccessful()
         ->assertSeeText('Test mail');
 });
