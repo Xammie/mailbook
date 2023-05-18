@@ -20,6 +20,11 @@ class MailContentController
             abort(404);
         }
 
+        if (function_exists('fake') && $request->has('s')) {
+            // restore faker seed
+            fake()->seed($request->get('s'));
+        }
+
         return $current->content();
     }
 }

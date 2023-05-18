@@ -15,6 +15,11 @@ class DashboardController
     {
         $mailables = Mailbook::mailables();
 
+        if (function_exists('fake')) {
+            $seed = fake()->randomNumber();
+            fake()->seed($seed);
+        }
+
         /** @var MailableItem $current */
         $current = Mailbook::retrieve(
             class: $request->class(),
@@ -45,6 +50,7 @@ class DashboardController
                 'class' => $current->class(),
                 'variant' => $current->currentVariant()?->slug,
                 'locale' => $locale,
+                's' => $seed ?? null,
             ]),
             'send' => config('mailbook.send'),
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),

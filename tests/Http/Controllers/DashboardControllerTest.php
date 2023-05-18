@@ -11,6 +11,13 @@ use Xammie\Mailbook\Tests\Mails\TranslatedMail;
 use Xammie\Mailbook\Tests\Support\User;
 
 it('can render default', function () {
+    if (function_exists('fake')) {
+        $seed = fake()->randomNumber();
+        fake()->seed($seed);
+        $number = fake()->randomNumber();
+        fake()->seed($seed);
+    }
+
     Mailbook::add(TestMail::class);
     Mailbook::add(OtherMail::class);
 
@@ -28,11 +35,18 @@ it('can render default', function () {
                 ],
             ],
             'attachments' => [],
-            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5CTestMail&locale=en',
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5CTestMail&locale=en'.(isset($number) ? '&s='.$number : ''),
         ]);
 });
 
 it('can get meta', function () {
+    if (function_exists('fake')) {
+        $seed = fake()->randomNumber();
+        fake()->seed($seed);
+        $number = fake()->randomNumber();
+        fake()->seed($seed);
+    }
+
     Mailbook::add(OtherMail::class);
 
     get(route('mailbook.dashboard'))
@@ -49,7 +63,7 @@ it('can get meta', function () {
                 'Bcc' => ['"Mailbook" <bcc@mailbook.dev>'],
             ],
             'attachments' => [],
-            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5COtherMail&locale=en',
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5COtherMail&locale=en'.(isset($number) ? '&s='.$number : ''),
         ]);
 });
 
