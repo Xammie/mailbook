@@ -2,6 +2,15 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.6.2 - 2023-05-22
+
+### What's Changed
+
+- Fix inconsistent faking by @Xammie in https://github.com/Xammie/mailbook/pull/53
+- Fixed send button active state by @Xammie in https://github.com/Xammie/mailbook/pull/54
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.6.1...1.6.2
+
 ## 1.6.1 - 2023-02-14
 
 ### What's Changed
