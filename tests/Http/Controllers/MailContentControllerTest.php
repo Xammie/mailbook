@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\DB;
-use function Pest\Laravel\get;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 use Xammie\Mailbook\Tests\Mails\TranslatedMail;
 use Xammie\Mailbook\Tests\Mails\TranslatedNotification;
+
+use function Pest\Laravel\get;
 
 it('can render', function () {
     Mailbook::add(TestMail::class);

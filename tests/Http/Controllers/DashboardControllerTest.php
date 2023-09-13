@@ -1,7 +1,5 @@
 <?php
 
-use function Pest\Laravel\get;
-use function Pest\Laravel\withoutExceptionHandling;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
@@ -9,6 +7,9 @@ use Xammie\Mailbook\Tests\Mails\TestMail;
 use Xammie\Mailbook\Tests\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Mails\TranslatedMail;
 use Xammie\Mailbook\Tests\Support\User;
+
+use function Pest\Laravel\get;
+use function Pest\Laravel\withoutExceptionHandling;
 
 it('can render default', function () {
     if (function_exists('fake')) {
