@@ -1,9 +1,10 @@
 <?php
 
-use function Pest\Laravel\artisan;
 use Symfony\Component\Console\Command\Command;
 use Xammie\Mailbook\Commands\InstallMailbookCommand;
 use Xammie\Mailbook\Facades\Mailbook;
+
+use function Pest\Laravel\artisan;
 
 it('can install mailbook', function () {
     artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
