@@ -5,6 +5,7 @@ namespace Xammie\Mailbook;
 use Closure;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Mail\Mailer;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
@@ -213,7 +214,9 @@ class MailableItem
 
     public function send(mixed $email): void
     {
-        Mail::alwaysTo($email);
+        if (method_exists(app(Mailer::class), 'alwaysTo')) {
+            Mail::alwaysTo($email);
+        }
 
         $instance = $this->variantResolver()->instance();
         $locale = MailbookFacade::getLocale();
