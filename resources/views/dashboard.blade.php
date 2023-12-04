@@ -17,7 +17,6 @@
 </div>
 <script>
     const select = document.getElementById('locale');
-
     select.addEventListener('change', (event) => {
         const queryVariables = new URLSearchParams(window.location.search);
         queryVariables.set('locale', event.target.value);
