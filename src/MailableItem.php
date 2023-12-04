@@ -213,6 +213,8 @@ class MailableItem
 
     public function send(mixed $email): void
     {
+        Mail::alwaysTo($email);
+
         $instance = $this->variantResolver()->instance();
         $locale = MailbookFacade::getLocale();
 
