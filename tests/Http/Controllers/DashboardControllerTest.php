@@ -98,8 +98,7 @@ it('can render default locale', function () {
     get(route('mailbook.dashboard', ['selected' => TranslatedMail::class]))
         ->assertSuccessful()
         ->assertViewHas('subject', 'Example email subject')
-        ->assertViewHas('currentLocale', 'en')
-        ->assertViewHas('localeLabel', 'English');
+        ->assertViewHas('currentLocale', 'en');
 });
 
 it('can render locale', function () {
@@ -116,8 +115,7 @@ it('can render locale', function () {
     get(route('mailbook.dashboard', ['selected' => TranslatedMail::class, 'locale' => 'nl']))
         ->assertSuccessful()
         ->assertViewHas('subject', 'Voorbeeld e-mail onderwerp')
-        ->assertViewHas('currentLocale', 'nl')
-        ->assertViewHas('localeLabel', 'Dutch');
+        ->assertViewHas('currentLocale', 'nl');
 });
 
 it('cannot render unknown locale', function () {
@@ -131,8 +129,7 @@ it('cannot render unknown locale', function () {
 
     get(route('mailbook.dashboard', ['selected' => TranslatedMail::class, 'locale' => 'be']))
         ->assertSuccessful()
-        ->assertViewHas('currentLocale', 'en')
-        ->assertViewHas('localeLabel', 'English');
+        ->assertViewHas('currentLocale', 'en');
 });
 
 it('can render default variant', function () {

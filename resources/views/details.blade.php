@@ -26,7 +26,7 @@
                 <div class="flex flex-col gap-2 items-start">
                     @foreach($attachments as $attachment)
                         <div
-                            class="px-2 py-1 rounded-full shadow-lg bg-gray-600 flex gap-1 items-center text-sm truncate">
+                            class="px-2 py-1 rounded-lg shadow-lg bg-gray-600 flex gap-1 items-center text-sm truncate">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round"

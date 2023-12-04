@@ -31,7 +31,6 @@ class DashboardController
         /** @var array $locales */
         $locales = config('mailbook.locales', []);
         $locale = Mailbook::getLocale() ?? config('app.locale');
-        $localeLabel = $locales[$locale] ?? $locale;
 
         $display = config('mailbook.display_preview') ? $request->get('display') : null;
 
@@ -43,7 +42,6 @@ class DashboardController
             'mailables' => $mailables,
             'display' => $display,
             'locales' => $locales,
-            'localeLabel' => $localeLabel,
             'currentLocale' => $locale,
             'meta' => $current->meta(),
             'preview' => route('mailbook.content', [
