@@ -2,6 +2,9 @@
 
 namespace Xammie\Mailbook;
 
+/**
+ * @internal
+ */
 class FakeSeedGenerator
 {
     public function getCurrentSeed(): ?int

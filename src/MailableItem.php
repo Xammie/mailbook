@@ -212,7 +212,7 @@ class MailableItem
         return $this->resolver()->className();
     }
 
-    public function send(mixed $email): void
+    public function send(string $email): void
     {
         if (method_exists(app(Mailer::class), 'alwaysTo')) {
             Mail::alwaysTo($email);

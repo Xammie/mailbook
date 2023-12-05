@@ -3,6 +3,7 @@
 namespace Xammie\Mailbook\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use RuntimeException;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Http\Requests\MailbookRequest;
 use Xammie\Mailbook\MailableItem;
@@ -25,7 +26,17 @@ class MailSendController
             abort(404);
         }
 
-        $current->send(config('mailbook.send_to'));
+        $to = config('mailbook.send_to');
+
+        if (is_array($to)) {
+            $to = $to[0];
+        }
+
+        if (! $to) {
+            throw new RuntimeException('invalid config mailbook.send_to should be string');
+        }
+
+        $current->send($to);
 
         return redirect()->back();
     }

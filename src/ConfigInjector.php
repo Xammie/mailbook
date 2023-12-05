@@ -4,6 +4,9 @@ namespace Xammie\Mailbook;
 
 use Illuminate\Support\Facades\Config;
 
+/**
+ * @internal
+ */
 class ConfigInjector
 {
     private array $replaced = [];

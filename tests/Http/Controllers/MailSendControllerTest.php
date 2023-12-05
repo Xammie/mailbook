@@ -30,6 +30,18 @@ it('cannot send mails when disabled', function () {
     Notification::assertNothingSent();
 });
 
+it('cannot send mails when sent_to is invalid', function () {
+    config()->set('mailbook.send_to', null);
+
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.send', ['class' => TestMail::class]))
+        ->assertStatus(500);
+
+    Mail::assertNothingSent();
+    Notification::assertNothingSent();
+});
+
 it('can send mailable', function () {
     Mailbook::add(TestMail::class);
 
@@ -137,7 +149,7 @@ it('can send to one', function () {
     });
 });
 
-it('can send to multiple', function () {
+it('cannot send to multiple', function () {
     config()->set('mailbook.send_to', [
         'test@mailbook.dev',
         'example@mailbook.dev',
@@ -153,10 +165,6 @@ it('can send to multiple', function () {
             [
                 'name' => null,
                 'address' => 'test@mailbook.dev',
-            ],
-            [
-                'name' => null,
-                'address' => 'example@mailbook.dev',
             ],
         ], $mail->to);
 
