@@ -17,8 +17,6 @@ use Xammie\Mailbook\Support\Format;
 
 class MailableItem
 {
-    use HasMeta;
-
     private ?string $label = null;
 
     /**
@@ -230,5 +228,18 @@ class MailableItem
         } else {
             Mail::to($email)->send($instance);
         }
+    }
+
+    public function meta(): array
+    {
+        return array_filter([
+            'Subject' => $this->subject(),
+            'From' => $this->from(),
+            'Reply To' => $this->replyTo(),
+            'To' => $this->to(),
+            'Cc' => $this->cc(),
+            'Bcc' => $this->bcc(),
+            'Theme' => $this->theme(),
+        ]);
     }
 }
