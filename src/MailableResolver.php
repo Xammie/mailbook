@@ -10,6 +10,9 @@ use ReflectionFunction;
 use ReflectionNamedType;
 use UnexpectedValueException;
 
+/**
+ * @internal
+ */
 class MailableResolver
 {
     private Mailable|Notification|null $instance = null;

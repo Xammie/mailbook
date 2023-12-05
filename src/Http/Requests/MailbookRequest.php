@@ -4,6 +4,9 @@ namespace Xammie\Mailbook\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @internal
+ */
 class MailbookRequest extends FormRequest
 {
     public function rules(): array

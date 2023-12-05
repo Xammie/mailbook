@@ -6,6 +6,9 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Part\DataPart;
 
+/**
+ * @internal
+ */
 class ResolvedMail
 {
     public function __construct(
