@@ -2,6 +2,7 @@
 
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
+use Xammie\Mailbook\FakeSeedGenerator;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 use Xammie\Mailbook\Tests\Mails\TestNotification;
@@ -9,6 +10,7 @@ use Xammie\Mailbook\Tests\Mails\TranslatedMail;
 use Xammie\Mailbook\Tests\Support\User;
 
 use function Pest\Laravel\get;
+use function Pest\Laravel\mock;
 use function Pest\Laravel\withoutExceptionHandling;
 
 it('can render default', function () {
@@ -40,13 +42,10 @@ it('can render default', function () {
         ]);
 });
 
-it('can get meta', function () {
-    if (function_exists('fake')) {
-        $seed = fake()->randomNumber();
-        fake()->seed($seed);
-        $number = fake()->randomNumber();
-        fake()->seed($seed);
-    }
+it('can get meta without seed', function () {
+    mock(FakeSeedGenerator::class)
+        ->shouldReceive('getCurrentSeed')
+        ->andReturn(null);
 
     Mailbook::add(OtherMail::class);
 
@@ -64,7 +63,32 @@ it('can get meta', function () {
                 'Bcc' => ['"Mailbook" <bcc@mailbook.dev>'],
             ],
             'attachments' => [],
-            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5COtherMail&locale=en'.(isset($number) ? '&s='.$number : ''),
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5COtherMail&locale=en',
+        ]);
+});
+
+it('can get meta', function () {
+    mock(FakeSeedGenerator::class)
+        ->shouldReceive('getCurrentSeed')
+        ->andReturn(123456);
+
+    Mailbook::add(OtherMail::class);
+
+    get(route('mailbook.dashboard'))
+        ->assertSuccessful()
+        ->assertViewHas([
+            'subject' => 'Hello!',
+            'size' => '20 B',
+            'meta' => [
+                'Subject' => 'Hello!',
+                'From' => ['"Harry Potter" <harry@example.com>'],
+                'To' => ['"Mailbook" <example@mailbook.dev>'],
+                'Reply To' => ['"Support" <questions@example.com>'],
+                'Cc' => ['"Mailbook" <cc@mailbook.dev>'],
+                'Bcc' => ['"Mailbook" <bcc@mailbook.dev>'],
+            ],
+            'attachments' => [],
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5COtherMail&locale=en&s=123456',
         ]);
 });
 
