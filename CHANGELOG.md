@@ -2,6 +2,17 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.7.0 - 2023-12-07
+
+### What's Changed
+
+* Redesigned display breakpoints by @Xammie in https://github.com/Xammie/mailbook/pull/62
+* Fixed sending mail would not clear set recipients by @Xammie in https://github.com/Xammie/mailbook/pull/64
+* Update PHP by @Xammie in https://github.com/Xammie/mailbook/pull/59
+* Upgrade tailwindcss by @Xammie in https://github.com/Xammie/mailbook/pull/63
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.6.2...1.7.0
+
 ## 1.6.2 - 2023-05-22
 
 ### What's Changed
