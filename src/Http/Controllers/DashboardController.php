@@ -9,11 +9,14 @@ use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\FakeSeedGenerator;
 use Xammie\Mailbook\Http\Requests\MailbookRequest;
 use Xammie\Mailbook\MailableItem;
+use Xammie\Mailbook\MailbookConfig;
 
 class DashboardController
 {
-    public function __construct(private FakeSeedGenerator $fakeSeedGenerator)
-    {
+    public function __construct(
+        private FakeSeedGenerator $fakeSeedGenerator,
+        private MailbookConfig $config,
+    ) {
     }
 
     public function __invoke(MailbookRequest $request): View
@@ -51,6 +54,7 @@ class DashboardController
                 's' => $this->fakeSeedGenerator->getCurrentSeed(),
             ]),
             'send' => config('mailbook.send'),
+            'send_to' => $this->config->getSendTo(),
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
         ]);
     }

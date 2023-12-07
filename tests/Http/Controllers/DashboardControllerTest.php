@@ -253,13 +253,14 @@ it('cannot see mail form by default', function () {
         ->assertDontSee('Send');
 });
 
-it('can see mail form', function () {
+it('can see send button', function () {
     config()->set('mailbook.send', true);
+    config()->set('mailbook.send_to', 'max@mailbook.dev');
     Mailbook::add(TestMail::class);
 
     get(route('mailbook.dashboard', ['class' => TestMail::class]))
         ->assertSuccessful()
-        ->assertSee('Send');
+        ->assertSee('Send to max@mailbook.dev');
 });
 
 it('can fallback to unknown clas', function () {

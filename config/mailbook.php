@@ -59,7 +59,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This option allows you to specify where the send mail button should be
-    | sent to.
+    | sending to.
     */
     'send_to' => 'test@mailbook.dev',
 
