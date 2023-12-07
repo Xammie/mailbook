@@ -13,7 +13,7 @@
                 <div class="py-2">
                     <a href="{{ route('mailbook.send', ['class' => $current->class(), 'variant' => $current->currentVariant()?->slug, 'locale' => $currentLocale]) }}"
                        class="flex items-center justify-center p-3 rounded-lg transition-colors duration-100 hover:bg-gray-700"
-                       aria-label="Send"
+                       aria-label="Send to {{ $send_to }}"
                        title="Send to {{ $send_to }}">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-6 h-6 fill-white">
                             <path
