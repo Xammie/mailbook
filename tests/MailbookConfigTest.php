@@ -11,7 +11,7 @@ it('can get send_to', function () {
     expect($config->getSendToStrict())->toBe('test@mailbook.dev');
 });
 
-it('can get send_to strictly from array', function () {
+it('can get send_to from array', function () {
     config()->set('mailbook.send_to', ['test@mailbook.dev']);
 
     $config = new MailbookConfig();
@@ -20,7 +20,7 @@ it('can get send_to strictly from array', function () {
     expect($config->getSendToStrict())->toBe('test@mailbook.dev');
 });
 
-it('can get send_to strictly from array with multiple', function () {
+it('can get send_to from array with multiple', function () {
     config()->set('mailbook.send_to', ['example@mailbook.dev', 'test@mailbook.dev']);
 
     $config = new MailbookConfig();
@@ -29,7 +29,7 @@ it('can get send_to strictly from array with multiple', function () {
     expect($config->getSendToStrict())->toBe('example@mailbook.dev');
 });
 
-it('cannot get send_to stricly when not a string', function () {
+it('cannot get send_to when not a string', function () {
     config()->set('mailbook.send_to', null);
 
     $config = new MailbookConfig();
