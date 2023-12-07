@@ -6,19 +6,22 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\HtmlString;
 use Xammie\Mailbook\Facades\Mailbook;
+use Xammie\Mailbook\FakeSeedGenerator;
 use Xammie\Mailbook\Http\Requests\MailbookRequest;
 use Xammie\Mailbook\MailableItem;
+use Xammie\Mailbook\MailbookConfig;
 
 class DashboardController
 {
+    public function __construct(
+        private FakeSeedGenerator $fakeSeedGenerator,
+        private MailbookConfig $config,
+    ) {
+    }
+
     public function __invoke(MailbookRequest $request): View
     {
         $mailables = Mailbook::mailables();
-
-        if (function_exists('fake')) {
-            $seed = fake()->randomNumber();
-            fake()->seed($seed);
-        }
 
         /** @var MailableItem $current */
         $current = Mailbook::retrieve(
@@ -48,9 +51,10 @@ class DashboardController
                 'class' => $current->class(),
                 'variant' => $current->currentVariant()?->slug,
                 'locale' => $locale,
-                's' => $seed ?? null,
+                's' => $this->fakeSeedGenerator->getCurrentSeed(),
             ]),
             'send' => config('mailbook.send'),
+            'send_to' => $this->config->getSendTo(),
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
         ]);
     }

@@ -9,6 +9,9 @@ use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\MessageConverter;
 use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 
+/**
+ * @internal
+ */
 class MailbookTransport extends AbstractTransport implements Stringable
 {
     protected function doSend(SentMessage $message): void

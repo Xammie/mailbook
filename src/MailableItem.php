@@ -5,6 +5,7 @@ namespace Xammie\Mailbook;
 use Closure;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Mail\Mailable;
+use Illuminate\Mail\Mailer;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
@@ -16,8 +17,6 @@ use Xammie\Mailbook\Support\Format;
 
 class MailableItem
 {
-    use HasMeta;
-
     private ?string $label = null;
 
     /**
@@ -211,8 +210,12 @@ class MailableItem
         return $this->resolver()->className();
     }
 
-    public function send(mixed $email): void
+    public function send(string $email): void
     {
+        if (method_exists(app(Mailer::class), 'alwaysTo')) {
+            Mail::alwaysTo($email);
+        }
+
         $instance = $this->variantResolver()->instance();
         $locale = MailbookFacade::getLocale();
 
@@ -225,5 +228,18 @@ class MailableItem
         } else {
             Mail::to($email)->send($instance);
         }
+    }
+
+    public function meta(): array
+    {
+        return array_filter([
+            'Subject' => $this->subject(),
+            'From' => $this->from(),
+            'Reply To' => $this->replyTo(),
+            'To' => $this->to(),
+            'Cc' => $this->cc(),
+            'Bcc' => $this->bcc(),
+            'Theme' => $this->theme(),
+        ]);
     }
 }

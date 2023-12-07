@@ -6,9 +6,14 @@ use Illuminate\Http\RedirectResponse;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Http\Requests\MailbookRequest;
 use Xammie\Mailbook\MailableItem;
+use Xammie\Mailbook\MailbookConfig;
 
 class MailSendController
 {
+    public function __construct(private MailbookConfig $config)
+    {
+    }
+
     public function __invoke(MailbookRequest $request): RedirectResponse
     {
         if (! config('mailbook.send')) {
@@ -25,7 +30,7 @@ class MailSendController
             abort(404);
         }
 
-        $current->send(config('mailbook.send_to'));
+        $current->send($this->config->getSendToStrict());
 
         return redirect()->back();
     }
