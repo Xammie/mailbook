@@ -14,12 +14,9 @@ use function Pest\Laravel\mock;
 use function Pest\Laravel\withoutExceptionHandling;
 
 it('can render default', function () {
-    if (function_exists('fake')) {
-        $seed = fake()->randomNumber();
-        fake()->seed($seed);
-        $number = fake()->randomNumber();
-        fake()->seed($seed);
-    }
+    mock(FakeSeedGenerator::class)
+        ->shouldReceive('getCurrentSeed')
+        ->andReturn(123456);
 
     Mailbook::add(TestMail::class);
     Mailbook::add(OtherMail::class);
@@ -38,7 +35,7 @@ it('can render default', function () {
                 ],
             ],
             'attachments' => [],
-            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5CTestMail&locale=en'.(isset($number) ? '&s='.$number : ''),
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5CTestMail&locale=en&s=123456',
         ]);
 });
 
