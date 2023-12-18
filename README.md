@@ -157,14 +157,12 @@ Database rollback is disabled by default.
 
 Testing your mails outside the browser is important if you want to make sure that everything is displayed correctly.
 You can use Mailbook to send mails to an email address of your choice using your default mail driver. This will show a
-button in the top-right corner which when pressed will send the currently selected email to the speecified addresses.
+button in the top-right corner which when pressed will send the currently selected email to the specified address.
 You can enable this in the config:
 
 ```php
 'send' => true,
-'send_to' => [
-    'test@mailbook.dev',
-],
+'send_to' => 'test@mailbook.dev',
 ```
 
 ## Customization
