@@ -26,7 +26,7 @@ class InstallMailbookCommand extends Command
 
         $stubs = [
             'routes/mailbook.php' => 'route-file.php',
-            'app/Mail/MailbookMail.php' => 'MailbookMail.php',
+            'app/Mail/MailbookMail.php' => class_exists('Illuminate\Mail\Mailables\Envelope') ? 'MailbookEnvelopeMail.php' : 'MailbookBuildMail.php',
             'resources/views/mail/mailbook.blade.php' => 'mailbook.blade.php',
         ];
 
