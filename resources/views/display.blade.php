@@ -5,7 +5,7 @@
                     'max-w-md' => $display === 'phone',
                     'max-w-3xl' => $display === 'tablet',
                 ])
-                sandbox
+                sandbox="allow-scripts allow-same-origin allow-popups"
                 fetchpriority="high"
                 loading="eager"
                 src="{{ $preview }}"></iframe>

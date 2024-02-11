@@ -18,6 +18,13 @@ it('can render', function () {
         ->assertSeeText('Test mail');
 });
 
+it('renders custom script', function () {
+    Mailbook::add(TestMail::class);
+
+    get(route('mailbook.content', ['class' => TestMail::class, 's' => '123']))
+        ->assertSee(value: '<script defer>', escape: false);
+});
+
 it('cannot render without class', function () {
     Mailbook::add(OtherMail::class);
 
