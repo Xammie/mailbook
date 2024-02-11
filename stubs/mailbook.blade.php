@@ -5,7 +5,7 @@ You have successfully installed Mailbook. You can start by registering your mail
 
 If you enjoy mailbook don't forget to [give it a ⭐️](https://github.com/Xammie/mailbook)
 
-@component('mail::button', ['url' => 'https://github.com/Xammie/mailbook#readme'])
+@component('mail::button', ['url' => 'https://github.com/Xammie/mailbook?tab=readme-ov-file#usage'])
 Documentation
 @endcomponent
 
