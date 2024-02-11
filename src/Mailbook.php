@@ -7,6 +7,8 @@ use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Symfony\Component\Mime\Email;
+use Xammie\Mailbook\Data\MailableGroup;
+use Xammie\Mailbook\Data\MailableItem;
 use Xammie\Mailbook\Exceptions\MailbookException;
 
 class Mailbook
@@ -40,6 +42,11 @@ class Mailbook
         return $this->registrar()->label($label);
     }
 
+    public function category(string $category): MailRegistrar
+    {
+        return $this->registrar()->category($category);
+    }
+
     public function to(mixed $notifiable): MailRegistrar
     {
         return $this->registrar()->to($notifiable);
@@ -58,6 +65,34 @@ class Mailbook
         $this->collect();
 
         return $this->collection->all();
+    }
+
+    /**
+     * @return Collection<int, MailableItem|MailableGroup>
+     */
+    public function groupedMailables(): Collection
+    {
+        $output = collect();
+        $items = $this->mailables();
+        $categories = [];
+
+        foreach ($items as $item) {
+            if ($item->hasCategory() && ! in_array($item->getCategory(), $categories, true)) {
+                $categories[] = $item->getCategory();
+                $categoryItems = $items
+                    ->filter(fn (MailableItem $mailable) => $mailable->getCategory() === $item->getCategory())
+                    ->values();
+
+                $output->push(new MailableGroup(
+                    label: $item->getCategory() ?? '',
+                    items: $categoryItems,
+                ));
+            } elseif (! in_array($item->getCategory(), $categories, true)) {
+                $output->push($item);
+            }
+        }
+
+        return $output;
     }
 
     private function collect(): void

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xammie\Mailbook;
+namespace Xammie\Mailbook\Support;
 
 /**
  * @internal
@@ -17,5 +17,18 @@ class FakeSeedGenerator
         fake()->seed($seed);
 
         return $seed;
+    }
+
+    public function restoreSeed(int|string|null $seed): void
+    {
+        if ($seed === null) {
+            return;
+        }
+
+        if (! function_exists('fake')) {
+            return;
+        }
+
+        fake()->seed($seed);
     }
 }

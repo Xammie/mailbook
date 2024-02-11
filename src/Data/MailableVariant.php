@@ -1,10 +1,14 @@
 <?php
 
-namespace Xammie\Mailbook;
+namespace Xammie\Mailbook\Data;
 
 use Closure;
 use Illuminate\Contracts\Mail\Mailable;
+use Xammie\Mailbook\MailableResolver;
 
+/**
+ * @internal
+ */
 class MailableVariant
 {
     private ?MailableResolver $resolver = null;

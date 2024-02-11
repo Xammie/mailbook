@@ -3,6 +3,7 @@
 namespace Xammie\Mailbook;
 
 use Illuminate\Support\Collection;
+use Xammie\Mailbook\Data\MailableItem;
 
 class MailCollection
 {

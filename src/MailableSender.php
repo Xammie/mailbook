@@ -7,7 +7,9 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Symfony\Component\Mime\Email;
+use Xammie\Mailbook\Data\ResolvedMail;
 use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
+use Xammie\Mailbook\Support\ConfigInjector;
 
 class MailableSender
 {

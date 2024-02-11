@@ -3,9 +3,9 @@
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Event;
+use Xammie\Mailbook\Data\ResolvedMail;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\MailableSender;
-use Xammie\Mailbook\ResolvedMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 use Xammie\Mailbook\Tests\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Support\User;

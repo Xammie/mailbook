@@ -1,8 +1,8 @@
 <?php
 
 use Symfony\Component\Mime\Email;
+use Xammie\Mailbook\Data\ResolvedMail;
 use Xammie\Mailbook\MailableResolver;
-use Xammie\Mailbook\ResolvedMail;
 use Xammie\Mailbook\Tests\Mails\TestNotification;
 
 it('can get to address', function () {

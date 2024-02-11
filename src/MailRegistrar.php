@@ -5,11 +5,14 @@ namespace Xammie\Mailbook;
 use Closure;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
+use Xammie\Mailbook\Data\MailableItem;
 use Xammie\Mailbook\Facades\Mailbook;
 
 class MailRegistrar
 {
     protected ?string $label = null;
+
+    protected ?string $category = null;
 
     protected mixed $notifiable = null;
 
@@ -29,6 +32,13 @@ class MailRegistrar
         return $this;
     }
 
+    public function category(string $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
     public function to(mixed $notifiable): self
     {
         $this->notifiable = $notifiable;
@@ -42,6 +52,10 @@ class MailRegistrar
 
         if ($this->label) {
             $item->label($this->label);
+        }
+
+        if ($this->category) {
+            $item->category($this->category);
         }
 
         $this->collection->push($item);

@@ -46,4 +46,15 @@ class MailbookRequest extends FormRequest
 
         return null;
     }
+
+    public function seed(): ?string
+    {
+        $seed = $this->get('s');
+
+        if (is_string($seed)) {
+            return $seed;
+        }
+
+        return null;
+    }
 }

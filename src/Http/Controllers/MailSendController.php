@@ -3,9 +3,9 @@
 namespace Xammie\Mailbook\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Xammie\Mailbook\Data\MailableItem;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Http\Requests\MailbookRequest;
-use Xammie\Mailbook\MailableItem;
 use Xammie\Mailbook\MailbookConfig;
 
 class MailSendController

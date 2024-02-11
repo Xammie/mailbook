@@ -2,7 +2,7 @@
 
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\FakeSeedGenerator;
+use Xammie\Mailbook\Support\FakeSeedGenerator;
 use Xammie\Mailbook\Tests\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Mails\TestMail;
 use Xammie\Mailbook\Tests\Mails\TestNotification;
