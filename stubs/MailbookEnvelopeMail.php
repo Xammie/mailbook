@@ -13,7 +13,7 @@ class MailbookMail extends Mailable
     {
         return new Envelope(
             from: new Address('laravel@mailbook.dev', 'Mailbook'),
-            subject: 'Welcome to mailbook!',
+            subject: 'Welcome to Mailbook!',
         );
     }
 
