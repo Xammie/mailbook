@@ -22,9 +22,9 @@
     },
     "require-dev": {
         "infection/infection": "^0.26.13",
+        "larastan/larastan": "^2.8",
         "laravel/pint": "^v1.4.1",
         "nunomaduro/collision": "^6.0|^7.0",
-        "nunomaduro/larastan": "^2.2",
         "nunomaduro/phpinsights": "^2.6",
         "orchestra/testbench": "^7.0|^8.0",
         "pestphp/pest": "^1.22|^2.0",
