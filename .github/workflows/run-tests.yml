@@ -42,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer remove tomasvotruba/bladestan --dev --no-interaction --no-update --ignore-platform-reqs
+          composer remove larastan/larastan tomasvotruba/bladestan --dev --no-interaction --no-update --ignore-platform-reqs
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:2.62.1" --no-interaction --no-update --ignore-platform-reqs
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
