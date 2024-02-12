@@ -1,10 +1,10 @@
 <?php
 
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\Tests\Mails\ClassicMail;
-use Xammie\Mailbook\Tests\Mails\OtherMail;
-use Xammie\Mailbook\Tests\Mails\TestMail;
-use Xammie\Mailbook\Tests\Mails\TestNotification;
+use Xammie\Mailbook\Tests\Fixtures\Mails\ClassicMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 
 it('can register mailable with label as first method', function () {
     $item = Mailbook::label('Test label')->add(TestMail::class);

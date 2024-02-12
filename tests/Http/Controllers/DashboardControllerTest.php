@@ -3,11 +3,11 @@
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Support\FakeSeedGenerator;
-use Xammie\Mailbook\Tests\Mails\OtherMail;
-use Xammie\Mailbook\Tests\Mails\TestMail;
-use Xammie\Mailbook\Tests\Mails\TestNotification;
-use Xammie\Mailbook\Tests\Mails\TranslatedMail;
-use Xammie\Mailbook\Tests\Support\User;
+use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedMail;
+use Xammie\Mailbook\Tests\Fixtures\User;
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\mock;
@@ -35,7 +35,7 @@ it('can render default', function () {
                 ],
             ],
             'attachments' => [],
-            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5CTestMail&locale=en&s=123456',
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5CTestMail&locale=en&s=123456',
         ]);
 });
 
@@ -60,7 +60,7 @@ it('can get meta without seed', function () {
                 'Bcc' => ['"Mailbook" <bcc@mailbook.dev>'],
             ],
             'attachments' => [],
-            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5COtherMail&locale=en',
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5COtherMail&locale=en',
         ]);
 });
 
@@ -85,7 +85,7 @@ it('can get meta', function () {
                 'Bcc' => ['"Mailbook" <bcc@mailbook.dev>'],
             ],
             'attachments' => [],
-            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CMails%5COtherMail&locale=en&s=123456',
+            'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5COtherMail&locale=en&s=123456',
         ]);
 });
 

@@ -3,9 +3,9 @@
 use Xammie\Mailbook\Data\MailableGroup;
 use Xammie\Mailbook\Data\MailableItem;
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\Tests\Mails\OtherMail;
-use Xammie\Mailbook\Tests\Mails\TestMail;
-use Xammie\Mailbook\Tests\Mails\TranslatedMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedMail;
 
 it('can get mailables', function () {
     Mailbook::add(TestMail::class);

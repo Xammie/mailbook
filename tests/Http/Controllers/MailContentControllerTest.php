@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\DB;
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\Tests\Mails\OtherMail;
-use Xammie\Mailbook\Tests\Mails\TestMail;
-use Xammie\Mailbook\Tests\Mails\TranslatedMail;
-use Xammie\Mailbook\Tests\Mails\TranslatedNotification;
+use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedNotification;
 
 use function Pest\Laravel\get;
 

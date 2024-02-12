@@ -3,7 +3,7 @@
 use Symfony\Component\Mime\Email;
 use Xammie\Mailbook\Data\ResolvedMail;
 use Xammie\Mailbook\MailableResolver;
-use Xammie\Mailbook\Tests\Mails\TestNotification;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 
 it('can get to address', function () {
     $resolver = new MailableResolver(TestNotification::class);

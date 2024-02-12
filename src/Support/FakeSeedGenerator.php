@@ -10,7 +10,9 @@ class FakeSeedGenerator
     public function getCurrentSeed(): ?int
     {
         if (! function_exists('fake')) {
+            // @codeCoverageIgnoreStart
             return null;
+            // @codeCoverageIgnoreEnd
         }
 
         $seed = fake()->randomNumber();
@@ -26,7 +28,9 @@ class FakeSeedGenerator
         }
 
         if (! function_exists('fake')) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
 
         fake()->seed($seed);

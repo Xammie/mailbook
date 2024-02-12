@@ -4,10 +4,10 @@ use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Event;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\MailableResolver;
-use Xammie\Mailbook\Tests\Mails\NotificationMail;
-use Xammie\Mailbook\Tests\Mails\OtherMail;
-use Xammie\Mailbook\Tests\Mails\TestMail;
-use Xammie\Mailbook\Tests\Mails\TestNotification;
+use Xammie\Mailbook\Tests\Fixtures\Mails\NotificationMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 
 it('can get class from mailable', function ($mailable) {
     $resolver = new MailableResolver($mailable);

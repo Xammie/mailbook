@@ -1,8 +1,8 @@
 <?php
 
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\Tests\Mails\AlternativeMail;
-use Xammie\Mailbook\Tests\Mails\ClassicMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\AlternativeMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\ClassicMail;
 
 it('can get mail subject and content', function ($mailable) {
     $item = Mailbook::add($mailable);

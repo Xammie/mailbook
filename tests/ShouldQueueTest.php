@@ -2,8 +2,8 @@
 
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\MailableSender;
-use Xammie\Mailbook\Tests\Mails\ShouldQueueMail;
-use Xammie\Mailbook\Tests\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\ShouldQueueMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 
 it('can get mail content from mail with ShouldQueue interface', function () {
     config()->set('queue.default', 'redis');

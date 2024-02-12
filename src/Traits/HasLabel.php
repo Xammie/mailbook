@@ -23,9 +23,4 @@ trait HasLabel
 
         return Str::title(Str::snake(class_basename($this->resolver()->className()), ' '));
     }
-
-    public function hasLabel(): bool
-    {
-        return $this->label !== null;
-    }
 }

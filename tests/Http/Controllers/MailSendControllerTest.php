@@ -3,12 +3,12 @@
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\Tests\Mails\OtherMail;
-use Xammie\Mailbook\Tests\Mails\TestMail;
-use Xammie\Mailbook\Tests\Mails\TestNotification;
-use Xammie\Mailbook\Tests\Mails\TranslatedMail;
-use Xammie\Mailbook\Tests\Mails\TranslatedNotification;
-use Xammie\Mailbook\Tests\Support\User;
+use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedNotification;
+use Xammie\Mailbook\Tests\Fixtures\User;
 
 use function Pest\Laravel\get;
 
