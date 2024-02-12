@@ -15,6 +15,7 @@
                         :currentLocale="$currentLocale"
                     />
                 @endforeach
+                <div class="mb-4"></div>
             @else
                 <x-mailbook::items
                     :mailable="$item"
