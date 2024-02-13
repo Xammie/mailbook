@@ -4,6 +4,7 @@ namespace Xammie\Mailbook\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Mail\Mailables\Envelope;
 
 class InstallMailbookCommand extends Command
 {
@@ -26,7 +27,7 @@ class InstallMailbookCommand extends Command
 
         $stubs = [
             'routes/mailbook.php' => 'route-file.php',
-            'app/Mail/MailbookMail.php' => class_exists(\Illuminate\Mail\Mailables\Envelope::class) ? 'MailbookEnvelopeMail.php' : 'MailbookBuildMail.php',
+            'app/Mail/MailbookMail.php' => class_exists(Envelope::class) ? 'MailbookEnvelopeMail.php' : 'MailbookBuildMail.php',
             'resources/views/mail/mailbook.blade.php' => 'mailbook.blade.php',
         ];
 
