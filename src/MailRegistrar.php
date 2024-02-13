@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Xammie\Mailbook\Data\MailableItem;
+use Xammie\Mailbook\Data\MailCollection;
 use Xammie\Mailbook\Facades\Mailbook;
 
 class MailRegistrar

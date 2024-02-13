@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Symfony\Component\Mime\Email;
 use Xammie\Mailbook\Data\MailableGroup;
 use Xammie\Mailbook\Data\MailableItem;
+use Xammie\Mailbook\Data\MailCollection;
 use Xammie\Mailbook\Exceptions\MailbookException;
 
 class Mailbook
