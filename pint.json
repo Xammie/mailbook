@@ -1,5 +1,10 @@
 {
+    "rules": {
+        "declare_strict_types": true,
+        "void_return": true
+    },
     "exclude": [
-        "build"
+        "build",
+        "stubs"
     ]
 }

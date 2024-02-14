@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use Faker\Generator;
 use Mockery\MockInterface;
 use Xammie\Mailbook\Support\FakeSeedGenerator;
 
-it('can get random seed', function () {
-    $mock = $this->mock(Generator::class, function (MockInterface $mock) {
+it('can get random seed', function (): void {
+    $mock = $this->mock(Generator::class, function (MockInterface $mock): void {
         $mock->shouldReceive('randomNumber')->once()->andReturn(123);
         $mock->shouldReceive('seed')->with(123)->once();
     });
@@ -19,7 +21,7 @@ it('can get random seed', function () {
 })
     ->skip(! function_exists('fake'));
 
-it('cannot get random seed', function () {
+it('cannot get random seed', function (): void {
     $generator = new FakeSeedGenerator();
 
     $seed = $generator->getCurrentSeed();
@@ -28,8 +30,8 @@ it('cannot get random seed', function () {
 })
     ->skip(function_exists('fake'));
 
-it('can restore seed', function () {
-    $mock = $this->mock(Generator::class, function (MockInterface $mock) {
+it('can restore seed', function (): void {
+    $mock = $this->mock(Generator::class, function (MockInterface $mock): void {
         $mock->shouldReceive('seed')->with('abc')->once();
     });
     $this->app->bind(Generator::class.':en_US', fn () => $mock);
@@ -40,8 +42,8 @@ it('can restore seed', function () {
 })
     ->skip(! function_exists('fake'));
 
-it('cannot restore empty seed', function () {
-    $mock = $this->mock(Generator::class, function (MockInterface $mock) {
+it('cannot restore empty seed', function (): void {
+    $mock = $this->mock(Generator::class, function (MockInterface $mock): void {
         $mock->shouldReceive('seed')->never();
     });
     $this->app->bind(Generator::class.':en_US', fn () => $mock);

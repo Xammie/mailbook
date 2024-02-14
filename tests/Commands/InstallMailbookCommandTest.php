@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use Symfony\Component\Console\Command\Command;
 use Xammie\Mailbook\Commands\InstallMailbookCommand;
 use Xammie\Mailbook\Facades\Mailbook;
 
 use function Pest\Laravel\artisan;
 
-it('can install mailbook', function () {
+it('can install mailbook', function (): void {
     artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
 
     expect(base_path('routes/mailbook.php'))->toBeFile()
@@ -14,7 +16,7 @@ it('can install mailbook', function () {
         ->and(base_path('resources/views/mail/mailbook.blade.php'))->toBeFile();
 });
 
-it('will not overwrite existing files', function () {
+it('will not overwrite existing files', function (): void {
     $path = base_path('routes/mailbook.php');
     @mkdir(dirname($path), 0755, true);
     file_put_contents($path, 'test');
@@ -26,7 +28,7 @@ it('will not overwrite existing files', function () {
         ->and(file_get_contents($path))->toBe('test');
 });
 
-it('can collect mails from route file', function () {
+it('can collect mails from route file', function (): void {
     artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
 
     require_once base_path('app/Mail/MailbookMail.php');
@@ -36,7 +38,7 @@ it('can collect mails from route file', function () {
     expect($mails)->toHaveCount(1);
 });
 
-it('can will collect mails from route file once', function () {
+it('can will collect mails from route file once', function (): void {
     artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
 
     require_once base_path('app/Mail/MailbookMail.php');
@@ -47,7 +49,7 @@ it('can will collect mails from route file once', function () {
     expect($mails)->toHaveCount(1);
 });
 
-it('cannot collect mails from non existing route file', function () {
+it('cannot collect mails from non existing route file', function (): void {
     config()->set('mailbook.route_file', base_path('routes/unknown.php'));
 
     artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
@@ -59,7 +61,7 @@ it('cannot collect mails from non existing route file', function () {
     expect($mails)->toBeEmpty();
 });
 
-it('can render installable mail', function () {
+it('can render installable mail', function (): void {
     artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
 
     require_once base_path('app/Mail/MailbookMail.php');

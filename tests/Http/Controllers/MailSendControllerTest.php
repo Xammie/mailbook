@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Xammie\Mailbook\Facades\Mailbook;
@@ -12,13 +14,13 @@ use Xammie\Mailbook\Tests\Fixtures\User;
 
 use function Pest\Laravel\get;
 
-beforeEach(function () {
+beforeEach(function (): void {
     Mail::fake();
     Notification::fake();
     config()->set('mailbook.send', true);
 });
 
-it('cannot send mails when disabled', function () {
+it('cannot send mails when disabled', function (): void {
     config()->set('mailbook.send', false);
 
     Mailbook::add(TestMail::class);
@@ -30,7 +32,7 @@ it('cannot send mails when disabled', function () {
     Notification::assertNothingSent();
 });
 
-it('cannot send mails when sent_to is invalid', function () {
+it('cannot send mails when sent_to is invalid', function (): void {
     config()->set('mailbook.send_to', null);
 
     Mailbook::add(TestMail::class);
@@ -42,7 +44,7 @@ it('cannot send mails when sent_to is invalid', function () {
     Notification::assertNothingSent();
 });
 
-it('can send mailable', function () {
+it('can send mailable', function (): void {
     Mailbook::add(TestMail::class);
 
     get(route('mailbook.send', ['class' => TestMail::class]))
@@ -52,7 +54,7 @@ it('can send mailable', function () {
     Notification::assertNothingSent();
 });
 
-it('can send notification', function () {
+it('can send notification', function (): void {
     Mailbook::add(TestNotification::class);
 
     get(route('mailbook.send', ['class' => TestNotification::class]))
@@ -62,7 +64,7 @@ it('can send notification', function () {
     Mail::assertNothingSent();
 });
 
-it('can send notification with notifiable', function () {
+it('can send notification with notifiable', function (): void {
     Mailbook::to(new User(['email' => 'notifiable@mailbook.dev']))->add(TestNotification::class);
 
     get(route('mailbook.send', ['class' => TestNotification::class]))
@@ -72,21 +74,21 @@ it('can send notification with notifiable', function () {
     Mail::assertNothingSent();
 });
 
-it('cannot send with invalid class', function () {
+it('cannot send with invalid class', function (): void {
     Mailbook::add(TestMail::class);
 
     get(route('mailbook.send', ['class' => '::invalid-mailable-item::']))
         ->assertStatus(404);
 });
 
-it('cannot send without class', function () {
+it('cannot send without class', function (): void {
     Mailbook::add(TestMail::class);
 
     get(route('mailbook.send'))
         ->assertStatus(404);
 });
 
-it('can send different locale mailable', function () {
+it('can send different locale mailable', function (): void {
     config()->set('mailbook.locales', [
         'en' => 'English',
         'nl' => 'Dutch',
@@ -107,7 +109,7 @@ it('can send different locale mailable', function () {
     });
 });
 
-it('can send different locale notification', function () {
+it('can send different locale notification', function (): void {
     config()->set('mailbook.locales', [
         'en' => 'English',
         'nl' => 'Dutch',
@@ -129,7 +131,7 @@ it('can send different locale notification', function () {
     Mail::assertNothingSent();
 });
 
-it('can send to one', function () {
+it('can send to one', function (): void {
     config()->set('mailbook.send_to', 'test@mailbook.dev');
 
     Mailbook::add(TestMail::class);
@@ -149,7 +151,7 @@ it('can send to one', function () {
     });
 });
 
-it('cannot send to multiple', function () {
+it('cannot send to multiple', function (): void {
     config()->set('mailbook.send_to', [
         'test@mailbook.dev',
         'example@mailbook.dev',
@@ -172,7 +174,7 @@ it('cannot send to multiple', function () {
     });
 });
 
-it('can send variant', function () {
+it('can send variant', function (): void {
     Mailbook::add(TestMail::class)
         ->variant('wrong variant', fn () => new OtherMail())
         ->variant('Test variant', fn () => new TestMail());

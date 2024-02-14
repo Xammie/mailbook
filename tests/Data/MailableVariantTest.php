@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use Xammie\Mailbook\Data\MailableVariant;
 use Xammie\Mailbook\MailableResolver;
 
-it('can create a mailable variant', function () {
+it('can create a mailable variant', function (): void {
     $variant = new MailableVariant('label', 'slug', 'closure');
     expect($variant->label)->toBe('label');
     expect($variant->slug)->toBe('slug');
@@ -11,13 +13,13 @@ it('can create a mailable variant', function () {
     expect($variant->notifiable)->toBeNull();
 });
 
-it('can get a new resolver', function () {
+it('can get a new resolver', function (): void {
     $variant = new MailableVariant('label', 'slug', 'closure');
 
     expect($variant->resolver())->toBeInstanceOf(MailableResolver::class);
 });
 
-it('will only create one resolver', function () {
+it('will only create one resolver', function (): void {
     $variant = new MailableVariant('label', 'slug', 'closure');
 
     expect($variant->resolver())->toBe($variant->resolver());

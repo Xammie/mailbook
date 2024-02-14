@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 use Xammie\Mailbook\Support\Format;
 
-it('can convert to human readable sizes', function ($bytes, $expected) {
+it('can convert to human readable sizes', function ($bytes, $expected): void {
     expect(Format::bytesToHuman($bytes))->toBe($expected);
 })
     ->with([

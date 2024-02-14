@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Event;
@@ -10,7 +12,7 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Fixtures\User;
 
-it('can collect mail', function () {
+it('can collect mail', function (): void {
     Event::fake();
 
     $mailableSender = new MailableSender(new TestMail());
@@ -22,7 +24,7 @@ it('can collect mail', function () {
     Event::assertDispatched(MessageSent::class);
 });
 
-it('will add new mailer', function () {
+it('will add new mailer', function (): void {
     $mailableSender = new MailableSender(new TestMail());
     invade($mailableSender)->inject();
 
@@ -31,7 +33,7 @@ it('will add new mailer', function () {
     ]);
 });
 
-it('will cleanup driver', function () {
+it('will cleanup driver', function (): void {
     $mailableSender = new MailableSender(new TestMail());
     $mailableSender->collect();
 
@@ -39,49 +41,49 @@ it('will cleanup driver', function () {
         ->and(config('mail.driver'))->not()->toBe('mailbook');
 });
 
-it('will cleanup message', function () {
+it('will cleanup message', function (): void {
     $mailableSender = new MailableSender(new TestMail());
     $mailableSender->collect();
 
     expect(Mailbook::getMessage())->toBeNull();
 });
 
-it('will inject driver config', function () {
+it('will inject driver config', function (): void {
     $mailableSender = new MailableSender(new TestMail());
     invade($mailableSender)->inject();
 
     expect(config('mail.default'))->toBe('mailbook');
 });
 
-it('will inject old driver config', function () {
+it('will inject old driver config', function (): void {
     $mailableSender = new MailableSender(new TestMail());
     invade($mailableSender)->inject();
 
     expect(config('mail.driver'))->toBe('mailbook');
 });
 
-it('can send mailable with email', function () {
+it('can send mailable with email', function (): void {
     $mailableSender = new MailableSender(new TestMail(), 'test@mailbook.dev');
     $mail = $mailableSender->collect();
 
     expect($mail->to())->toBe(['test@mailbook.dev']);
 });
 
-it('can send mailable with notifiable', function () {
+it('can send mailable with notifiable', function (): void {
     $mailableSender = new MailableSender(new TestNotification(), new User(['email' => 'test@mailbook.dev']));
     $mail = $mailableSender->collect();
 
     expect($mail->to())->toBe(['test@mailbook.dev']);
 });
 
-it('can send notification with email', function () {
+it('can send notification with email', function (): void {
     $mailableSender = new MailableSender(new TestNotification(), 'test@mailbook.dev');
     $mail = $mailableSender->collect();
 
     expect($mail->to())->toBe(['test@mailbook.dev']);
 });
 
-it('can send notification with notifiable', function () {
+it('can send notification with notifiable', function (): void {
     $mailableSender = new MailableSender(new TestNotification(), new User(['email' => 'test@mailbook.dev']));
     $mail = $mailableSender->collect();
 
