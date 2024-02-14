@@ -2,6 +2,18 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.8.0 - 2024-02-14
+
+### What's Changed
+
+* Group multiple mailables by category by @Xammie in https://github.com/Xammie/mailbook/pull/71
+* Add support for laravel 11 by @Xammie in https://github.com/Xammie/mailbook/pull/68
+* Use mail envelope for install example by @Xammie in https://github.com/Xammie/mailbook/pull/69
+* Fix navigating inside the iframe by @Xammie in https://github.com/Xammie/mailbook/pull/70
+* Fix database is still rolled back when an exception occurs by @Xammie in https://github.com/Xammie/mailbook/pull/72
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.7.0...1.8.0
+
 ## 1.7.0 - 2023-12-07
 
 ### What's Changed
