@@ -29,13 +29,9 @@ class Mailbook
         $this->collection = new MailCollection();
     }
 
-    private function registrar(): MailRegistrar
+    public function add(string|Closure|Mailable|Notification $class): MailableItem
     {
-        if ($this->registrar instanceof MailRegistrar) {
-            return $this->registrar;
-        }
-
-        return MailRegistrar::make($this->collection);
+        return $this->registrar()->add($class);
     }
 
     public function label(string $label): MailRegistrar
@@ -53,9 +49,13 @@ class Mailbook
         return $this->registrar()->to($notifiable);
     }
 
-    public function add(string|Closure|Mailable|Notification $class): MailableItem
+    private function registrar(): MailRegistrar
     {
-        return $this->registrar()->add($class);
+        if ($this->registrar instanceof MailRegistrar) {
+            return $this->registrar;
+        }
+
+        return MailRegistrar::make($this->collection);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Xammie\Mailbook\Http\Middlewares;
 
 use Closure;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class RollbackDatabase
@@ -15,7 +16,13 @@ class RollbackDatabase
 
         DB::beginTransaction();
 
-        $response = $next($request);
+        try {
+            $response = $next($request);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
 
         DB::rollBack();
 
