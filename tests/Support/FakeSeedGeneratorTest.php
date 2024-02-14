@@ -17,8 +17,7 @@ it('can get random seed', function () {
 
     expect($seed)->toBe(123);
 })
-    ->
-    skip(! function_exists('fake'));
+    ->skip(! function_exists('fake'));
 
 it('cannot get random seed', function () {
     $generator = new FakeSeedGenerator();
