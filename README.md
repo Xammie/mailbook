@@ -79,6 +79,8 @@ A notification will most of the time need a user (also called `notifiable` in th
 You can set the desired user with the `::to()` method.
 
 ```php
+$user = User::factory()->create();
+
 Mailbook::to($user)->add(WelcomeNotification::class);
 ```
 
@@ -90,14 +92,33 @@ Mailbook::to('example@mailbook.dev')->add(WelcomeNotification::class)
 
 ## Grouping multiple mails
 
-To avoid having to pass the same `::to()` to every mailable that needs it you can use the `::group()` method. This will
-automatically pass the notifiable to every mailable inside the group.
+You can group multiple mails under the same category. This can be done using the `category()` and `group()` methods.
+
+```php
+Mailbook::category('Invoices')->group(function () {
+    Mailbook::add(InvoiceCreatedNotification::class);
+    Mailbook::add(InvoicePaidNotification::class);
+});
+```
+
+To avoid having to pass the same `to()` to every mailable that needs it you can also use the `group()` method. This will
+use the notifiable to every mailable inside the group.
 
 ```php
 Mailbook::to('example@mailbook.dev')->group(function () {
     Mailbook::add(WelcomeNotification::class);
     Mailbook::add(TrialEndedNotification::class);
 });
+```
+
+It is also possible to chain both `category()` and `to()` to the same group.
+
+```php
+Mailbook::to('example@mailbook.dev')
+    ->category('Invoices')
+    ->group(function () {
+        // ...
+    });
 ```
 
 ## Variants
