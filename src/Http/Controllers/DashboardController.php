@@ -5,11 +5,11 @@ namespace Xammie\Mailbook\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\HtmlString;
+use Xammie\Mailbook\Data\MailableItem;
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\FakeSeedGenerator;
 use Xammie\Mailbook\Http\Requests\MailbookRequest;
-use Xammie\Mailbook\MailableItem;
 use Xammie\Mailbook\MailbookConfig;
+use Xammie\Mailbook\Support\FakeSeedGenerator;
 
 class DashboardController
 {
@@ -21,7 +21,7 @@ class DashboardController
 
     public function __invoke(MailbookRequest $request): View
     {
-        $mailables = Mailbook::mailables();
+        $mailables = Mailbook::groupedMailables();
 
         /** @var MailableItem $current */
         $current = Mailbook::retrieve(
@@ -42,7 +42,7 @@ class DashboardController
             'subject' => $current->subject(),
             'attachments' => $current->attachments(),
             'size' => $current->size(),
-            'mailables' => $mailables,
+            'items' => $mailables,
             'display' => $display,
             'locales' => $locales,
             'currentLocale' => $locale,

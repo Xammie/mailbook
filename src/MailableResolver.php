@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\App;
 use ReflectionFunction;
 use ReflectionNamedType;
 use UnexpectedValueException;
+use Xammie\Mailbook\Data\ResolvedMail;
 
 /**
  * @internal

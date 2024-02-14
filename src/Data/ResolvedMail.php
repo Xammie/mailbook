@@ -1,6 +1,6 @@
 <?php
 
-namespace Xammie\Mailbook;
+namespace Xammie\Mailbook\Data;
 
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;

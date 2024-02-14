@@ -1,4 +1,5 @@
 @props(['label', 'type', 'selected'])
+
 <div>
     <a href="{{ request()->fullUrlWithQuery(['display' => $type]) }}"
        @class([

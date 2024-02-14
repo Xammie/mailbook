@@ -1,11 +1,11 @@
 <?php
 
-namespace Xammie\Mailbook\Tests\Mails;
+namespace Xammie\Mailbook\Tests\Fixtures\Mails;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NotificationMail extends Notification
+class TestNotification extends Notification
 {
     public function via($notifiable)
     {
@@ -15,8 +15,7 @@ class NotificationMail extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
+            ->subject('Test email subject')
             ->line('Thank you for using our application!');
     }
 }

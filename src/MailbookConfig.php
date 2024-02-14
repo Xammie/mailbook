@@ -11,7 +11,7 @@ class MailbookConfig
 {
     public function getSendToStrict(): string
     {
-        $to = config('mailbook.send_to');
+        $to = config()->get('mailbook.send_to');
 
         if (is_array($to)) {
             $to = $to[0];
@@ -21,7 +21,7 @@ class MailbookConfig
             throw new RuntimeException('invalid config mailbook.send_to should be string');
         }
 
-        if (! $to) {
+        if (empty($to)) {
             throw new RuntimeException('invalid config mailbook.send_to should not be empty');
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xammie\Mailbook;
+namespace Xammie\Mailbook\Data;
 
 use Illuminate\Support\Collection;
 

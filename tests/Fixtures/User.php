@@ -1,6 +1,6 @@
 <?php
 
-namespace Xammie\Mailbook\Tests\Support;
+namespace Xammie\Mailbook\Tests\Fixtures;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

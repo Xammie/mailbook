@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Xammie\Mailbook\Tests\Mails;
+namespace Xammie\Mailbook\Tests\Fixtures\Mails;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

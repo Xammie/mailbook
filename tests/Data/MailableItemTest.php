@@ -2,11 +2,11 @@
 
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\Tests\Mails\NotificationMail;
-use Xammie\Mailbook\Tests\Mails\OtherMail;
-use Xammie\Mailbook\Tests\Mails\TestBinding;
-use Xammie\Mailbook\Tests\Mails\TestMail;
-use Xammie\Mailbook\Tests\Mails\WithAttachmentsMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\NotificationMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestBinding;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\WithAttachmentsMail;
 
 it('can render', function () {
     $html = Mailbook::add(TestMail::class)->content();
@@ -33,19 +33,19 @@ it('can render closure', function () {
 it('can get subject', function () {
     $subject = Mailbook::add(TestMail::class)->subject();
 
-    expect($subject)->toEqual('Test email subject');
+    expect($subject)->toBe('Test email subject');
 });
 
 it('cannot get subject with container binding error', function () {
     $subject = Mailbook::add(TestBinding::class)->subject();
 
-    expect($subject)->toEqual('');
+    expect($subject)->toBeNull();
 });
 
 it('cannot get missing subject', function () {
     $subject = Mailbook::add(NotificationMail::class)->subject();
 
-    expect($subject)->toEqual('Notification Mail');
+    expect($subject)->toBe('Notification Mail');
 });
 
 it('can render multiple times', function () {
@@ -193,4 +193,27 @@ it('can get theme', function () {
     $item = Mailbook::add($mail);
 
     expect($item->theme())->toBe('shop');
+});
+
+it('can get meta', function () {
+    $item = Mailbook::add(OtherMail::class);
+
+    expect($item->meta())->toBe([
+        'Subject' => 'Hello!',
+        'From' => [
+            '"Harry Potter" <harry@example.com>',
+        ],
+        'Reply To' => [
+            '"Support" <questions@example.com>',
+        ],
+        'To' => [
+            '"Mailbook" <example@mailbook.dev>',
+        ],
+        'Cc' => [
+            '"Mailbook" <cc@mailbook.dev>',
+        ],
+        'Bcc' => [
+            '"Mailbook" <bcc@mailbook.dev>',
+        ],
+    ]);
 });

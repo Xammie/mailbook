@@ -1,7 +1,7 @@
 <?php
 
 use Xammie\Mailbook\Facades\Mailbook;
-use Xammie\Mailbook\Tests\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 
 it('executes the closure once', function () {
     $executed = 0;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xammie\Mailbook;
+namespace Xammie\Mailbook\Data;
 
 use Closure;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Str;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
+use Xammie\Mailbook\MailableResolver;
 use Xammie\Mailbook\Support\Format;
+use Xammie\Mailbook\Traits\HasCategory;
+use Xammie\Mailbook\Traits\HasLabel;
 
 class MailableItem
 {
-    private ?string $label = null;
+    use HasCategory;
+    use HasLabel;
 
     /**
      * @var Collection<int, MailableVariant>
@@ -31,22 +35,6 @@ class MailableItem
     public function __construct(public string|Closure|Mailable|Notification $closure, public mixed $notifiable = null)
     {
         $this->variants = collect();
-    }
-
-    public function label(string $label): self
-    {
-        $this->label = $label;
-
-        return $this;
-    }
-
-    public function getLabel(): string
-    {
-        if (! is_null($this->label)) {
-            return $this->label;
-        }
-
-        return Str::title(Str::snake(class_basename($this->resolver()->className()), ' '));
     }
 
     public function variant(string $label, Closure $variant): self

@@ -3,12 +3,18 @@
 namespace Xammie\Mailbook\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
+use Xammie\Mailbook\Data\MailableItem;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Http\Requests\MailbookRequest;
-use Xammie\Mailbook\MailableItem;
+use Xammie\Mailbook\Support\FakeSeedGenerator;
 
 class MailContentController
 {
+    public function __construct(
+        private FakeSeedGenerator $fakeSeedGenerator,
+    ) {
+    }
+
     public function __invoke(MailbookRequest $request): View
     {
         $current = Mailbook::retrieve(
@@ -21,10 +27,7 @@ class MailContentController
             abort(404);
         }
 
-        if (function_exists('fake') && $request->has('s')) {
-            // restore faker seed
-            fake()->seed($request->get('s'));
-        }
+        $this->fakeSeedGenerator->restoreSeed($request->seed());
 
         return view('mailbook::content', [
             'content' => $current->content(),

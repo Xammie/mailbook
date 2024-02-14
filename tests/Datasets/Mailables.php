@@ -1,7 +1,7 @@
 <?php
 
-use Xammie\Mailbook\Tests\Mails\TestMail;
-use Xammie\Mailbook\Tests\Mails\TestNotification;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 
 dataset('mailables', fn () => [
     TestMail::class,

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xammie\Mailbook;
+namespace Xammie\Mailbook\Support;
 
 use Illuminate\Support\Facades\Config;
 
