@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\AlternativeMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\ClassicMail;
 
-it('can get mail subject and content', function ($mailable) {
+it('can get mail subject and content', function ($mailable): void {
     $item = Mailbook::add($mailable);
 
     expect($item->subject())->toBe('Invoice Paid')

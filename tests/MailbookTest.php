@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Xammie\Mailbook\Data\MailableGroup;
 use Xammie\Mailbook\Data\MailableItem;
 use Xammie\Mailbook\Facades\Mailbook;
@@ -7,7 +9,7 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedMail;
 
-it('can get mailables', function () {
+it('can get mailables', function (): void {
     Mailbook::add(TestMail::class);
     Mailbook::add(OtherMail::class);
 
@@ -18,10 +20,10 @@ it('can get mailables', function () {
     expect($mailables->get(1)?->getLabel())->toBe('Other Mail');
 });
 
-it('can get grouped mailables', function () {
+it('can get grouped mailables', function (): void {
     Mailbook::add(TestMail::class);
 
-    Mailbook::category('Other')->group(function () {
+    Mailbook::category('Other')->group(function (): void {
         Mailbook::add(OtherMail::class);
         Mailbook::add(TranslatedMail::class);
     });

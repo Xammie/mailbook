@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Xammie\Mailbook\Tests\Fixtures\Mails;
 
 use Illuminate\Notifications\Messages\MailMessage;

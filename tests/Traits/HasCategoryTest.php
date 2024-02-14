@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 use Xammie\Mailbook\Traits\HasCategory;
 
-it('can get category', function () {
+it('can get category', function (): void {
     $instance = new class
     {
         use HasCategory;
@@ -11,7 +13,7 @@ it('can get category', function () {
     expect($instance->getCategory())->toBeNull();
 });
 
-it('can set category', function () {
+it('can set category', function (): void {
     $instance = new class
     {
         use HasCategory;
@@ -22,7 +24,7 @@ it('can set category', function () {
     expect($instance->getCategory())->toBe('Test category');
 });
 
-it('can detect category', function () {
+it('can detect category', function (): void {
     $instance = new class
     {
         use HasCategory;

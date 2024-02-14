@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 use Xammie\Mailbook\Facades\Mailbook;
 
-it('can set locale', function ($locale) {
+it('can set locale', function ($locale): void {
     config()->set('mailbook.locales', [
         'en' => 'English',
         'nl' => 'Dutch',
@@ -17,7 +19,7 @@ it('can set locale', function ($locale) {
 })
     ->with(['en', 'nl', 'de']);
 
-it('cannot set invalid locale', function () {
+it('cannot set invalid locale', function (): void {
     config()->set('mailbook.locales', [
         'en' => 'English',
         'nl' => 'Dutch',
@@ -29,7 +31,7 @@ it('cannot set invalid locale', function () {
     expect(Mailbook::getLocale())->toBeNull();
 });
 
-it('cannot set unknown locale', function () {
+it('cannot set unknown locale', function (): void {
     config()->set('mailbook.locales', [
         'en' => 'English',
         'nl' => 'Dutch',
@@ -41,7 +43,7 @@ it('cannot set unknown locale', function () {
     expect(Mailbook::getLocale())->toBeNull();
 });
 
-it('cannot set locales when none are set', function () {
+it('cannot set locales when none are set', function (): void {
     config()->set('mailbook.locales', null);
 
     Mailbook::setLocale('be');

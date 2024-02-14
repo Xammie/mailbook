@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 

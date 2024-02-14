@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Xammie\Mailbook\Data;
 
 use Symfony\Component\Mime\Address;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Xammie\Mailbook\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -14,7 +16,7 @@ class TestCase extends Orchestra
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    public function getEnvironmentSetUp($app): void
     {
         config()->set('database.default', 'testing');
         config()->set('mailbook.enabled', true);

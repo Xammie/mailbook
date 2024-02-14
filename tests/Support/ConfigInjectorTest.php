@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 use Xammie\Mailbook\Support\ConfigInjector;
 
-it('can set and revert config', function () {
+it('can set and revert config', function (): void {
     config()->set('example.test', 'foo');
 
     $injector = new ConfigInjector();
