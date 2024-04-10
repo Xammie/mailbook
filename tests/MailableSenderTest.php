@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
+use Illuminate\Mail\PendingMail;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Xammie\Mailbook\Data\ResolvedMail;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\MailableSender;
+use Xammie\Mailbook\Tests\Fixtures\Mails\AfterCommitMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\ShouldQueueMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Fixtures\User;
@@ -22,6 +26,38 @@ it('can collect mail', function (): void {
 
     Event::assertDispatched(MessageSending::class);
     Event::assertDispatched(MessageSent::class);
+});
+
+it('can collect queued mail', function (): void {
+    Event::fake();
+
+    $mailableSender = new MailableSender(new ShouldQueueMail());
+    $mail = $mailableSender->collect();
+
+    expect($mail)->toBeInstanceOf(ResolvedMail::class);
+
+    Event::assertDispatched(MessageSending::class);
+    Event::assertDispatched(MessageSent::class);
+});
+
+it('can collect after commit mail', function (): void {
+    Event::fake();
+
+    Mail::shouldReceive('to')
+        ->once()
+        ->with('remove@mailbook.dev')
+        ->andReturn(Mockery::mock(PendingMail::class)
+            ->shouldReceive('send')
+            ->once()
+            ->withArgs(function (AfterCommitMail $mail) {
+                expect($mail->afterCommit)->toBeFalse();
+
+                return true;
+            })
+            ->getMock());
+
+    $mailableSender = new MailableSender(new AfterCommitMail());
+    invade($mailableSender)->send();
 });
 
 it('will add new mailer', function (): void {
