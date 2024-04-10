@@ -64,6 +64,11 @@ class MailableSender
     private function send(): void
     {
         if (! $this->subject instanceof Notification) {
+            if (method_exists($this->subject, 'beforeCommit')) {
+                // prevent the mail from being sent after the transaction is committed
+                $this->subject->beforeCommit();
+            }
+
             Mail::to($this->notifiable ?? 'remove@mailbook.dev')->send($this->subject);
 
             return;
