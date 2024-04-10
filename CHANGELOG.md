@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.8.1 - 2024-04-10
+
+### What's Changed
+
+* Fix after commit compatibility by @Xammie in https://github.com/Xammie/mailbook/pull/80
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.8.0...1.8.1
+
 ## 1.8.0 - 2024-02-14
 
 ### What's Changed
