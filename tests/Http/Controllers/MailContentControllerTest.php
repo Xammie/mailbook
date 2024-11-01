@@ -76,8 +76,8 @@ it('can render without locales', function (): void {
 
 it('can render default variant', function (): void {
     Mailbook::add(TestMail::class)
-        ->variant('First variant', fn (): TestMail => new TestMail())
-        ->variant('Second variant', fn (): OtherMail => new OtherMail());
+        ->variant('First variant', fn (): TestMail => new TestMail)
+        ->variant('Second variant', fn (): OtherMail => new OtherMail);
 
     get(route('mailbook.content', ['class' => TestMail::class]))
         ->assertSuccessful()
@@ -86,8 +86,8 @@ it('can render default variant', function (): void {
 
 it('can render selected variant', function (): void {
     Mailbook::add(TestMail::class)
-        ->variant('Second variant', fn (): OtherMail => new OtherMail())
-        ->variant('First variant', fn (): TestMail => new TestMail());
+        ->variant('Second variant', fn (): OtherMail => new OtherMail)
+        ->variant('First variant', fn (): TestMail => new TestMail);
 
     get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'first-variant']))
         ->assertSuccessful()
@@ -96,8 +96,8 @@ it('can render selected variant', function (): void {
 
 it('cannot render unknown variant', function (): void {
     Mailbook::add(TestMail::class)
-        ->variant('First variant', fn (): TestMail => new TestMail())
-        ->variant('Second variant', fn (): OtherMail => new OtherMail());
+        ->variant('First variant', fn (): TestMail => new TestMail)
+        ->variant('Second variant', fn (): OtherMail => new OtherMail);
 
     get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'unknown']))
         ->assertSuccessful()
@@ -105,7 +105,7 @@ it('cannot render unknown variant', function (): void {
 });
 
 it('can render closure', function (): void {
-    Mailbook::add(fn () => new TestMail());
+    Mailbook::add(fn () => new TestMail);
 
     get(route('mailbook.content', ['class' => TestMail::class]))
         ->assertSuccessful()
@@ -132,7 +132,7 @@ it('rolls back database changes', function (): void {
     Mailbook::add(function () {
         expect(DB::transactionLevel())->toBe(1);
 
-        return new TestMail();
+        return new TestMail;
     });
 
     get(route('mailbook.content', ['class' => TestMail::class]))
@@ -150,7 +150,7 @@ it('does not rollback database changes when disabled', function (): void {
     Mailbook::add(function () {
         expect(DB::transactionLevel())->toBe(0);
 
-        return new TestMail();
+        return new TestMail;
     });
 
     get(route('mailbook.content', ['class' => TestMail::class]))

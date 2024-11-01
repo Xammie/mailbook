@@ -19,7 +19,7 @@ class MailableSender
 
     public function __construct(private Mailable|Notification $subject, public mixed $notifiable = null)
     {
-        $this->injector = new ConfigInjector();
+        $this->injector = new ConfigInjector;
     }
 
     public function collect(): ResolvedMail

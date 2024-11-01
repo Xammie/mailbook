@@ -23,6 +23,6 @@ class MailbookServiceProvider extends PackageServiceProvider
 
     public function bootingPackage(): void
     {
-        Mail::extend('mailbook', fn () => new MailbookTransport());
+        Mail::extend('mailbook', fn () => new MailbookTransport);
     }
 }

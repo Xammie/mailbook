@@ -38,4 +38,9 @@ class MailbookConfig
             return null;
         }
     }
+
+    public function getLocales(): array
+    {
+        return (array) config('mailbook.locales', []);
+    }
 }

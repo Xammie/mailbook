@@ -28,7 +28,7 @@ class Mailbook
 
     public function __construct()
     {
-        $this->collection = new MailCollection();
+        $this->collection = new MailCollection;
     }
 
     public function add(string|Closure|Mailable|Notification $class): MailableItem

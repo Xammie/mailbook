@@ -11,8 +11,8 @@ it('will rollback database', function (): void {
     DB::shouldReceive('beginTransaction')->once();
     DB::shouldReceive('rollback')->once();
 
-    $middleware = new RollbackDatabase();
-    $middleware->handle(new stdClass(), function () {
+    $middleware = new RollbackDatabase;
+    $middleware->handle(new stdClass, function () {
         return 'response';
     });
 });
@@ -23,8 +23,8 @@ it('will rollback database when exception occurs', function (): void {
     DB::shouldReceive('beginTransaction')->once();
     DB::shouldReceive('rollback')->once();
 
-    $middleware = new RollbackDatabase();
-    $middleware->handle(new stdClass(), function (): void {
+    $middleware = new RollbackDatabase;
+    $middleware->handle(new stdClass, function (): void {
         throw new RuntimeException('test exception');
     });
 })
@@ -36,8 +36,8 @@ it('will not rollback database when disabled', function (): void {
     DB::shouldReceive('beginTransaction')->never();
     DB::shouldReceive('rollback')->never();
 
-    $middleware = new RollbackDatabase();
-    $middleware->handle(new stdClass(), function () {
+    $middleware = new RollbackDatabase;
+    $middleware->handle(new stdClass, function () {
         return 'response';
     });
 });

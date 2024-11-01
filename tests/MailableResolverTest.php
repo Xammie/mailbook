@@ -32,7 +32,7 @@ it('can get class from class', function (): void {
 });
 
 it('can get class from closure', function (): void {
-    $resolver = new MailableResolver(fn () => new TestMail());
+    $resolver = new MailableResolver(fn () => new TestMail);
 
     expect($resolver->className())->toEqual(TestMail::class);
 });
@@ -73,7 +73,7 @@ it('can get instance from class', function (): void {
 });
 
 it('can get instance from closure', function (): void {
-    $resolver = new MailableResolver(fn () => new TestMail());
+    $resolver = new MailableResolver(fn () => new TestMail);
 
     expect($resolver->instance())->toBeInstanceOf(TestMail::class);
 });
@@ -86,13 +86,13 @@ it('cannot get instance from closure with invalid type', function (): void {
     ->throws(UnexpectedValueException::class, 'Unexpected value returned from mailbook closure expected instance of Illuminate\Contracts\Mail\Mailable but got string');
 
 it('can get instance from closure with return type', function (): void {
-    $resolver = new MailableResolver(fn (): TestMail => new TestMail());
+    $resolver = new MailableResolver(fn (): TestMail => new TestMail);
 
     expect($resolver->instance())->toBeInstanceOf(TestMail::class);
 });
 
 it('can get instance from mailable', function (): void {
-    $resolver = new MailableResolver(new TestMail());
+    $resolver = new MailableResolver(new TestMail);
 
     expect($resolver->instance())->toBeInstanceOf(TestMail::class);
 });
@@ -118,7 +118,7 @@ it('will execute closure once when resolving class from closure', function (): v
     $resolver = new MailableResolver(function () use (&$executed) {
         $executed++;
 
-        return new TestMail();
+        return new TestMail;
     });
 
     $resolver->className();
@@ -129,7 +129,7 @@ it('will execute closure once when resolving class from closure', function (): v
 });
 
 it('resolved class instance can be built', function (): void {
-    $resolver = new MailableResolver(fn () => new TestMail());
+    $resolver = new MailableResolver(fn () => new TestMail);
 
     expect($resolver->resolve()->subject())->toBe('Test email subject');
 });
@@ -141,7 +141,7 @@ it('can resolve className from notification class', function (): void {
 });
 
 it('can resolve className from notification closure', function (): void {
-    $resolver = new MailableResolver(fn () => new NotificationMail());
+    $resolver = new MailableResolver(fn () => new NotificationMail);
 
     expect($resolver->className())->toBe(NotificationMail::class);
 });

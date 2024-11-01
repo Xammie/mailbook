@@ -14,8 +14,7 @@ class MailContentController
 {
     public function __construct(
         private FakeSeedGenerator $fakeSeedGenerator,
-    ) {
-    }
+    ) {}
 
     public function __invoke(MailbookRequest $request): View
     {

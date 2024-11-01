@@ -7,7 +7,7 @@ use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 
 it('can collect mails', function (): void {
-    $collection = new MailCollection();
+    $collection = new MailCollection;
 
     expect($collection->all())->toBeEmpty();
 

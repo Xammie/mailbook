@@ -13,7 +13,7 @@ it('can get random seed', function (): void {
     });
     $this->app->bind(Generator::class.':en_US', fn () => $mock);
 
-    $generator = new FakeSeedGenerator();
+    $generator = new FakeSeedGenerator;
 
     $seed = $generator->getCurrentSeed();
 
@@ -22,7 +22,7 @@ it('can get random seed', function (): void {
     ->skip(! function_exists('fake'));
 
 it('cannot get random seed', function (): void {
-    $generator = new FakeSeedGenerator();
+    $generator = new FakeSeedGenerator;
 
     $seed = $generator->getCurrentSeed();
 
@@ -36,7 +36,7 @@ it('can restore seed', function (): void {
     });
     $this->app->bind(Generator::class.':en_US', fn () => $mock);
 
-    $generator = new FakeSeedGenerator();
+    $generator = new FakeSeedGenerator;
 
     $generator->restoreSeed('abc');
 })
@@ -48,7 +48,7 @@ it('cannot restore empty seed', function (): void {
     });
     $this->app->bind(Generator::class.':en_US', fn () => $mock);
 
-    $generator = new FakeSeedGenerator();
+    $generator = new FakeSeedGenerator;
 
     $generator->restoreSeed(null);
 })

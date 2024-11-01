@@ -18,8 +18,7 @@ class DashboardController
     public function __construct(
         private FakeSeedGenerator $fakeSeedGenerator,
         private MailbookConfig $config,
-    ) {
-    }
+    ) {}
 
     public function __invoke(MailbookRequest $request): View
     {
@@ -33,8 +32,6 @@ class DashboardController
             fallback: true
         );
 
-        /** @var array $locales */
-        $locales = config('mailbook.locales', []);
         $locale = Mailbook::getLocale() ?? config('app.locale');
 
         $display = config('mailbook.display_preview') ? $request->get('display') : null;
@@ -46,7 +43,7 @@ class DashboardController
             'size' => $current->size(),
             'items' => $mailables,
             'display' => $display,
-            'locales' => $locales,
+            'locales' => $this->config->getLocales(),
             'currentLocale' => $locale,
             'meta' => $current->meta(),
             'preview' => route('mailbook.content', [

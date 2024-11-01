@@ -8,9 +8,7 @@ use Illuminate\Mail\Mailable;
 
 class TestBinding extends Mailable
 {
-    public function __construct(string $random)
-    {
-    }
+    public function __construct(string $random) {}
 
     public function build(): self
     {

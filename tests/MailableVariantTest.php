@@ -12,7 +12,7 @@ it('executes the closure once', function (): void {
         ->variant('test', function () use (&$executed) {
             $executed++;
 
-            return new TestMail();
+            return new TestMail;
         });
 
     $mailable->selectVariant('test');
