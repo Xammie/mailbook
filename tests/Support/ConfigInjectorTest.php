@@ -7,7 +7,7 @@ use Xammie\Mailbook\Support\ConfigInjector;
 it('can set and revert config', function (): void {
     config()->set('example.test', 'foo');
 
-    $injector = new ConfigInjector();
+    $injector = new ConfigInjector;
 
     $injector->set('example.test', 'bar');
 

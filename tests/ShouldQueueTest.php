@@ -24,7 +24,7 @@ it('will not overwrite set queue driver', function (): void {
 });
 
 it('will inject sync queue driver', function (): void {
-    $mailableSender = new MailableSender(new TestMail());
+    $mailableSender = new MailableSender(new TestMail);
     invade($mailableSender)->inject();
 
     expect(config('queue.default'))->toBe('sync');

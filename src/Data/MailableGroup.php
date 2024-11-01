@@ -17,6 +17,5 @@ class MailableGroup
     public function __construct(
         public string $label,
         public Collection $items
-    ) {
-    }
+    ) {}
 }

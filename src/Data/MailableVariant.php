@@ -20,8 +20,7 @@ class MailableVariant
         public string $slug,
         public string|Mailable|Closure $closure,
         public mixed $notifiable = null,
-    ) {
-    }
+    ) {}
 
     public function resolver(): MailableResolver
     {

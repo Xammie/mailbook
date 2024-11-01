@@ -15,8 +15,7 @@ class ResolvedMail
 {
     public function __construct(
         private Email $message
-    ) {
-    }
+    ) {}
 
     public function subject(): ?string
     {

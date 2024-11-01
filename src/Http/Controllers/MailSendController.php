@@ -12,9 +12,7 @@ use Xammie\Mailbook\MailbookConfig;
 
 class MailSendController
 {
-    public function __construct(private MailbookConfig $config)
-    {
-    }
+    public function __construct(private MailbookConfig $config) {}
 
     public function __invoke(MailbookRequest $request): RedirectResponse
     {

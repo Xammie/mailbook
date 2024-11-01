@@ -19,9 +19,7 @@ class MailRegistrar
 
     protected mixed $notifiable = null;
 
-    public function __construct(protected MailCollection $collection)
-    {
-    }
+    public function __construct(protected MailCollection $collection) {}
 
     public static function make(MailCollection $collection): self
     {

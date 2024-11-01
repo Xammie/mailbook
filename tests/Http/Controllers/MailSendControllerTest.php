@@ -176,8 +176,8 @@ it('cannot send to multiple', function (): void {
 
 it('can send variant', function (): void {
     Mailbook::add(TestMail::class)
-        ->variant('wrong variant', fn () => new OtherMail())
-        ->variant('Test variant', fn () => new TestMail());
+        ->variant('wrong variant', fn () => new OtherMail)
+        ->variant('Test variant', fn () => new TestMail);
 
     get(route('mailbook.send', ['class' => TestMail::class, 'variant' => 'test-variant']))
         ->assertRedirect();

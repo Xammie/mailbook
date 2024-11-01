@@ -157,8 +157,8 @@ it('cannot render unknown locale', function (): void {
 
 it('can render default variant', function (): void {
     Mailbook::add(TestMail::class)
-        ->variant('Test variant', fn () => new TestMail())
-        ->variant('wrong variant', fn () => new OtherMail());
+        ->variant('Test variant', fn () => new TestMail)
+        ->variant('wrong variant', fn () => new OtherMail);
 
     get(route('mailbook.dashboard'))
         ->assertSuccessful()
@@ -169,8 +169,8 @@ it('can render default variant', function (): void {
 
 it('can render variant', function (): void {
     Mailbook::add(TestMail::class)
-        ->variant('wrong variant', fn () => new OtherMail())
-        ->variant('Test variant', fn () => new TestMail());
+        ->variant('wrong variant', fn () => new OtherMail)
+        ->variant('Test variant', fn () => new TestMail);
 
     get(route('mailbook.dashboard', ['selected' => TestMail::class, 'variant' => 'test-variant']))
         ->assertSuccessful()
@@ -180,7 +180,7 @@ it('can render variant', function (): void {
 });
 
 it('can render closure', function (): void {
-    Mailbook::add(fn () => new TestMail());
+    Mailbook::add(fn () => new TestMail);
 
     get(route('mailbook.dashboard'))
         ->assertSuccessful()
@@ -219,7 +219,7 @@ it('executes the close once', function (): void {
     Mailbook::add(function () use (&$executed) {
         $executed++;
 
-        return new TestMail();
+        return new TestMail;
     });
 
     get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))

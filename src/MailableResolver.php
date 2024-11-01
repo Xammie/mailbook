@@ -22,9 +22,7 @@ class MailableResolver
 
     private ?ResolvedMail $resolved = null;
 
-    public function __construct(public string|Closure|Mailable|Notification $subject, public mixed $notifiable = null)
-    {
-    }
+    public function __construct(public string|Closure|Mailable|Notification $subject, public mixed $notifiable = null) {}
 
     public function className(): string
     {

@@ -18,8 +18,7 @@ class DashboardController
     public function __construct(
         private FakeSeedGenerator $fakeSeedGenerator,
         private MailbookConfig $config,
-    ) {
-    }
+    ) {}
 
     public function __invoke(MailbookRequest $request): View
     {

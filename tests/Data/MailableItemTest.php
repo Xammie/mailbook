@@ -27,7 +27,7 @@ it('can set label', function (): void {
 });
 
 it('can render closure', function (): void {
-    $html = Mailbook::add(fn () => new TestMail())->content();
+    $html = Mailbook::add(fn () => new TestMail)->content();
 
     expect($html)->toContain('Test mail');
 });
@@ -51,23 +51,23 @@ it('cannot get missing subject', function (): void {
 });
 
 it('can render multiple times', function (): void {
-    $item = Mailbook::add(fn () => new TestMail());
+    $item = Mailbook::add(fn () => new TestMail);
 
     expect($item->content())->toBe($item->content());
 });
 
 it('can register variants', function (): void {
     $item = Mailbook::add(TestMail::class)
-        ->variant('Test', fn () => new TestMail())
-        ->variant('Another test', fn () => new TestMail());
+        ->variant('Test', fn () => new TestMail)
+        ->variant('Another test', fn () => new TestMail);
 
     expect($item->getVariants())->toHaveCount(2);
 });
 
 it('cannot register duplicate variants', function (): void {
     Mailbook::add(TestMail::class)
-        ->variant('Test', fn () => new TestMail())
-        ->variant('Test', fn () => new TestMail());
+        ->variant('Test', fn () => new TestMail)
+        ->variant('Test', fn () => new TestMail);
 })
     ->throws(MailbookException::class, 'Variant Test (test) already exists');
 
@@ -97,7 +97,7 @@ it('can get variant resolver without variants', function (): void {
 
 it('can get variant resolver from default variant', function (): void {
     $item = Mailbook::add(TestMail::class)
-        ->variant('Other one', fn () => new OtherMail());
+        ->variant('Other one', fn () => new OtherMail);
 
     expect($item->variantResolver()->className())->toEqual(OtherMail::class);
 });
@@ -153,7 +153,7 @@ it('can get size', function (): void {
 });
 
 it('builds mailable resolved from instance', function (): void {
-    $item = Mailbook::add(new OtherMail());
+    $item = Mailbook::add(new OtherMail);
 
     expect($item->subject())->toBe('Hello!');
 });
@@ -173,7 +173,7 @@ it('executes the closure once', function (): void {
     $mailable = Mailbook::add(function () use (&$executed) {
         $executed++;
 
-        return new TestMail();
+        return new TestMail;
     });
 
     $mailable->subject();
@@ -190,7 +190,7 @@ it('can get default theme', function (): void {
 });
 
 it('can get theme', function (): void {
-    $mail = new OtherMail();
+    $mail = new OtherMail;
     $mail->theme = 'shop';
     $item = Mailbook::add($mail);
 
