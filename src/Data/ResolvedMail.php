@@ -67,6 +67,7 @@ class ResolvedMail
             return stream_get_contents($html) ?: null;
         }
 
+        /** @var null|string $html */
         return $html;
     }
 
