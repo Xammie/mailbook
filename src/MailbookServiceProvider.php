@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Xammie\Mailbook;
 
+use Illuminate\Mail\MailManager;
 use Illuminate\Support\Facades\Mail;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -21,8 +22,12 @@ class MailbookServiceProvider extends PackageServiceProvider
             ->hasCommand(InstallMailbookCommand::class);
     }
 
-    public function bootingPackage(): void
+    public function packageBooted(): void
     {
-        Mail::extend('mailbook', fn () => new MailbookTransport);
+        $this->app->extend('mail.manager', function (MailManager $manager): MailManager {
+            return $manager->extend('mailbook', function (): MailbookTransport {
+                return new MailbookTransport();
+            });
+        });
     }
 }
