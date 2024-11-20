@@ -2,6 +2,21 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.8.2 - 2024-11-20
+
+### What's Changed
+
+* Fix initialization issues by @daniel-de-wit in https://github.com/Xammie/mailbook/pull/95
+* Support PHP 8.4 by @Xammie in https://github.com/Xammie/mailbook/pull/96
+* Update dependencies by @Xammie in https://github.com/Xammie/mailbook/pull/93
+* Slightly improve the design of attachments in details by @Xammie in https://github.com/Xammie/mailbook/pull/97
+
+### New Contributors
+
+* @daniel-de-wit made their first contribution in https://github.com/Xammie/mailbook/pull/95
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.8.1...1.8.2
+
 ## 1.8.1 - 2024-04-10
 
 ### What's Changed
