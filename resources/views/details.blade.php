@@ -1,11 +1,11 @@
 <div class="flex-col justify-between gap-2 w-[300px] overflow-y-auto overflow-x-hidden hidden xl:flex">
-    <div class="flex flex-col p-4 divide-y divide-gray-500">
+    <div class="flex flex-col p-4 divide-y divide-gray-600">
         @foreach($meta as $label => $values)
             <div class="flex flex-col py-2">
                 <div class="text-xs font-bold tracking-wide uppercase">
                     {{ $label }}
                 </div>
-                @if(is_array($values))
+                    @if(is_array($values))
                     @foreach($values as $mail)
                         <div class="text-sm truncate" title="{{ $mail }}">
                             {{ $mail }}
@@ -23,15 +23,10 @@
                 <div class="text-xs font-bold tracking-wide uppercase">
                     Attachments
                 </div>
-                <div class="flex flex-col gap-2 items-start">
+                <div class="flex flex-row flex-wrap gap-2 items-start">
                     @foreach($attachments as $attachment)
                         <div
-                            class="px-2 py-1 rounded-lg shadow-lg bg-gray-600 flex gap-1 items-center text-sm truncate">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13"/>
-                            </svg>
+                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-blue-500/50 text-primary-foreground hover:bg-primary/80">
                             {{ $attachment }}
                         </div>
                     @endforeach
