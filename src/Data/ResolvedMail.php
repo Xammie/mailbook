@@ -64,7 +64,7 @@ class ResolvedMail
         $html = $this->message->getHtmlBody();
 
         if (is_resource($html)) {
-            return $this->replaceEmbeddedAttachments(stream_get_contents($html) ?: '', $this->message->getAttachments());
+            $html = stream_get_contents($html) ?: '';
         }
 
         /** @var null|string $html */
