@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.8.3 - 2024-12-06
+
+### What's Changed
+
+* Fix displaying inline images by @Xammie in https://github.com/Xammie/mailbook/pull/99
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.8.2...1.8.3
+
 ## 1.8.2 - 2024-11-20
 
 ### What's Changed
