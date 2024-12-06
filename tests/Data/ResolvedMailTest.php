@@ -96,6 +96,7 @@ it('can get bcc address', function (): void {
 it('can get the content from string', function (): void {
     $email = $this->mock(Email::class, function (MockInterface $mock): void {
         $mock->shouldReceive('getHtmlBody')->andReturn('this is some mail content');
+        $mock->shouldReceive('getAttachments')->andReturn([]);
     });
     $resolvedMail = new ResolvedMail($email);
 
@@ -107,6 +108,7 @@ it('can get the content from a steam', function (): void {
         $content = 'this is some mail content';
         $stream = fopen('data://text/plain,'.$content, 'r');
         $mock->shouldReceive('getHtmlBody')->andReturn($stream);
+        $mock->shouldReceive('getAttachments')->andReturn([]);
     });
     $resolvedMail = new ResolvedMail($email);
 
@@ -116,20 +118,34 @@ it('can get the content from a steam', function (): void {
 it('can get null content', function (): void {
     $email = $this->mock(Email::class, function (MockInterface $mock): void {
         $mock->shouldReceive('getHtmlBody')->andReturn(null);
+        $mock->shouldReceive('getAttachments')->andReturn([]);
     });
     $resolvedMail = new ResolvedMail($email);
 
-    expect($resolvedMail->content())->toBeNull();
+    expect($resolvedMail->content())->toBe('');
 });
 
 it('can get null content from a stream', function (): void {
     $email = $this->mock(Email::class, function (MockInterface $mock): void {
         $stream = fopen('data://text/plain,', 'r');
         $mock->shouldReceive('getHtmlBody')->andReturn($stream);
+        $mock->shouldReceive('getAttachments')->andReturn([]);
     });
     $resolvedMail = new ResolvedMail($email);
 
-    expect($resolvedMail->content())->toBeNull();
+    expect($resolvedMail->content())->toBe('');
+});
+
+it('will replace inline attachments', function (): void {
+    $email = $this->mock(Email::class, function (MockInterface $mock): void {
+        $mock->shouldReceive('getHtmlBody')->andReturn('<img src="cid:GRM6dF7cV3" alt="img alt">');
+        $mock->shouldReceive('getAttachments')->andReturn([
+            new DataPart('attachment1', 'GRM6dF7cV3', 'image/png'),
+        ]);
+    });
+    $resolvedMail = new ResolvedMail($email);
+
+    expect($resolvedMail->content())->toBe('<img src="data:image/png;base64,YXR0YWNobWVudDE=" alt="img alt">');
 });
 
 it('can get attachments', function (): void {

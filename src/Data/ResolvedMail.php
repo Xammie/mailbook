@@ -59,16 +59,43 @@ class ResolvedMail
             ->toArray();
     }
 
-    public function content(): ?string
+    public function content(): string
     {
         $html = $this->message->getHtmlBody();
 
         if (is_resource($html)) {
-            return stream_get_contents($html) ?: null;
+            $html = stream_get_contents($html) ?: '';
         }
 
         /** @var null|string $html */
-        return $html;
+        return $this->replaceEmbeddedAttachments($html ?? '', $this->message->getAttachments());
+    }
+
+    /**
+     * Replace embedded attachments with base64 encoded images.
+     *
+     * @see https://github.com/Xammie/mailbook/discussions/98
+     * @see https://github.com/laravel/framework/pull/48292
+     */
+    protected function replaceEmbeddedAttachments(string $renderedView, array $attachments): string
+    {
+        if (preg_match_all('/<img.+?src=[\'"]cid:([^\'"]+)[\'"].*?>/i', $renderedView, $matches)) {
+            foreach (array_unique($matches[1]) as $image) {
+                foreach ($attachments as $attachment) {
+                    if ($attachment->getFilename() === $image) {
+                        $renderedView = str_replace(
+                            'cid:'.$image,
+                            'data:'.$attachment->getContentType().';base64,'.$attachment->bodyToString(),
+                            $renderedView
+                        );
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $renderedView;
     }
 
     public function attachments(): array
