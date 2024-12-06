@@ -132,7 +132,7 @@ class MailableItem
 
     public function content(): string
     {
-        return $this->resolve()->content() ?? '';
+        return $this->resolve()->content();
     }
 
     public function size(): string
