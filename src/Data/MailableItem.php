@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook as MailbookFacade;
 use Xammie\Mailbook\MailableResolver;
+use Xammie\Mailbook\Support\ConfigInjector;
 use Xammie\Mailbook\Support\Format;
 use Xammie\Mailbook\Traits\HasCategory;
 use Xammie\Mailbook\Traits\HasLabel;
@@ -213,11 +214,16 @@ class MailableItem
             $instance->locale($locale);
         }
 
+        $injector = new ConfigInjector;
+        $injector->set('queue.default', 'sync');
+
         if ($instance instanceof Notification) {
             NotificationFacade::route('mail', $email)->notifyNow($instance);
         } else {
-            Mail::to($email)->sendNow($instance);
+            Mail::to($email)->send($instance);
         }
+
+        $injector->revert();
     }
 
     public function meta(): array
