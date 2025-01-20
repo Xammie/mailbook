@@ -216,7 +216,7 @@ class MailableItem
         if ($instance instanceof Notification) {
             NotificationFacade::route('mail', $email)->notifyNow($instance);
         } else {
-            Mail::to($email)->send($instance);
+            Mail::to($email)->sendNow($instance);
         }
     }
 
