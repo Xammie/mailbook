@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.8.4 - 2025-01-21
+
+### What's Changed
+
+* Fix sending mailables that implement ShouldQueue by @ItsRD in https://github.com/Xammie/mailbook/pull/102
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.8.3...1.8.4
+
 ## 1.8.3 - 2024-12-06
 
 ### What's Changed
