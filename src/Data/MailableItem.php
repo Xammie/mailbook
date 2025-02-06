@@ -227,6 +227,9 @@ class MailableItem
         $injector->revert();
     }
 
+	/**
+	 * @return array<string, array|string>
+	 */
     public function meta(): array
     {
         return array_filter([
