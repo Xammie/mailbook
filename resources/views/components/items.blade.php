@@ -1,4 +1,4 @@
-@props(['mailable', 'items', 'current', 'display', 'currentLocale'])
+@props(['mailable', 'current', 'display', 'currentLocale'])
 
 @if($mailable->hasVariants())
     <div class="px-3 py-[3px] text-sm flex gap-1 items-center text-white">
