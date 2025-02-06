@@ -7,3 +7,6 @@ parameters:
         - config
     ignoreErrors:
         - identifier: missingType.iterableValue
+    bladestan:
+        template_paths:
+            - mailbook:resources/views
