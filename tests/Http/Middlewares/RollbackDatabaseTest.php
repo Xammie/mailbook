@@ -12,9 +12,7 @@ it('will rollback database', function (): void {
     DB::shouldReceive('rollback')->once();
 
     $middleware = new RollbackDatabase;
-    $middleware->handle(new stdClass, function () {
-        return 'response';
-    });
+    $middleware->handle(new stdClass, fn () => 'response');
 });
 
 it('will rollback database when exception occurs', function (): void {
@@ -37,7 +35,5 @@ it('will not rollback database when disabled', function (): void {
     DB::shouldReceive('rollback')->never();
 
     $middleware = new RollbackDatabase;
-    $middleware->handle(new stdClass, function () {
-        return 'response';
-    });
+    $middleware->handle(new stdClass, fn () => 'response');
 });

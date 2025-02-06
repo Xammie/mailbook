@@ -102,6 +102,7 @@ class ResolvedMail
     {
         return collect($this->message->getAttachments())
             ->map(function (DataPart $part) {
+                /** @phpstan-ignore function.alreadyNarrowedType */
                 if (method_exists($part, 'getName')) {
                     return $part->getName();
                 }
