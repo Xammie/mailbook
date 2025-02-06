@@ -1,3 +1,5 @@
+includes:
+    - vendor/tomasvotruba/bladestan/config/extension.neon
 parameters:
     level: 9
     paths:
