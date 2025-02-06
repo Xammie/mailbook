@@ -21,6 +21,7 @@
         "illuminate/contracts": "^9.0 || ^10.0 || ^11.0"
     },
     "require-dev": {
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^v1.4.1",
         "nunomaduro/collision": "^6.0 || ^7.0 || ^8.0",
         "nunomaduro/phpinsights": "^2.6",
