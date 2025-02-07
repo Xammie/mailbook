@@ -1,5 +1,3 @@
-includes:
-    - vendor/tomasvotruba/bladestan/config/extension.neon
 parameters:
     level: 9
     paths:
@@ -7,6 +5,7 @@ parameters:
         - config
     ignoreErrors:
         - identifier: missingType.iterableValue
+    noEnvCallsOutsideOfConfig: false
     bladestan:
         template_paths:
             - mailbook:resources/views
