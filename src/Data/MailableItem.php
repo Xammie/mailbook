@@ -125,7 +125,7 @@ class MailableItem
 
     public function theme(): ?string
     {
-        /** @var object $instance */
+        /** @var \Illuminate\Mail\Mailable $instance */
         $instance = $this->resolveInstance();
 
         return $instance->theme ?? null;
@@ -203,6 +203,7 @@ class MailableItem
 
     public function send(string $email): void
     {
+        /** @phpstan-ignore function.alreadyNarrowedType */
         if (method_exists(app(Mailer::class), 'alwaysTo')) {
             Mail::alwaysTo($email);
         }
@@ -226,6 +227,9 @@ class MailableItem
         $injector->revert();
     }
 
+    /**
+     * @return array<string, array|string>
+     */
     public function meta(): array
     {
         return array_filter([

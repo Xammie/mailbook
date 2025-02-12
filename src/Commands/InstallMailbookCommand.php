@@ -14,18 +14,13 @@ class InstallMailbookCommand extends Command
 
     public $description = 'Install mailbook into your application';
 
-    public function __construct(private Filesystem $files)
-    {
-        parent::__construct();
-    }
+    private Filesystem $files;
 
-    public function handle(): int
+    public function handle(Filesystem $files): int
     {
-        if (property_exists($this, 'components')) {
-            $this->components->info('Installing mailbook');
-        } else {
-            $this->info('Installing mailbook');
-        }
+        $this->files = $files;
+
+        $this->output('Installing mailbook');
 
         $stubs = [
             'routes/mailbook.php' => 'route-file.php',
@@ -41,14 +36,8 @@ class InstallMailbookCommand extends Command
         }
 
         $this->newLine();
-
         $url = route('mailbook.dashboard');
-
-        if (property_exists($this, 'components')) {
-            $this->components->info("Mailbook has been installed. Navigate to $url to view it");
-        } else {
-            $this->info("Mailbook has been installed. Navigate to $url to view it");
-        }
+        $this->output("Mailbook has been installed. Navigate to $url to view it");
 
         return self::SUCCESS;
     }
@@ -67,13 +56,7 @@ class InstallMailbookCommand extends Command
                 str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($to)) // @phpstan-ignore-line
             );
 
-            if (property_exists($this, 'components')) {
-                $this->components->twoColumnDetail($output, '<fg=yellow;options=bold>SKIPPED</>');
-
-                return;
-            }
-
-            $this->info($output);
+            $this->twoColumnDetail($output, '<fg=yellow;options=bold>SKIPPED</>');
         }
     }
 
@@ -89,13 +72,36 @@ class InstallMailbookCommand extends Command
         $from = str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($from)); // @phpstan-ignore-line
         $to = str_replace(base_path().DIRECTORY_SEPARATOR, '', realpath($to)); // @phpstan-ignore-line
 
-        $output = sprintf('Copying file [%s] to [%s]', $from, $to);
+        $this->task(sprintf('Copying file [%s] to [%s]', $from, $to));
+    }
 
+    private function twoColumnDetail(string $first, string $second): void
+    {
+        /** @phpstan-ignore function.alreadyNarrowedType */
         if (property_exists($this, 'components')) {
-            $this->components->task($output);
-
-            return;
+            $this->components->twoColumnDetail($first, $second);
+        } else {
+            $this->info($first);
         }
-        $this->info($output);
+    }
+
+    private function task(string $description): void
+    {
+        /** @phpstan-ignore function.alreadyNarrowedType */
+        if (property_exists($this, 'components')) {
+            $this->components->task($description);
+        } else {
+            $this->info($description);
+        }
+    }
+
+    public function output(string $string): void
+    {
+        /** @phpstan-ignore function.alreadyNarrowedType */
+        if (property_exists($this, 'components')) {
+            $this->components->info($string);
+        } else {
+            $this->info($string);
+        }
     }
 }

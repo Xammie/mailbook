@@ -1,0 +1,11 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - config
+    ignoreErrors:
+        - identifier: missingType.iterableValue
+    noEnvCallsOutsideOfConfig: false
+    bladestan:
+        template_paths:
+            - mailbook:resources/views
