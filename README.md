@@ -210,10 +210,6 @@ composer test
 
 Please see [CHANGELOG](https://github.com/Xammie/mailbook/blob/main/CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
-
-Please see [CONTRIBUTING](https://github.com/Xammie/mailbook/blob/main/CONTRIBUTING.md) for details.
-
 ## Security Vulnerabilities
 
 Please review [our security policy](https://github.com/Xammie/mailbook/security/policy) on how to report security vulnerabilities.
