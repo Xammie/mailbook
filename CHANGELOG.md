@@ -2,6 +2,22 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.9.0 - 2025-02-17
+
+### What's Changed
+
+* Update phpstan and bladestan by @AJenbo in https://github.com/Xammie/mailbook/pull/106
+* Load service provider during tests by @AJenbo in https://github.com/Xammie/mailbook/pull/109
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/Xammie/mailbook/pull/110
+* Upgrade to tailwindcss v4 by @Xammie in https://github.com/Xammie/mailbook/pull/112
+
+### New Contributors
+
+* @AJenbo made their first contribution in https://github.com/Xammie/mailbook/pull/106
+* @laravel-shift made their first contribution in https://github.com/Xammie/mailbook/pull/110
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.8.4...1.9.0
+
 ## 1.8.4 - 2025-01-21
 
 ### What's Changed
