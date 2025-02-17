@@ -10,7 +10,7 @@
 </head>
 <body class="bg-gray-900 text-white h-screen w-screen flex flex-col">
 @include('mailbook::navigation')
-<div class="flex flex-grow flex-shrink items-stretch overflow-hidden">
+<div class="flex grow shrink items-stretch overflow-hidden">
     @include('mailbook::list')
     @include('mailbook::display')
     @include('mailbook::details')
