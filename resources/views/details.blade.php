@@ -26,7 +26,7 @@
                 <div class="flex flex-row flex-wrap gap-2 items-start">
                     @foreach($attachments as $attachment)
                         <div
-                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-blue-500/50 text-primary-foreground hover:bg-primary/80">
+                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-blue-500/50 text-primary-foreground hover:bg-primary/80">
                             {{ $attachment }}
                         </div>
                     @endforeach

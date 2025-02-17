@@ -1,10 +1,11 @@
 {
-  "dependencies": {
-    "tailwindcss": "^3.4.17"
-  },
-  "scripts": {
-    "dev": "yarn watch",
-    "watch": "tailwindcss --input ./resources/css/mailbook.css --output ./resources/dist/mailbook.css --watch",
-    "build": "tailwindcss --input ./resources/css/mailbook.css --output ./resources/dist/mailbook.css --minify"
-  }
+    "dependencies": {
+        "tailwindcss": "^4.0.6",
+        "@tailwindcss/cli": "^4.0.6"
+    },
+    "scripts": {
+        "dev": "yarn watch",
+        "watch": "tailwindcss --input ./resources/css/mailbook.css --output ./resources/dist/mailbook.css --watch",
+        "build": "tailwindcss --input ./resources/css/mailbook.css --output ./resources/dist/mailbook.css --minify"
+    }
 }
