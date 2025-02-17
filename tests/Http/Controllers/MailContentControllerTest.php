@@ -113,9 +113,9 @@ it('can render closure', function (): void {
 });
 
 it('cannot render without mailables', function (): void {
-    get(route('mailbook.content', ['class' => TestMail::class]))
-        ->assertStatus(500);
-});
+get(route('mailbook.content', ['class' => TestMail::class]))
+->assertStatus(500);
+    });
 
 it('cannot render with unknown mailable', function (): void {
     Mailbook::add(TestMail::class);
