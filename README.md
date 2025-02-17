@@ -208,21 +208,21 @@ composer test
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](https://github.com/Xammie/mailbook/blob/main/CHANGELOG.md) for more information on what has changed recently.
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/Xammie/.github/blob/main/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/Xammie/mailbook/blob/main/CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+Please review [our security policy](https://github.com/Xammie/mailbook/security/policy) on how to report security vulnerabilities.
 
 ## Credits
 
 - [Max Hoogenbosch](https://github.com/Xammie)
-- [All Contributors](../../contributors)
+- [All Contributors](https://github.com/Xammie/mailbook/contributors)
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/Xammie/mailbook/blob/main/LICENSE.md) for more information.
