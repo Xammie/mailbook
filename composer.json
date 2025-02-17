@@ -47,7 +47,7 @@
         }
     },
     "scripts": {
-        "analyse": "vendor/bin/phpstan analyse",
+        "analyse": "vendor/bin/phpstan analyse --memory-limit 1G",
         "test": "vendor/bin/pest --compact",
         "coverage": "XDEBUG_MODE=coverage vendor/bin/pest --compact --coverage --coverage-html=./coverage && echo 'open coverage/index.html'",
         "format": "vendor/bin/pint"
