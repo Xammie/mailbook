@@ -336,10 +336,15 @@ picomatch@^2.3.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
-tailwindcss@4.0.6, tailwindcss@^4.0.6:
+tailwindcss@4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.0.6.tgz#c033bfba94d6e3bf70650a2f9fe949f39d3bb191"
   integrity sha512-mysewHYJKaXgNOW6pp5xon/emCsfAMnO8WMaGKZZ35fomnR/T5gYnRg2/yRTTrtXiEl1tiVkeRt0eMO6HxEZqw==
+
+tailwindcss@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.0.8.tgz#25d7fed091aacd16e2a3b8b86d51eea0a482fb1c"
+  integrity sha512-Me7N5CKR+D2A1xdWA5t5+kjjT7bwnxZOE6/yDI/ixJdJokszsn2n++mdU5yJwrsTpqFX2B9ZNMBJDwcqk9C9lw==
 
 tapable@^2.2.0:
   version "2.2.1"
