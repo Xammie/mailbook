@@ -1,7 +1,7 @@
 {
     "dependencies": {
         "tailwindcss": "^4.0.8",
-        "@tailwindcss/cli": "^4.0.6"
+        "@tailwindcss/cli": "^4.0.8"
     },
     "scripts": {
         "dev": "yarn watch",
