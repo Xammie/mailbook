@@ -484,10 +484,15 @@ source-map-js@^1.2.1:
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.1.tgz#1ce5650fddd87abc099eda37dcff024c2667ae46"
   integrity sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==
 
-tailwindcss@4.1.6, tailwindcss@^4.0.17:
+tailwindcss@4.1.6:
   version "4.1.6"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.1.6.tgz#ebe62de22b7d8a8c1f76bd3a07fc37c3fcc36503"
   integrity sha512-j0cGLTreM6u4OWzBeLBpycK0WIh8w7kSwcUsQZoGLHZ7xDTdM69lN64AgoIEEwFi0tnhs4wSykUa5YWxAzgFYg==
+
+tailwindcss@^4.1.7:
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.1.7.tgz#949f76d50667946ddd7291e0c7a4b5a7dfc9e765"
+  integrity sha512-kr1o/ErIdNhTz8uzAYL7TpaUuzKIE6QPQ4qmSdxnoX/lo+5wmUHQA6h3L5yIqEImSRnAAURDirLu/BgiXGPAhg==
 
 tapable@^2.2.0:
   version "2.2.1"
