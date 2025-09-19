@@ -73,7 +73,6 @@ return [
     | This value is the "domain name" associated with your mailbook routes
     |
     */
-
     'domain' => env('MAILBOOK_DOMAIN', null),
 
     /*
