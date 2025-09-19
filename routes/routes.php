@@ -8,7 +8,8 @@ use Xammie\Mailbook\Http\Controllers\MailContentController;
 use Xammie\Mailbook\Http\Controllers\MailSendController;
 
 if (config('mailbook.enabled')) {
-    Route::prefix(config('mailbook.route_prefix'))
+    Route::domain(config('mailbook.domain'))
+        ->prefix(config('mailbook.route_prefix'))
         ->middleware(config('mailbook.middlewares'))
         ->group(function (): void {
             Route::get('/', DashboardController::class)->name('mailbook.dashboard');
