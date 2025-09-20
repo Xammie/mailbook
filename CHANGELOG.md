@@ -2,6 +2,19 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.10.0 - 2025-09-20
+
+### What's Changed
+
+* Add domain config option by @mstaack in https://github.com/Xammie/mailbook/pull/151
+* Updated tailwind build
+
+### New Contributors
+
+* @mstaack made their first contribution in https://github.com/Xammie/mailbook/pull/151
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.9.0...1.10.0
+
 ## 1.9.0 - 2025-02-17
 
 ### What's Changed
