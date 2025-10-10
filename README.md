@@ -79,7 +79,7 @@ A notification will most of the time need a user (also called `notifiable` in th
 You can set the desired user with the `::to()` method.
 
 ```php
-$user = User::factory()->create();
+$user = User::factory()->make();
 
 Mailbook::to($user)->add(WelcomeNotification::class);
 ```
@@ -129,8 +129,8 @@ variants to solve this.
 ```php
 // Use a closure to customize the parameters of the mail instance
 Mailbook::add(OrderCreatedMail::class)
-    ->variant('1 item', fn () => new OrderCreatedMail(Order::factory()->withOneProduct()->create()))
-    ->variant('2 items', fn () => new OrderCreatedMail(Order::factory()->withTwoProducts()->create()));
+    ->variant('1 item', fn () => new OrderCreatedMail(Order::factory()->withOneProduct()->make()))
+    ->variant('2 items', fn () => new OrderCreatedMail(Order::factory()->withTwoProducts()->make()));
 ```
 
 ## Localization
@@ -165,8 +165,8 @@ You can now safely use factories and other queries when registering your mailabl
 ```php
 // All database changes are rolled back after rendering the mail.
 Mailbook::add(function (): OrderShippedMail {
-    $order = Order::factory()->create();
-    $tracker = Tracker::factory()->create();
+    $order = Order::factory()->make();
+    $tracker = Tracker::factory()->make();
         
     return new OrderShippedMail($order, $tracker);
 });
