@@ -16,7 +16,6 @@
 /testbench.yaml     export-ignore
 /UPGRADING.md       export-ignore
 /phpstan.neon.dist  export-ignore
-/infection.json     export-ignore
 /pint.json          export-ignore
 /screenshot.png     export-ignore
 /tailwind.config.js export-ignore
