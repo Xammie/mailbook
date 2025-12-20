@@ -21,11 +21,14 @@ jobs:
         stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 11.*
-            testbench: 9.*
+            testbench: ^9.9
             carbon: ^2.72.2
           - laravel: 12.*
             testbench: 10.*
             carbon: ^3.8.4
+        exclude:
+          - laravel: 11.*
+            php: 8.5
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
@@ -48,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer remove larastan/larastan tomasvotruba/bladestan rector/rector --dev --no-interaction --no-update --ignore-platform-reqs
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update --ignore-platform-reqs
+          composer require --dev "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update --ignore-platform-reqs
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Execute tests
