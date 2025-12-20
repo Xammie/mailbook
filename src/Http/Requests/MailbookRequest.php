@@ -18,7 +18,7 @@ class MailbookRequest extends FormRequest
 
     public function class(): ?string
     {
-        $class = $this->query->get('class', $this->query->get('selected'));
+        $class = $this->query('class', $this->query('selected'));
 
         if (is_string($class)) {
             return $class;
@@ -29,7 +29,7 @@ class MailbookRequest extends FormRequest
 
     public function variant(): ?string
     {
-        $variant = $this->query->get('variant');
+        $variant = $this->query('variant');
 
         if (is_string($variant)) {
             return $variant;
@@ -40,7 +40,7 @@ class MailbookRequest extends FormRequest
 
     public function locale(): ?string
     {
-        $locale = $this->query->get('locale');
+        $locale = $this->query('locale');
 
         if (is_string($locale)) {
             return $locale;
@@ -51,7 +51,7 @@ class MailbookRequest extends FormRequest
 
     public function seed(): ?string
     {
-        $seed = $this->query->get('s');
+        $seed = $this->query('s');
 
         if (is_string($seed)) {
             return $seed;

@@ -15,7 +15,7 @@ class Format
 
         $bytes = max($bytes, 0);
         $pow = floor(($bytes !== 0 ? log($bytes) : 0) / log(1024));
-        $pow = (int)min($pow, count($units) - 1);
+        $pow = (int) min($pow, count($units) - 1);
 
         $bytes /= 1024 ** $pow;
 
