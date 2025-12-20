@@ -2,6 +2,15 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.10.1 - 2025-12-20
+
+### What's Changed
+
+* Handle Symfony 8 deprecations by @AJenbo in https://github.com/Xammie/mailbook/pull/154
+* Update CI to run php 8.5 by @Xammie in https://github.com/Xammie/mailbook/pull/155
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.10.0...1.10.1
+
 ## 1.10.0 - 2025-09-20
 
 ### What's Changed
