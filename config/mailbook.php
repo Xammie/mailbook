@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use Xammie\Mailbook\Http\Middlewares\RollbackDatabase;
 
 return [
     /*
@@ -94,7 +95,7 @@ return [
     | every route defined by mailbook.
     */
     'middlewares' => [
-        Xammie\Mailbook\Http\Middlewares\RollbackDatabase::class,
+        RollbackDatabase::class,
     ],
 
     /*

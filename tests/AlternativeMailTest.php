@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Mail\Mailables\Envelope;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\AlternativeMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\ClassicMail;
@@ -21,4 +22,4 @@ it('can get mail subject and content', function ($mailable): void {
         new ClassicMail,
         new AlternativeMail,
     ])
-    ->skip(! class_exists(\Illuminate\Mail\Mailables\Envelope::class), 'Alternative mailables are not available in this version of Laravel');
+    ->skip(! class_exists(Envelope::class), 'Alternative mailables are not available in this version of Laravel');
