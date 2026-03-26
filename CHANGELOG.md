@@ -2,6 +2,14 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.11.0 - 2026-03-26
+
+### What's Changed
+
+* Laravel 13 by @Xammie in https://github.com/Xammie/mailbook/pull/157
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.10.1...1.11.0
+
 ## 1.10.1 - 2025-12-20
 
 ### What's Changed
