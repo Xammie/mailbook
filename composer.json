@@ -17,15 +17,15 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/contracts": "^9.0 || ^10.0 || ^11.0 || ^12.0",
+        "illuminate/contracts": "^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0",
         "spatie/laravel-package-tools": "^1.9.2"
     },
     "require-dev": {
-        "larastan/larastan": "^3.0",
+        "larastan/larastan": "^3.0 || dev-l13",
         "laravel/pint": "^v1.4.1",
         "nunomaduro/collision": "^6.0 || ^7.0 || ^8.0",
         "nunomaduro/phpinsights": "^2.6",
-        "orchestra/testbench": "^9.0 || ^10.0",
+        "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
         "pestphp/pest": "^3.7 || ^4.0",
         "pestphp/pest-plugin-laravel": "^3.0 || ^4.0",
         "phpstan/extension-installer": "^1.4",
