@@ -2,7 +2,6 @@
     "name": "xammie/mailbook",
     "description": "Laravel Mail Explorer",
     "keywords": [
-        "xammie",
         "laravel",
         "mailbook"
     ],
@@ -26,8 +25,7 @@
         "nunomaduro/collision": "^6.0 || ^7.0 || ^8.0",
         "nunomaduro/phpinsights": "^2.6",
         "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
-        "pestphp/pest": "^3.7 || ^4.0",
-        "pestphp/pest-plugin-laravel": "^3.0 || ^4.0",
+        "phpunit/phpunit": "11.*",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-deprecation-rules": "^2.0",
@@ -48,14 +46,13 @@
     },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse --memory-limit 1G",
-        "test": "vendor/bin/pest --compact",
-        "coverage": "XDEBUG_MODE=coverage vendor/bin/pest --compact --coverage --coverage-html=./coverage && echo 'open coverage/index.html'",
+        "test": "vendor/bin/phpunit",
+        "coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --compact --coverage --coverage-html=./coverage && echo 'open coverage/index.html'",
         "format": "vendor/bin/pint"
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": false
         },

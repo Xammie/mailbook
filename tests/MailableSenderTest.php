@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
+namespace Xammie\Mailbook\Tests;
+
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Mail\PendingMail;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
+use Mockery;
 use Xammie\Mailbook\Data\ResolvedMail;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\MailableSender;
@@ -16,112 +19,109 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Fixtures\User;
 
-it('can collect mail', function (): void {
-    Event::fake();
+class MailableSenderTest extends TestCase
+{
+    public function test_can_collect_mail(): void
+    {
+        Event::fake();
+        $mailableSender = new MailableSender(new TestMail);
+        $mail = $mailableSender->collect();
+        $this->assertInstanceOf(ResolvedMail::class, $mail);
+        Event::assertDispatched(MessageSending::class);
+        Event::assertDispatched(MessageSent::class);
+    }
 
-    $mailableSender = new MailableSender(new TestMail);
-    $mail = $mailableSender->collect();
+    public function test_can_collect_queued_mail(): void
+    {
+        Event::fake();
+        $mailableSender = new MailableSender(new ShouldQueueMail);
+        $mail = $mailableSender->collect();
+        $this->assertInstanceOf(ResolvedMail::class, $mail);
+        Event::assertDispatched(MessageSending::class);
+        Event::assertDispatched(MessageSent::class);
+    }
 
-    expect($mail)->toBeInstanceOf(ResolvedMail::class);
-
-    Event::assertDispatched(MessageSending::class);
-    Event::assertDispatched(MessageSent::class);
-});
-
-it('can collect queued mail', function (): void {
-    Event::fake();
-
-    $mailableSender = new MailableSender(new ShouldQueueMail);
-    $mail = $mailableSender->collect();
-
-    expect($mail)->toBeInstanceOf(ResolvedMail::class);
-
-    Event::assertDispatched(MessageSending::class);
-    Event::assertDispatched(MessageSent::class);
-});
-
-it('can collect after commit mail', function (): void {
-    Event::fake();
-
-    Mail::shouldReceive('to')
-        ->once()
-        ->with('remove@mailbook.dev')
-        ->andReturn(Mockery::mock(PendingMail::class)
-            ->shouldReceive('send')
+    public function test_can_collect_after_commit_mail(): void
+    {
+        Event::fake();
+        Mail::shouldReceive('to')
             ->once()
-            ->withArgs(function (AfterCommitMail $mail) {
-                expect($mail->afterCommit)->toBeFalse();
+            ->with('remove@mailbook.dev')
+            ->andReturn(Mockery::mock(PendingMail::class)
+                ->shouldReceive('send')
+                ->once()
+                ->withArgs(function (AfterCommitMail $mail) {
+                    $this->assertFalse($mail->afterCommit);
 
-                return true;
-            })
-            ->getMock());
+                    return true;
+                })
+                ->getMock()
+            );
+        $mailableSender = new MailableSender(new AfterCommitMail);
+        invade($mailableSender)->send();
+    }
 
-    $mailableSender = new MailableSender(new AfterCommitMail);
-    invade($mailableSender)->send();
-});
+    public function test_will_add_new_mailer(): void
+    {
+        $mailableSender = new MailableSender(new TestMail);
+        invade($mailableSender)->inject();
+        $this->assertSame(['transport' => 'mailbook'], config('mail.mailers.mailbook'));
+    }
 
-it('will add new mailer', function (): void {
-    $mailableSender = new MailableSender(new TestMail);
-    invade($mailableSender)->inject();
+    public function test_will_cleanup_driver(): void
+    {
+        $mailableSender = new MailableSender(new TestMail);
+        $mailableSender->collect();
+        $this->assertNotSame('mailbook', config('mail.default'));
+        $this->assertNotSame('mailbook', config('mail.driver'));
+    }
 
-    expect(config('mail.mailers.mailbook'))->toBe([
-        'transport' => 'mailbook',
-    ]);
-});
+    public function test_will_cleanup_message(): void
+    {
+        $mailableSender = new MailableSender(new TestMail);
+        $mailableSender->collect();
+        $this->assertNull(Mailbook::getMessage());
+    }
 
-it('will cleanup driver', function (): void {
-    $mailableSender = new MailableSender(new TestMail);
-    $mailableSender->collect();
+    public function test_will_inject_driver_config(): void
+    {
+        $mailableSender = new MailableSender(new TestMail);
+        invade($mailableSender)->inject();
+        $this->assertSame('mailbook', config('mail.default'));
+    }
 
-    expect(config('mail.default'))->not()->toBe('mailbook')
-        ->and(config('mail.driver'))->not()->toBe('mailbook');
-});
+    public function test_will_inject_old_driver_config(): void
+    {
+        $mailableSender = new MailableSender(new TestMail);
+        invade($mailableSender)->inject();
+        $this->assertSame('mailbook', config('mail.driver'));
+    }
 
-it('will cleanup message', function (): void {
-    $mailableSender = new MailableSender(new TestMail);
-    $mailableSender->collect();
+    public function test_can_send_mailable_with_email(): void
+    {
+        $mailableSender = new MailableSender(new TestMail, 'test@mailbook.dev');
+        $mail = $mailableSender->collect();
+        $this->assertSame(['test@mailbook.dev'], $mail->to());
+    }
 
-    expect(Mailbook::getMessage())->toBeNull();
-});
+    public function test_can_send_mailable_with_notifiable(): void
+    {
+        $mailableSender = new MailableSender(new TestNotification, new User(['email' => 'test@mailbook.dev']));
+        $mail = $mailableSender->collect();
+        $this->assertSame(['test@mailbook.dev'], $mail->to());
+    }
 
-it('will inject driver config', function (): void {
-    $mailableSender = new MailableSender(new TestMail);
-    invade($mailableSender)->inject();
+    public function test_can_send_notification_with_email(): void
+    {
+        $mailableSender = new MailableSender(new TestNotification, 'test@mailbook.dev');
+        $mail = $mailableSender->collect();
+        $this->assertSame(['test@mailbook.dev'], $mail->to());
+    }
 
-    expect(config('mail.default'))->toBe('mailbook');
-});
-
-it('will inject old driver config', function (): void {
-    $mailableSender = new MailableSender(new TestMail);
-    invade($mailableSender)->inject();
-
-    expect(config('mail.driver'))->toBe('mailbook');
-});
-
-it('can send mailable with email', function (): void {
-    $mailableSender = new MailableSender(new TestMail, 'test@mailbook.dev');
-    $mail = $mailableSender->collect();
-
-    expect($mail->to())->toBe(['test@mailbook.dev']);
-});
-
-it('can send mailable with notifiable', function (): void {
-    $mailableSender = new MailableSender(new TestNotification, new User(['email' => 'test@mailbook.dev']));
-    $mail = $mailableSender->collect();
-
-    expect($mail->to())->toBe(['test@mailbook.dev']);
-});
-
-it('can send notification with email', function (): void {
-    $mailableSender = new MailableSender(new TestNotification, 'test@mailbook.dev');
-    $mail = $mailableSender->collect();
-
-    expect($mail->to())->toBe(['test@mailbook.dev']);
-});
-
-it('can send notification with notifiable', function (): void {
-    $mailableSender = new MailableSender(new TestNotification, new User(['email' => 'test@mailbook.dev']));
-    $mail = $mailableSender->collect();
-
-    expect($mail->to())->toBe(['test@mailbook.dev']);
-});
+    public function test_can_send_notification_with_notifiable(): void
+    {
+        $mailableSender = new MailableSender(new TestNotification, new User(['email' => 'test@mailbook.dev']));
+        $mail = $mailableSender->collect();
+        $this->assertSame(['test@mailbook.dev'], $mail->to());
+    }
+}

@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+namespace Xammie\Mailbook\Tests\Data;
+
+use UnexpectedValueException;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\NotificationMail;
@@ -9,213 +12,219 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestBinding;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\WithAttachmentsMail;
+use Xammie\Mailbook\Tests\TestCase;
 
-it('can render', function (): void {
-    $html = Mailbook::add(TestMail::class)->content();
+class MailableItemTest extends TestCase
+{
+    public function test_can_render(): void
+    {
+        $html = Mailbook::add(TestMail::class)->content();
+        $this->assertStringContainsString('Test mail', $html);
+    }
 
-    expect($html)->toContain('Test mail');
-});
+    public function test_can_set_label(): void
+    {
+        $item = Mailbook::add(TestMail::class);
+        $this->assertSame('Test Mail', $item->getLabel());
+        $item->label('test');
+        $this->assertSame('test', $item->getLabel());
+    }
 
-it('can set label', function (): void {
-    $item = Mailbook::add(TestMail::class);
+    public function test_can_render_closure(): void
+    {
+        $html = Mailbook::add(fn () => new TestMail)->content();
+        $this->assertStringContainsString('Test mail', $html);
+    }
 
-    expect($item->getLabel())->toBe('Test Mail');
+    public function test_can_get_subject(): void
+    {
+        $subject = Mailbook::add(TestMail::class)->subject();
+        $this->assertSame('Test email subject', $subject);
+    }
 
-    $item->label('test');
+    public function test_cannot_get_subject_with_container_binding_error(): void
+    {
+        $subject = Mailbook::add(TestBinding::class)->subject();
+        $this->assertNull($subject);
+    }
 
-    expect($item->getLabel())->toBe('test');
-});
+    public function test_cannot_get_missing_subject(): void
+    {
+        $subject = Mailbook::add(NotificationMail::class)->subject();
+        $this->assertSame('Notification Mail', $subject);
+    }
 
-it('can render closure', function (): void {
-    $html = Mailbook::add(fn () => new TestMail)->content();
+    public function test_can_render_multiple_times(): void
+    {
+        $item = Mailbook::add(fn () => new TestMail);
+        $this->assertSame($item->content(), $item->content());
+    }
 
-    expect($html)->toContain('Test mail');
-});
+    public function test_can_register_variants(): void
+    {
+        $item = Mailbook::add(TestMail::class)
+            ->variant('Test', fn () => new TestMail)
+            ->variant('Another test', fn () => new TestMail);
 
-it('can get subject', function (): void {
-    $subject = Mailbook::add(TestMail::class)->subject();
+        $this->assertCount(2, $item->getVariants());
+    }
 
-    expect($subject)->toBe('Test email subject');
-});
+    public function test_cannot_register_duplicate_variants(): void
+    {
+        $this->expectException(MailbookException::class);
+        $this->expectExceptionMessage('Variant Test (test) already exists');
 
-it('cannot get subject with container binding error', function (): void {
-    $subject = Mailbook::add(TestBinding::class)->subject();
+        Mailbook::add(TestMail::class)
+            ->variant('Test', fn () => new TestMail)
+            ->variant('Test', fn () => new TestMail);
+    }
 
-    expect($subject)->toBeNull();
-});
+    public function test_throws_with_invalid_return_type(): void
+    {
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('Unexpected value returned from mailbook closure expected instance of Illuminate\Contracts\Mail\Mailable but got string');
 
-it('cannot get missing subject', function (): void {
-    $subject = Mailbook::add(NotificationMail::class)->subject();
+        Mailbook::add(fn () => 'invalid')->variantResolver()->instance();
+    }
 
-    expect($subject)->toBe('Notification Mail');
-});
+    public function test_is_equal(): void
+    {
+        $item = Mailbook::add(TestMail::class);
+        $other = Mailbook::mailables()->first();
+        $this->assertTrue($item->is($other));
+    }
 
-it('can render multiple times', function (): void {
-    $item = Mailbook::add(fn () => new TestMail);
+    public function test_will_resolve_once(): void
+    {
+        $item = Mailbook::add(TestMail::class);
+        $this->assertSame($item->resolver(), $item->resolver());
+    }
 
-    expect($item->content())->toBe($item->content());
-});
+    public function test_can_get_variant_resolver_without_variants(): void
+    {
+        $item = Mailbook::add(TestMail::class);
+        $this->assertSame(TestMail::class, $item->variantResolver()->className());
+    }
 
-it('can register variants', function (): void {
-    $item = Mailbook::add(TestMail::class)
-        ->variant('Test', fn () => new TestMail)
-        ->variant('Another test', fn () => new TestMail);
+    public function test_can_get_variant_resolver_from_default_variant(): void
+    {
+        $item = Mailbook::add(TestMail::class)
+            ->variant('Other one', fn () => new OtherMail);
+        $this->assertSame(OtherMail::class, $item->variantResolver()->className());
+    }
 
-    expect($item->getVariants())->toHaveCount(2);
-});
+    public function test_can_get_default_from(): void
+    {
+        $item = Mailbook::add(TestMail::class);
+        $this->assertEquals(['"Example" <hello@example.com>'], $item->from());
+    }
 
-it('cannot register duplicate variants', function (): void {
-    Mailbook::add(TestMail::class)
-        ->variant('Test', fn () => new TestMail)
-        ->variant('Test', fn () => new TestMail);
-})
-    ->throws(MailbookException::class, 'Variant Test (test) already exists');
+    public function test_can_get_from(): void
+    {
+        $item = Mailbook::add(OtherMail::class);
+        $this->assertEquals(['"Harry Potter" <harry@example.com>'], $item->from());
+    }
 
-it('throws with invalid return type', function (): void {
-    Mailbook::add(fn () => 'invalid')->variantResolver()->instance();
-})
-    ->throws(UnexpectedValueException::class, 'Unexpected value returned from mailbook closure expected instance of Illuminate\Contracts\Mail\Mailable but got string');
+    public function test_can_get_from_after_rendering(): void
+    {
+        $item = Mailbook::add(OtherMail::class);
+        $item->content();
+        $this->assertEquals(['"Harry Potter" <harry@example.com>'], $item->from());
+    }
 
-it('is equal', function (): void {
-    $item = Mailbook::add(TestMail::class);
-    $other = Mailbook::mailables()->first();
+    public function test_can_get_reply_to(): void
+    {
+        $item = Mailbook::add(OtherMail::class);
+        $this->assertEquals(['"Support" <questions@example.com>'], $item->replyTo());
+    }
 
-    expect($item->is($other))->toBeTrue();
-});
+    public function test_can_get_to(): void
+    {
+        $item = Mailbook::add(OtherMail::class);
+        $this->assertEquals(['"Mailbook" <example@mailbook.dev>'], $item->to());
+    }
 
-it('will resolve once', function (): void {
-    $item = Mailbook::add(TestMail::class);
+    public function test_can_get_cc(): void
+    {
+        $item = Mailbook::add(OtherMail::class);
+        $this->assertEquals(['"Mailbook" <cc@mailbook.dev>'], $item->cc());
+    }
 
-    expect($item->resolver())->toBe($item->resolver());
-});
+    public function test_can_get_bcc(): void
+    {
+        $item = Mailbook::add(OtherMail::class);
+        $this->assertEquals(['"Mailbook" <bcc@mailbook.dev>'], $item->bcc());
+    }
 
-it('can get variant resolver without variants', function (): void {
-    $item = Mailbook::add(TestMail::class);
+    public function test_can_get_size(): void
+    {
+        $item = Mailbook::add(OtherMail::class);
+        $this->assertSame('20 B', $item->size());
+    }
 
-    expect($item->variantResolver()->className())->toEqual(TestMail::class);
-});
+    public function test_builds_mailable_resolved_from_instance(): void
+    {
+        $item = Mailbook::add(new OtherMail);
+        $this->assertSame('Hello!', $item->subject());
+    }
 
-it('can get variant resolver from default variant', function (): void {
-    $item = Mailbook::add(TestMail::class)
-        ->variant('Other one', fn () => new OtherMail);
+    public function test_can_get_attachments(): void
+    {
+        $item = Mailbook::add(WithAttachmentsMail::class);
+        $this->assertEquals([
+            'document.pdf',
+            'rows.csv',
+        ], $item->attachments());
+    }
 
-    expect($item->variantResolver()->className())->toEqual(OtherMail::class);
-});
+    public function test_executes_the_closure_once(): void
+    {
+        $executed = 0;
+        $mailable = Mailbook::add(function () use (&$executed) {
+            $executed++;
 
-it('can get default from', function (): void {
-    $item = Mailbook::add(TestMail::class);
+            return new TestMail;
+        });
+        $mailable->subject();
+        $mailable->to();
+        $mailable->content();
+        $this->assertSame(1, $executed);
+    }
 
-    expect($item->from())->toBe(['"Example" <hello@example.com>']);
-});
+    public function test_can_get_default_theme(): void
+    {
+        $item = Mailbook::add(OtherMail::class);
+        $this->assertNull($item->theme());
+    }
 
-it('can get from', function (): void {
-    $item = Mailbook::add(OtherMail::class);
+    public function test_can_get_theme(): void
+    {
+        $mail = new OtherMail;
+        $mail->theme = 'shop';
+        $item = Mailbook::add($mail);
+        $this->assertSame('shop', $item->theme());
+    }
 
-    expect($item->from())->toBe(['"Harry Potter" <harry@example.com>']);
-});
-
-it('can get from after rendering', function (): void {
-    $item = Mailbook::add(OtherMail::class);
-
-    $item->content();
-
-    expect($item->from())->toBe(['"Harry Potter" <harry@example.com>']);
-});
-
-it('can get reply to', function (): void {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->replyTo())->toBe(['"Support" <questions@example.com>']);
-});
-
-it('can get to', function (): void {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->to())->toBe(['"Mailbook" <example@mailbook.dev>']);
-});
-
-it('can get cc', function (): void {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->cc())->toBe(['"Mailbook" <cc@mailbook.dev>']);
-});
-
-it('can get bcc', function (): void {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->bcc())->toBe(['"Mailbook" <bcc@mailbook.dev>']);
-});
-
-it('can get size', function (): void {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->size())->toBe('20 B');
-});
-
-it('builds mailable resolved from instance', function (): void {
-    $item = Mailbook::add(new OtherMail);
-
-    expect($item->subject())->toBe('Hello!');
-});
-
-it('can get attachments', function (): void {
-    $item = Mailbook::add(WithAttachmentsMail::class);
-
-    expect($item->attachments())->toEqual([
-        'document.pdf',
-        'rows.csv',
-    ]);
-});
-
-it('executes the closure once', function (): void {
-    $executed = 0;
-
-    $mailable = Mailbook::add(function () use (&$executed) {
-        $executed++;
-
-        return new TestMail;
-    });
-
-    $mailable->subject();
-    $mailable->to();
-    $mailable->content();
-
-    expect($executed)->toBe(1);
-});
-
-it('can get default theme', function (): void {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->theme())->toBeNull();
-});
-
-it('can get theme', function (): void {
-    $mail = new OtherMail;
-    $mail->theme = 'shop';
-    $item = Mailbook::add($mail);
-
-    expect($item->theme())->toBe('shop');
-});
-
-it('can get meta', function (): void {
-    $item = Mailbook::add(OtherMail::class);
-
-    expect($item->meta())->toBe([
-        'Subject' => 'Hello!',
-        'From' => [
-            '"Harry Potter" <harry@example.com>',
-        ],
-        'Reply To' => [
-            '"Support" <questions@example.com>',
-        ],
-        'To' => [
-            '"Mailbook" <example@mailbook.dev>',
-        ],
-        'Cc' => [
-            '"Mailbook" <cc@mailbook.dev>',
-        ],
-        'Bcc' => [
-            '"Mailbook" <bcc@mailbook.dev>',
-        ],
-    ]);
-});
+    public function test_can_get_meta(): void
+    {
+        $item = Mailbook::add(OtherMail::class);
+        $this->assertEquals([
+            'Subject' => 'Hello!',
+            'From' => [
+                '"Harry Potter" <harry@example.com>',
+            ],
+            'Reply To' => [
+                '"Support" <questions@example.com>',
+            ],
+            'To' => [
+                '"Mailbook" <example@mailbook.dev>',
+            ],
+            'Cc' => [
+                '"Mailbook" <cc@mailbook.dev>',
+            ],
+            'Bcc' => [
+                '"Mailbook" <bcc@mailbook.dev>',
+            ],
+        ], $item->meta());
+    }
+}

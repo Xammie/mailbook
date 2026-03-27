@@ -2,25 +2,32 @@
 
 declare(strict_types=1);
 
+namespace Xammie\Mailbook\Tests\Data;
+
 use Xammie\Mailbook\Data\MailableVariant;
 use Xammie\Mailbook\MailableResolver;
+use Xammie\Mailbook\Tests\TestCase;
 
-it('can create a mailable variant', function (): void {
-    $variant = new MailableVariant('label', 'slug', 'closure');
-    expect($variant->label)->toBe('label');
-    expect($variant->slug)->toBe('slug');
-    expect($variant->closure)->toBe('closure');
-    expect($variant->notifiable)->toBeNull();
-});
+class MailableVariantTest extends TestCase
+{
+    public function test_can_create_a_mailable_variant(): void
+    {
+        $variant = new MailableVariant('label', 'slug', 'closure');
+        $this->assertSame('label', $variant->label);
+        $this->assertSame('slug', $variant->slug);
+        $this->assertSame('closure', $variant->closure);
+        $this->assertNull($variant->notifiable);
+    }
 
-it('can get a new resolver', function (): void {
-    $variant = new MailableVariant('label', 'slug', 'closure');
+    public function test_can_get_a_new_resolver(): void
+    {
+        $variant = new MailableVariant('label', 'slug', 'closure');
+        $this->assertInstanceOf(MailableResolver::class, $variant->resolver());
+    }
 
-    expect($variant->resolver())->toBeInstanceOf(MailableResolver::class);
-});
-
-it('will only create one resolver', function (): void {
-    $variant = new MailableVariant('label', 'slug', 'closure');
-
-    expect($variant->resolver())->toBe($variant->resolver());
-});
+    public function test_will_only_create_one_resolver(): void
+    {
+        $variant = new MailableVariant('label', 'slug', 'closure');
+        $this->assertSame($variant->resolver(), $variant->resolver());
+    }
+}
