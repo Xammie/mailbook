@@ -20,16 +20,17 @@
         "spatie/laravel-package-tools": "^1.9.2"
     },
     "require-dev": {
+        "infection/infection": "^0.32.6",
         "larastan/larastan": "^3.0 || dev-l13",
         "laravel/pint": "^v1.4.1",
         "nunomaduro/collision": "^6.0 || ^7.0 || ^8.0",
         "nunomaduro/phpinsights": "^2.6",
         "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
-        "phpunit/phpunit": "11.*",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "11.*",
         "rector/rector": "^2.0",
         "spatie/invade": "^1.1 || ^2.1",
         "tomasvotruba/bladestan": "^0.10.0"
@@ -53,8 +54,9 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "phpstan/extension-installer": true,
-            "dealerdirect/phpcodesniffer-composer-installer": false
+            "dealerdirect/phpcodesniffer-composer-installer": false,
+            "infection/extension-installer": true,
+            "phpstan/extension-installer": true
         },
         "audit": {
             "block-insecure": false
