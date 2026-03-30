@@ -4,6 +4,10 @@
         "directories": ["src"],
         "excludes": ["Commands", "Support"]
     },
+    "logs": {
+        "text": "infection.log",
+        "html": "infection.html",
+    },
     "mutators": {
         "@default": true,
         "MBString": false

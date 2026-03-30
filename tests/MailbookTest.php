@@ -36,6 +36,7 @@ class MailbookTest extends TestCase
         $this->assertInstanceOf(MailableGroup::class, $mailables->get(1));
         /** @var MailableGroup $group */
         $group = $mailables->get(1);
+        $this->assertSame('Other', $group->label);
         $this->assertInstanceOf(MailableItem::class, $group->items->get(0));
         $this->assertSame('Other Mail', $group->items->get(0)?->getLabel());
         $this->assertSame('Translated Mail', $group->items->get(1)?->getLabel());

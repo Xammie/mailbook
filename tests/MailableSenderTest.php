@@ -24,8 +24,10 @@ class MailableSenderTest extends TestCase
     public function test_can_collect_mail(): void
     {
         Event::fake();
+
         $mailableSender = new MailableSender(new TestMail);
         $mail = $mailableSender->collect();
+
         $this->assertInstanceOf(ResolvedMail::class, $mail);
         Event::assertDispatched(MessageSending::class);
         Event::assertDispatched(MessageSent::class);

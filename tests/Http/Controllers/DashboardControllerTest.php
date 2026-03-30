@@ -12,14 +12,24 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedMail;
 use Xammie\Mailbook\Tests\Fixtures\User;
+use Xammie\Mailbook\Tests\Support\FakeSeedGeneratorExpectation;
 use Xammie\Mailbook\Tests\TestCase;
 
 class DashboardControllerTest extends TestCase
 {
+    private FakeSeedGeneratorExpectation $fakeSeedGenerator;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->fakeSeedGenerator = FakeSeedGeneratorExpectation::factory();
+        $this->app->instance(FakeSeedGenerator::class, $this->fakeSeedGenerator->mock);
+    }
+
     public function test_can_render_default(): void
     {
-        $mock = $this->mock(FakeSeedGenerator::class);
-        $mock->shouldReceive('getCurrentSeed')->andReturn(123456);
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(123456);
 
         Mailbook::add(TestMail::class);
         Mailbook::add(OtherMail::class);
@@ -42,8 +52,7 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_get_meta_without_seed(): void
     {
-        $mock = $this->mock(FakeSeedGenerator::class);
-        $mock->shouldReceive('getCurrentSeed')->andReturn(null);
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
 
         Mailbook::add(OtherMail::class);
 
@@ -67,8 +76,7 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_get_meta(): void
     {
-        $mock = $this->mock(FakeSeedGenerator::class);
-        $mock->shouldReceive('getCurrentSeed')->andReturn(123456);
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(123456);
 
         Mailbook::add(OtherMail::class);
 
@@ -92,15 +100,22 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_render_without_locales(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::add(TestMail::class);
+
         config()->set('mailbook.locales', []);
+
         $this->get(route('mailbook.dashboard'))->assertSuccessful();
     }
 
     public function test_can_render_selected(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::add(OtherMail::class);
         Mailbook::add(TestMail::class);
+
         $this->get(route('mailbook.dashboard', ['selected' => TestMail::class]))
             ->assertSuccessful()
             ->assertSeeText('Mailbook')
@@ -109,12 +124,16 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_render_default_locale(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         config()->set('mailbook.locales', [
             'en' => 'English',
             'nl' => 'Dutch',
             'de' => 'German',
         ]);
+
         Mailbook::add(TranslatedMail::class);
+
         $this->get(route('mailbook.dashboard', ['selected' => TranslatedMail::class]))
             ->assertSuccessful()
             ->assertViewHas('subject', 'Example email subject')
@@ -123,6 +142,8 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_render_locale(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         config()->set('mailbook.locales', [
             'en' => 'English',
             'nl' => 'Dutch',
@@ -141,12 +162,16 @@ class DashboardControllerTest extends TestCase
 
     public function test_cannot_render_unknown_locale(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         config()->set('mailbook.locales', [
             'en' => 'English',
             'nl' => 'Dutch',
             'de' => 'German',
         ]);
+
         Mailbook::add(TranslatedMail::class);
+
         $this->get(route('mailbook.dashboard', ['selected' => TranslatedMail::class, 'locale' => 'be']))
             ->assertSuccessful()
             ->assertViewHas('currentLocale', 'en');
@@ -154,9 +179,12 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_render_default_variant(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::add(TestMail::class)
             ->variant('Test variant', fn () => new TestMail)
             ->variant('wrong variant', fn () => new OtherMail);
+
         $this->get(route('mailbook.dashboard'))
             ->assertSuccessful()
             ->assertSeeText('Mailbook')
@@ -166,9 +194,12 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_render_variant(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::add(TestMail::class)
             ->variant('wrong variant', fn () => new OtherMail)
             ->variant('Test variant', fn () => new TestMail);
+
         $this->get(route('mailbook.dashboard', ['selected' => TestMail::class, 'variant' => 'test-variant']))
             ->assertSuccessful()
             ->assertSeeText('Mailbook')
@@ -178,7 +209,10 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_render_closure(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::add(fn () => new TestMail);
+
         $this->get(route('mailbook.dashboard'))
             ->assertSuccessful()
             ->assertSeeText('Mailbook')
@@ -195,7 +229,10 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_render_other_display(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::add(TestMail::class);
+
         $this->get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))
             ->assertSuccessful()
             ->assertViewHas('display', 'phone');
@@ -203,8 +240,11 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_disable_display_preview(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
         config()->set('mailbook.display_preview', false);
+
         Mailbook::add(TestMail::class);
+
         $this->get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))
             ->assertSuccessful()
             ->assertViewHas('display', fn ($value) => $value === null);
@@ -212,19 +252,26 @@ class DashboardControllerTest extends TestCase
 
     public function test_executes_the_closure_once(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         $executed = 0;
         Mailbook::add(function () use (&$executed) {
             $executed++;
 
             return new TestMail;
         });
+
         $this->get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))->assertSuccessful();
+
         $this->assertSame(1, $executed);
     }
 
     public function test_can_render_mailable_with_notifiable(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::to(new User(['email' => 'test@mailbook.dev']))->add(TestMail::class);
+
         $this->get(route('mailbook.dashboard'))
             ->assertSuccessful()
             ->assertSeeText('test@mailbook.dev');
@@ -232,7 +279,10 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_render_notification_with_notifiable(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::to(new User(['email' => 'test@mailbook.dev']))->add(TestNotification::class);
+
         $this->get(route('mailbook.dashboard'))
             ->assertSuccessful()
             ->assertSeeText('test@mailbook.dev');
@@ -240,7 +290,10 @@ class DashboardControllerTest extends TestCase
 
     public function test_cannot_see_mail_form_by_default(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::add(TestMail::class);
+
         $this->get(route('mailbook.dashboard', ['class' => TestMail::class]))
             ->assertSuccessful()
             ->assertDontSee('Send');
@@ -248,9 +301,12 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_see_send_button(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
         config()->set('mailbook.send', true);
         config()->set('mailbook.send_to', 'max@mailbook.dev');
+
         Mailbook::add(TestMail::class);
+
         $this->get(route('mailbook.dashboard', ['class' => TestMail::class]))
             ->assertSuccessful()
             ->assertSee('Send to max@mailbook.dev');
@@ -258,14 +314,20 @@ class DashboardControllerTest extends TestCase
 
     public function test_can_fallback_to_unknown_class(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::add(TestMail::class);
+
         $this->get(route('mailbook.dashboard', ['selected' => 'random']))
             ->assertSuccessful();
     }
 
     public function test_can_render_lower_case_mailable(): void
     {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
         Mailbook::add(TestMail::class);
+
         $this->get(route('mailbook.dashboard', ['selected' => mb_strtolower(TestMail::class)]))
             ->assertSuccessful();
     }
