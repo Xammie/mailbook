@@ -263,7 +263,7 @@ class DashboardControllerTest extends TestCase
 
         $this->get(route('mailbook.dashboard', ['selected' => TestMail::class, 'display' => 'phone']))->assertSuccessful();
 
-        $this->assertSame(1, $executed);
+        self::assertSame(1, $executed);
     }
 
     public function test_can_render_mailable_with_notifiable(): void

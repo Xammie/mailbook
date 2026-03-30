@@ -15,14 +15,14 @@ class MailRegistrarTest extends TestCase
     public function test_can_register_mailable_with_label_as_first_method(): void
     {
         $item = Mailbook::label('Test label')->add(TestMail::class);
-        $this->assertSame('Test label', $item->getLabel());
+        self::assertSame('Test label', $item->getLabel());
     }
 
     public function test_will_clear_label_in_next_call(): void
     {
         Mailbook::label('Test label');
         $item = Mailbook::add(TestMail::class);
-        $this->assertSame('Test Mail', $item->getLabel());
+        self::assertSame('Test Mail', $item->getLabel());
     }
 
     public function test_can_group_mails(): void
@@ -34,8 +34,8 @@ class MailRegistrarTest extends TestCase
             });
         $first = Mailbook::mailables()->first();
         $last = Mailbook::mailables()->last();
-        $this->assertSame(['test@mailbook.dev'], $first->to());
-        $this->assertSame(['test@mailbook.dev'], $last->to());
+        self::assertSame(['test@mailbook.dev'], $first->to());
+        self::assertSame(['test@mailbook.dev'], $last->to());
     }
 
     public function test_will_clear_registrar_after_group_call(): void
@@ -46,26 +46,26 @@ class MailRegistrarTest extends TestCase
                 Mailbook::add(TestNotification::class);
             });
         $item = Mailbook::add(ClassicMail::class);
-        $this->assertSame([], $item->to());
+        self::assertSame([], $item->to());
     }
 
     public function test_can_pass_notifiable(): void
     {
         $item = Mailbook::to('test@mailbook.dev')->add(TestMail::class);
-        $this->assertSame(['test@mailbook.dev'], $item->to());
+        self::assertSame(['test@mailbook.dev'], $item->to());
     }
 
     public function test_will_reset_notifiable(): void
     {
         Mailbook::to('test@mailbook.dev')->add(OtherMail::class);
         $item = Mailbook::add(TestMail::class);
-        $this->assertSame([], $item->to());
+        self::assertSame([], $item->to());
     }
 
     public function test_can_pass_notifiable_as_closure(): void
     {
         $item = Mailbook::to(fn () => 'test@mailbook.dev')->add(TestMail::class);
-        $this->assertSame(['test@mailbook.dev'], $item->to());
+        self::assertSame(['test@mailbook.dev'], $item->to());
     }
 
     public function test_can_pass_notifiable_as_closure_to_group(): void
@@ -76,6 +76,6 @@ class MailRegistrarTest extends TestCase
                 Mailbook::add(TestNotification::class);
             });
         $first = Mailbook::mailables()->first();
-        $this->assertSame(['test@mailbook.dev'], $first->to());
+        self::assertSame(['test@mailbook.dev'], $first->to());
     }
 }

@@ -35,7 +35,7 @@ class FakeSeedGeneratorTest extends TestCase
 
         $seed = $this->subject->getCurrentSeed();
 
-        $this->assertSame(123, $seed);
+        self::assertSame(123, $seed);
     }
 
     public function test_cannot_get_random_seed(): void
@@ -46,7 +46,7 @@ class FakeSeedGeneratorTest extends TestCase
 
         $seed = $this->subject->getCurrentSeed();
 
-        $this->assertNull($seed);
+        self::assertNull($seed);
     }
 
     public function test_can_restore_seed(): void

@@ -25,6 +25,6 @@ class FormatTest extends TestCase
     #[DataProvider('bytesProvider')]
     public function test_can_convert_to_human_readable_sizes(int $bytes, string $expected): void
     {
-        $this->assertSame($expected, Format::bytesToHuman($bytes));
+        self::assertSame($expected, Format::bytesToHuman($bytes));
     }
 }

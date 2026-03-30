@@ -15,6 +15,6 @@ class MailableGroupTest extends TestCase
             label: 'Test group',
             items: collect()
         );
-        $this->assertSame('Test group', $group->label);
+        self::assertSame('Test group', $group->label);
     }
 }

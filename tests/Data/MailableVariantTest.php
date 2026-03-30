@@ -13,21 +13,21 @@ class MailableVariantTest extends TestCase
     public function test_can_create_a_mailable_variant(): void
     {
         $variant = new MailableVariant('label', 'slug', 'closure');
-        $this->assertSame('label', $variant->label);
-        $this->assertSame('slug', $variant->slug);
-        $this->assertSame('closure', $variant->closure);
-        $this->assertNull($variant->notifiable);
+        self::assertSame('label', $variant->label);
+        self::assertSame('slug', $variant->slug);
+        self::assertSame('closure', $variant->closure);
+        self::assertNull($variant->notifiable);
     }
 
     public function test_can_get_a_new_resolver(): void
     {
         $variant = new MailableVariant('label', 'slug', 'closure');
-        $this->assertInstanceOf(MailableResolver::class, $variant->resolver());
+        self::assertInstanceOf(MailableResolver::class, $variant->resolver());
     }
 
     public function test_will_only_create_one_resolver(): void
     {
         $variant = new MailableVariant('label', 'slug', 'closure');
-        $this->assertSame($variant->resolver(), $variant->resolver());
+        self::assertSame($variant->resolver(), $variant->resolver());
     }
 }

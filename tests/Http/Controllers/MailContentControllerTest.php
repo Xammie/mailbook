@@ -155,10 +155,10 @@ class MailContentControllerTest extends TestCase
     {
         config()->set('mailbook.database_rollback', true);
 
-        $this->assertSame(0, DB::transactionLevel());
+        self::assertSame(0, DB::transactionLevel());
 
         Mailbook::add(function () {
-            $this->assertSame(1, DB::transactionLevel());
+            self::assertSame(1, DB::transactionLevel());
 
             return new TestMail;
         });
@@ -167,17 +167,17 @@ class MailContentControllerTest extends TestCase
             ->assertSuccessful()
             ->assertSeeText('Test mail');
 
-        $this->assertSame(0, DB::transactionLevel());
+        self::assertSame(0, DB::transactionLevel());
     }
 
     public function test_does_not_rollback_database_changes_when_disabled(): void
     {
         config()->set('mailbook.database_rollback', false);
 
-        $this->assertSame(0, DB::transactionLevel());
+        self::assertSame(0, DB::transactionLevel());
 
         Mailbook::add(function () {
-            $this->assertSame(0, DB::transactionLevel());
+            self::assertSame(0, DB::transactionLevel());
 
             return new TestMail;
         });
@@ -186,6 +186,6 @@ class MailContentControllerTest extends TestCase
             ->assertSuccessful()
             ->assertSeeText('Test mail');
 
-        $this->assertSame(0, DB::transactionLevel());
+        self::assertSame(0, DB::transactionLevel());
     }
 }

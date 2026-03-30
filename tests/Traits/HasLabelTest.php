@@ -14,7 +14,7 @@ class HasLabelTest extends TestCase
     public function test_can_get_label(): void
     {
         $item = Mailbook::add(TestMail::class);
-        $this->assertSame('Test Mail', $item->getLabel());
+        self::assertSame('Test Mail', $item->getLabel());
     }
 
     public function test_can_set_label(): void
@@ -24,6 +24,6 @@ class HasLabelTest extends TestCase
             use HasLabel;
         };
         $instance->label('Test label');
-        $this->assertSame('Test label', $instance->getLabel());
+        self::assertSame('Test label', $instance->getLabel());
     }
 }

@@ -17,7 +17,7 @@ class ShouldQueueTest extends TestCase
 
         $mail = Mailbook::add(ShouldQueueMail::class);
 
-        $this->assertIsString($mail->content());
+        self::assertIsString($mail->content());
     }
 
     public function test_will_not_overwrite_set_queue_driver(): void
@@ -26,7 +26,7 @@ class ShouldQueueTest extends TestCase
 
         Mailbook::add(ShouldQueueMail::class);
 
-        $this->assertSame('redis', config()->get('queue.default'));
+        self::assertSame('redis', config()->get('queue.default'));
     }
 
     public function test_will_inject_sync_queue_driver(): void
@@ -34,6 +34,6 @@ class ShouldQueueTest extends TestCase
         $mailableSender = new MailableSender(new TestMail);
         invade($mailableSender)->inject();
 
-        $this->assertSame('sync', config('queue.default'));
+        self::assertSame('sync', config('queue.default'));
     }
 }

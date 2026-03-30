@@ -11,6 +11,6 @@ class MailbookTransportTest extends TestCase
     public function test_has_correct_transport_name(): void
     {
         $transport = new MailbookTransport;
-        $this->assertSame('mailbook', $transport->__toString());
+        self::assertSame('mailbook', $transport->__toString());
     }
 }

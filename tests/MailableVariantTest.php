@@ -25,6 +25,6 @@ class MailableVariantTest extends TestCase
         $mailable->to();
         $mailable->content();
 
-        $this->assertSame(1, $executed);
+        self::assertSame(1, $executed);
     }
 }

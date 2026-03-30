@@ -16,9 +16,9 @@ class ConfigInjectorTest extends TestCase
         $injector = new ConfigInjector;
 
         $injector->set('example.test', 'bar');
-        $this->assertSame('bar', config('example.test'));
+        self::assertSame('bar', config('example.test'));
 
         $injector->revert();
-        $this->assertSame('foo', config('example.test'));
+        self::assertSame('foo', config('example.test'));
     }
 }

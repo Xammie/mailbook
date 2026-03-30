@@ -14,9 +14,9 @@ class InstallMailbookCommandTest extends TestCase
     public function test_can_install_mailbook(): void
     {
         $this->artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
-        $this->assertFileExists(base_path('routes/mailbook.php'));
-        $this->assertFileExists(base_path('app/Mail/MailbookMail.php'));
-        $this->assertFileExists(base_path('resources/views/mail/mailbook.blade.php'));
+        self::assertFileExists(base_path('routes/mailbook.php'));
+        self::assertFileExists(base_path('app/Mail/MailbookMail.php'));
+        self::assertFileExists(base_path('resources/views/mail/mailbook.blade.php'));
     }
 
     public function test_will_not_overwrite_existing_files(): void
@@ -25,8 +25,8 @@ class InstallMailbookCommandTest extends TestCase
         @mkdir(dirname($path), 0755, true);
         file_put_contents($path, 'test');
         $this->artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
-        $this->assertFileExists($path);
-        $this->assertSame('test', file_get_contents($path));
+        self::assertFileExists($path);
+        self::assertSame('test', file_get_contents($path));
     }
 
     public function test_can_collect_mails_from_route_file(): void
@@ -34,7 +34,7 @@ class InstallMailbookCommandTest extends TestCase
         $this->artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
         require_once base_path('app/Mail/MailbookMail.php');
         $mails = Mailbook::mailables();
-        $this->assertCount(1, $mails);
+        self::assertCount(1, $mails);
     }
 
     public function test_can_collect_mails_from_route_file_once(): void
@@ -43,7 +43,7 @@ class InstallMailbookCommandTest extends TestCase
         require_once base_path('app/Mail/MailbookMail.php');
         Mailbook::mailables();
         $mails = Mailbook::mailables();
-        $this->assertCount(1, $mails);
+        self::assertCount(1, $mails);
     }
 
     public function test_cannot_collect_mails_from_non_existing_route_file(): void
@@ -52,7 +52,7 @@ class InstallMailbookCommandTest extends TestCase
         $this->artisan(InstallMailbookCommand::class)->assertExitCode(Command::SUCCESS);
         require_once base_path('app/Mail/MailbookMail.php');
         $mails = Mailbook::mailables();
-        $this->assertEmpty($mails);
+        self::assertEmpty($mails);
     }
 
     public function test_can_render_installable_mail(): void
@@ -63,12 +63,12 @@ class InstallMailbookCommandTest extends TestCase
 
         $mails = Mailbook::mailables();
         foreach ($mails as $mail) {
-            $this->assertNotEmpty($mail->content());
+            self::assertNotEmpty($mail->content());
             if ($mail->hasVariants()) {
                 $variants = $mail->getVariants();
                 foreach ($variants as $variant) {
                     $mail->selectVariant($variant->slug);
-                    $this->assertNotEmpty($mail->content());
+                    self::assertNotEmpty($mail->content());
                 }
             }
         }

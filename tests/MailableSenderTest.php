@@ -28,7 +28,7 @@ class MailableSenderTest extends TestCase
         $mailableSender = new MailableSender(new TestMail);
         $mail = $mailableSender->collect();
 
-        $this->assertInstanceOf(ResolvedMail::class, $mail);
+        self::assertInstanceOf(ResolvedMail::class, $mail);
         Event::assertDispatched(MessageSending::class);
         Event::assertDispatched(MessageSent::class);
     }
@@ -38,7 +38,7 @@ class MailableSenderTest extends TestCase
         Event::fake();
         $mailableSender = new MailableSender(new ShouldQueueMail);
         $mail = $mailableSender->collect();
-        $this->assertInstanceOf(ResolvedMail::class, $mail);
+        self::assertInstanceOf(ResolvedMail::class, $mail);
         Event::assertDispatched(MessageSending::class);
         Event::assertDispatched(MessageSent::class);
     }
@@ -53,7 +53,7 @@ class MailableSenderTest extends TestCase
                 ->shouldReceive('send')
                 ->once()
                 ->withArgs(function (AfterCommitMail $mail) {
-                    $this->assertFalse($mail->afterCommit);
+                    self::assertFalse($mail->afterCommit);
 
                     return true;
                 })
@@ -67,63 +67,63 @@ class MailableSenderTest extends TestCase
     {
         $mailableSender = new MailableSender(new TestMail);
         invade($mailableSender)->inject();
-        $this->assertSame(['transport' => 'mailbook'], config('mail.mailers.mailbook'));
+        self::assertSame(['transport' => 'mailbook'], config('mail.mailers.mailbook'));
     }
 
     public function test_will_cleanup_driver(): void
     {
         $mailableSender = new MailableSender(new TestMail);
         $mailableSender->collect();
-        $this->assertNotSame('mailbook', config('mail.default'));
-        $this->assertNotSame('mailbook', config('mail.driver'));
+        self::assertNotSame('mailbook', config('mail.default'));
+        self::assertNotSame('mailbook', config('mail.driver'));
     }
 
     public function test_will_cleanup_message(): void
     {
         $mailableSender = new MailableSender(new TestMail);
         $mailableSender->collect();
-        $this->assertNull(Mailbook::getMessage());
+        self::assertNull(Mailbook::getMessage());
     }
 
     public function test_will_inject_driver_config(): void
     {
         $mailableSender = new MailableSender(new TestMail);
         invade($mailableSender)->inject();
-        $this->assertSame('mailbook', config('mail.default'));
+        self::assertSame('mailbook', config('mail.default'));
     }
 
     public function test_will_inject_old_driver_config(): void
     {
         $mailableSender = new MailableSender(new TestMail);
         invade($mailableSender)->inject();
-        $this->assertSame('mailbook', config('mail.driver'));
+        self::assertSame('mailbook', config('mail.driver'));
     }
 
     public function test_can_send_mailable_with_email(): void
     {
         $mailableSender = new MailableSender(new TestMail, 'test@mailbook.dev');
         $mail = $mailableSender->collect();
-        $this->assertSame(['test@mailbook.dev'], $mail->to());
+        self::assertSame(['test@mailbook.dev'], $mail->to());
     }
 
     public function test_can_send_mailable_with_notifiable(): void
     {
         $mailableSender = new MailableSender(new TestNotification, new User(['email' => 'test@mailbook.dev']));
         $mail = $mailableSender->collect();
-        $this->assertSame(['test@mailbook.dev'], $mail->to());
+        self::assertSame(['test@mailbook.dev'], $mail->to());
     }
 
     public function test_can_send_notification_with_email(): void
     {
         $mailableSender = new MailableSender(new TestNotification, 'test@mailbook.dev');
         $mail = $mailableSender->collect();
-        $this->assertSame(['test@mailbook.dev'], $mail->to());
+        self::assertSame(['test@mailbook.dev'], $mail->to());
     }
 
     public function test_can_send_notification_with_notifiable(): void
     {
         $mailableSender = new MailableSender(new TestNotification, new User(['email' => 'test@mailbook.dev']));
         $mail = $mailableSender->collect();
-        $this->assertSame(['test@mailbook.dev'], $mail->to());
+        self::assertSame(['test@mailbook.dev'], $mail->to());
     }
 }

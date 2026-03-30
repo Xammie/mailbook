@@ -15,7 +15,7 @@ class HasCategoryTest extends TestCase
         {
             use HasCategory;
         };
-        $this->assertNull($instance->getCategory());
+        self::assertNull($instance->getCategory());
     }
 
     public function test_can_set_category(): void
@@ -25,7 +25,7 @@ class HasCategoryTest extends TestCase
             use HasCategory;
         };
         $instance->category('Test category');
-        $this->assertSame('Test category', $instance->getCategory());
+        self::assertSame('Test category', $instance->getCategory());
     }
 
     public function test_can_detect_category(): void
@@ -34,8 +34,8 @@ class HasCategoryTest extends TestCase
         {
             use HasCategory;
         };
-        $this->assertFalse($instance->hasCategory());
+        self::assertFalse($instance->hasCategory());
         $instance->category('Test category');
-        $this->assertTrue($instance->hasCategory());
+        self::assertTrue($instance->hasCategory());
     }
 }

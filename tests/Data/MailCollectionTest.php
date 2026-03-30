@@ -14,8 +14,8 @@ class MailCollectionTest extends TestCase
     public function test_can_collect_mails(): void
     {
         $collection = new MailCollection;
-        $this->assertEmpty($collection->all());
+        self::assertEmpty($collection->all());
         $collection->push(Mailbook::add(TestMail::class));
-        $this->assertCount(1, $collection->all());
+        self::assertCount(1, $collection->all());
     }
 }

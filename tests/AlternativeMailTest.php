@@ -20,13 +20,13 @@ class AlternativeMailTest extends TestCase
         }
 
         $item = Mailbook::add($mailable);
-        $this->assertSame('Invoice Paid', $item->subject());
-        $this->assertSame('Test mail content', $item->content());
-        $this->assertSame(['"Example" <hello@example.com>'], $item->from());
-        $this->assertSame([], $item->replyTo());
-        $this->assertSame([], $item->to());
-        $this->assertSame(['"Example Name" <foo@example.com>'], $item->cc());
-        $this->assertSame([], $item->bcc());
+        self::assertSame('Invoice Paid', $item->subject());
+        self::assertSame('Test mail content', $item->content());
+        self::assertSame(['"Example" <hello@example.com>'], $item->from());
+        self::assertSame([], $item->replyTo());
+        self::assertSame([], $item->to());
+        self::assertSame(['"Example Name" <foo@example.com>'], $item->cc());
+        self::assertSame([], $item->bcc());
     }
 
     public static function mailProvider(): array

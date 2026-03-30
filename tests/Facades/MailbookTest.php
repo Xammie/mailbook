@@ -27,9 +27,9 @@ class MailbookTest extends TestCase
             'nl' => 'Dutch',
             'de' => 'German',
         ]);
-        $this->assertNull(Mailbook::getLocale());
+        self::assertNull(Mailbook::getLocale());
         Mailbook::setLocale($locale);
-        $this->assertSame($locale, Mailbook::getLocale());
+        self::assertSame($locale, Mailbook::getLocale());
     }
 
     public function test_cannot_set_invalid_locale(): void
@@ -40,7 +40,7 @@ class MailbookTest extends TestCase
             'de' => 'German',
         ]);
         Mailbook::setLocale(123);
-        $this->assertNull(Mailbook::getLocale());
+        self::assertNull(Mailbook::getLocale());
     }
 
     public function test_cannot_set_unknown_locale(): void
@@ -53,13 +53,13 @@ class MailbookTest extends TestCase
 
         Mailbook::setLocale('be');
 
-        $this->assertNull(Mailbook::getLocale());
+        self::assertNull(Mailbook::getLocale());
     }
 
     public function test_cannot_set_locales_when_none_are_set(): void
     {
         config()->set('mailbook.locales', null);
         Mailbook::setLocale('be');
-        $this->assertNull(Mailbook::getLocale());
+        self::assertNull(Mailbook::getLocale());
     }
 }

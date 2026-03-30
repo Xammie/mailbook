@@ -18,9 +18,9 @@ class MailbookTest extends TestCase
         Mailbook::add(TestMail::class);
         Mailbook::add(OtherMail::class);
         $mailables = Mailbook::mailables();
-        $this->assertCount(2, $mailables);
-        $this->assertSame('Test Mail', $mailables->get(0)?->getLabel());
-        $this->assertSame('Other Mail', $mailables->get(1)?->getLabel());
+        self::assertCount(2, $mailables);
+        self::assertSame('Test Mail', $mailables->get(0)?->getLabel());
+        self::assertSame('Other Mail', $mailables->get(1)?->getLabel());
     }
 
     public function test_can_get_grouped_mailables(): void
@@ -31,14 +31,14 @@ class MailbookTest extends TestCase
             Mailbook::add(TranslatedMail::class);
         });
         $mailables = Mailbook::groupedMailables();
-        $this->assertCount(2, $mailables);
-        $this->assertInstanceOf(MailableItem::class, $mailables->get(0));
-        $this->assertInstanceOf(MailableGroup::class, $mailables->get(1));
+        self::assertCount(2, $mailables);
+        self::assertInstanceOf(MailableItem::class, $mailables->get(0));
+        self::assertInstanceOf(MailableGroup::class, $mailables->get(1));
         /** @var MailableGroup $group */
         $group = $mailables->get(1);
-        $this->assertSame('Other', $group->label);
-        $this->assertInstanceOf(MailableItem::class, $group->items->get(0));
-        $this->assertSame('Other Mail', $group->items->get(0)?->getLabel());
-        $this->assertSame('Translated Mail', $group->items->get(1)?->getLabel());
+        self::assertSame('Other', $group->label);
+        self::assertInstanceOf(MailableItem::class, $group->items->get(0));
+        self::assertSame('Other Mail', $group->items->get(0)?->getLabel());
+        self::assertSame('Translated Mail', $group->items->get(1)?->getLabel());
     }
 }

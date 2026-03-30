@@ -98,7 +98,7 @@ class MailSendControllerTest extends TestCase
         $this->get(route('mailbook.send', ['class' => TranslatedMail::class, 'locale' => 'nl']))
             ->assertRedirect();
         Mail::assertSent(TranslatedMail::class, function (TranslatedMail $mail): bool {
-            $this->assertEquals('nl', $mail->locale);
+            self::assertEquals('nl', $mail->locale);
 
             return true;
         });
@@ -116,7 +116,7 @@ class MailSendControllerTest extends TestCase
         $this->get(route('mailbook.send', ['class' => TranslatedNotification::class, 'locale' => 'nl']))
             ->assertRedirect();
         Notification::assertSentOnDemand(TranslatedNotification::class, function (TranslatedNotification $notification): bool {
-            $this->assertSame('nl', $notification->locale);
+            self::assertSame('nl', $notification->locale);
 
             return true;
         });
@@ -130,7 +130,7 @@ class MailSendControllerTest extends TestCase
         $this->get(route('mailbook.send', ['class' => TestMail::class]))
             ->assertRedirect();
         Mail::assertSent(TestMail::class, function (TestMail $mail): bool {
-            $this->assertEquals([
+            self::assertEquals([
                 [
                     'name' => null,
                     'address' => 'test@mailbook.dev',
@@ -151,7 +151,7 @@ class MailSendControllerTest extends TestCase
         $this->get(route('mailbook.send', ['class' => TestMail::class]))
             ->assertRedirect();
         Mail::assertSent(TestMail::class, function (TestMail $mail): bool {
-            $this->assertEquals([
+            self::assertEquals([
                 [
                     'name' => null,
                     'address' => 'test@mailbook.dev',

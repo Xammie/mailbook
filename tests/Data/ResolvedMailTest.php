@@ -28,7 +28,7 @@ class ResolvedMailTest extends TestCase
     {
         $this->emailExpectation->expectsGetSubject('This is the subject');
 
-        $this->assertSame('This is the subject', $this->subject->subject());
+        self::assertSame('This is the subject', $this->subject->subject());
     }
 
     public function test_can_get_to_address(): void
@@ -37,7 +37,7 @@ class ResolvedMailTest extends TestCase
             new Address('hello@mailbook.dev', 'User'),
         ]);
 
-        $this->assertSame(['"User" <hello@mailbook.dev>'], $this->subject->to());
+        self::assertSame(['"User" <hello@mailbook.dev>'], $this->subject->to());
     }
 
     public function test_can_get_to_address_without_remove_address(): void
@@ -46,7 +46,7 @@ class ResolvedMailTest extends TestCase
             new Address('remove@mailbook.dev', 'Mailbook'),
         ]);
 
-        $this->assertSame([], $this->subject->to());
+        self::assertSame([], $this->subject->to());
     }
 
     public function test_can_get_reply_to_address(): void
@@ -55,7 +55,7 @@ class ResolvedMailTest extends TestCase
             new Address('hello@mailbook.dev', 'User'),
         ]);
 
-        $this->assertSame(['"User" <hello@mailbook.dev>'], $this->subject->replyTo());
+        self::assertSame(['"User" <hello@mailbook.dev>'], $this->subject->replyTo());
     }
 
     public function test_can_get_from_address(): void
@@ -64,7 +64,7 @@ class ResolvedMailTest extends TestCase
             new Address('hello@mailbook.dev', 'User'),
         ]);
 
-        $this->assertSame(['"User" <hello@mailbook.dev>'], $this->subject->from());
+        self::assertSame(['"User" <hello@mailbook.dev>'], $this->subject->from());
     }
 
     public function test_can_get_cc_address(): void
@@ -73,7 +73,7 @@ class ResolvedMailTest extends TestCase
             new Address('hello@mailbook.dev', 'User'),
         ]);
 
-        $this->assertSame(['"User" <hello@mailbook.dev>'], $this->subject->cc());
+        self::assertSame(['"User" <hello@mailbook.dev>'], $this->subject->cc());
     }
 
     public function test_can_get_bcc_address(): void
@@ -82,7 +82,7 @@ class ResolvedMailTest extends TestCase
             new Address('hello@mailbook.dev', 'User'),
         ]);
 
-        $this->assertSame(['"User" <hello@mailbook.dev>'], $this->subject->bcc());
+        self::assertSame(['"User" <hello@mailbook.dev>'], $this->subject->bcc());
     }
 
     public function test_can_get_content_from_string(): void
@@ -90,7 +90,7 @@ class ResolvedMailTest extends TestCase
         $this->emailExpectation->expectsGetHtmlBody('this is some mail content');
         $this->emailExpectation->expectsGetAttachments([]);
 
-        $this->assertSame('this is some mail content', $this->subject->content());
+        self::assertSame('this is some mail content', $this->subject->content());
     }
 
     public function test_can_get_content_from_a_stream(): void
@@ -98,7 +98,7 @@ class ResolvedMailTest extends TestCase
         $this->emailExpectation->expectsGetHtmlBody(fopen('data://text/plain,this is some mail content', 'r'));
         $this->emailExpectation->expectsGetAttachments([]);
 
-        $this->assertSame('this is some mail content', $this->subject->content());
+        self::assertSame('this is some mail content', $this->subject->content());
     }
 
     public function test_can_get_null_content(): void
@@ -106,7 +106,7 @@ class ResolvedMailTest extends TestCase
         $this->emailExpectation->expectsGetHtmlBody(null);
         $this->emailExpectation->expectsGetAttachments([]);
 
-        $this->assertSame('', $this->subject->content());
+        self::assertSame('', $this->subject->content());
     }
 
     public function test_can_get_null_content_from_a_stream(): void
@@ -114,7 +114,7 @@ class ResolvedMailTest extends TestCase
         $this->emailExpectation->expectsGetHtmlBody(fopen('data://text/plain,', 'r'));
         $this->emailExpectation->expectsGetAttachments([]);
 
-        $this->assertSame('', $this->subject->content());
+        self::assertSame('', $this->subject->content());
     }
 
     public function test_will_replace_inline_attachments(): void
@@ -124,7 +124,7 @@ class ResolvedMailTest extends TestCase
             new DataPart('attachment1', 'GRM6dF7cV3', 'image/png'),
         ]);
 
-        $this->assertSame('<img src="data:image/png;base64,YXR0YWNobWVudDE=" alt="img alt">', $this->subject->content());
+        self::assertSame('<img src="data:image/png;base64,YXR0YWNobWVudDE=" alt="img alt">', $this->subject->content());
     }
 
     public function test_can_get_attachments(): void
@@ -134,6 +134,6 @@ class ResolvedMailTest extends TestCase
             new DataPart('attachment2', 'file2.txt', 'text/plain'),
         ]);
 
-        $this->assertSame(['file1.txt', 'file2.txt'], $this->subject->attachments());
+        self::assertSame(['file1.txt', 'file2.txt'], $this->subject->attachments());
     }
 }
