@@ -115,11 +115,7 @@ class Mailbook
 
     public function setLocale(mixed $locale): ?string
     {
-        if (! is_string($locale)) {
-            return null;
-        }
-
-        if (! in_array($locale, $this->localeCodes(), true)) {
+        if (! is_string($locale) || ! in_array($locale, $this->localeCodes(), true)) {
             return null;
         }
 

@@ -2,16 +2,20 @@
 
 declare(strict_types=1);
 
+namespace Xammie\Mailbook\Tests\Data;
+
 use Xammie\Mailbook\Data\MailCollection;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\TestCase;
 
-it('can collect mails', function (): void {
-    $collection = new MailCollection;
-
-    expect($collection->all())->toBeEmpty();
-
-    $collection->push(Mailbook::add(TestMail::class));
-
-    expect($collection->all())->toHaveCount(1);
-});
+class MailCollectionTest extends TestCase
+{
+    public function test_can_collect_mails(): void
+    {
+        $collection = new MailCollection;
+        self::assertEmpty($collection->all());
+        $collection->push(Mailbook::add(TestMail::class));
+        self::assertCount(1, $collection->all());
+    }
+}

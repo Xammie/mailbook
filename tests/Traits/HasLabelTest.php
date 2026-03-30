@@ -2,23 +2,28 @@
 
 declare(strict_types=1);
 
+namespace Xammie\Mailbook\Tests\Traits;
+
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\TestCase;
 use Xammie\Mailbook\Traits\HasLabel;
 
-it('can get label', function (): void {
-    $item = Mailbook::add(TestMail::class);
-
-    expect($item->getLabel())->toBe('Test Mail');
-});
-
-it('can set label', function (): void {
-    $instance = new class
+class HasLabelTest extends TestCase
+{
+    public function test_can_get_label(): void
     {
-        use HasLabel;
-    };
+        $item = Mailbook::add(TestMail::class);
+        self::assertSame('Test Mail', $item->getLabel());
+    }
 
-    $instance->label('Test label');
-
-    expect($instance->getLabel())->toBe('Test label');
-});
+    public function test_can_set_label(): void
+    {
+        $instance = new class
+        {
+            use HasLabel;
+        };
+        $instance->label('Test label');
+        self::assertSame('Test label', $instance->getLabel());
+    }
+}

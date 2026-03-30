@@ -77,7 +77,7 @@ class ResolvedMail
      * @see https://github.com/Xammie/mailbook/discussions/98
      * @see https://github.com/laravel/framework/pull/48292
      */
-    protected function replaceEmbeddedAttachments(string $renderedView, array $attachments): string
+    private function replaceEmbeddedAttachments(string $renderedView, array $attachments): string
     {
         if (preg_match_all('/<img.+?src=[\'"]cid:([^\'"]+)[\'"].*?>/i', $renderedView, $matches)) {
             foreach (array_unique($matches[1]) as $image) {

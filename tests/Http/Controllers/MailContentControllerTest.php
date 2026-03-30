@@ -2,160 +2,190 @@
 
 declare(strict_types=1);
 
+namespace Xammie\Mailbook\Tests\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Xammie\Mailbook\Facades\Mailbook;
+use Xammie\Mailbook\Support\FakeSeedGenerator;
 use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedNotification;
+use Xammie\Mailbook\Tests\Support\FakeSeedGeneratorExpectation;
+use Xammie\Mailbook\Tests\TestCase;
 
-use function Pest\Laravel\get;
+class MailContentControllerTest extends TestCase
+{
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-it('can render', function (): void {
-    Mailbook::add(TestMail::class);
-    Mailbook::add(OtherMail::class);
+        config()->set('mailbook.locales', [
+            'en' => 'English',
+            'nl' => 'Dutch',
+            'de' => 'German',
+        ]);
+        app('translator')->addJsonPath(__DIR__.'/../../lang');
+    }
 
-    get(route('mailbook.content', ['class' => TestMail::class, 's' => '123']))
-        ->assertSuccessful()
-        ->assertSeeText('Test mail');
-});
+    public function test_can_render(): void
+    {
+        Mailbook::add(TestMail::class);
+        Mailbook::add(OtherMail::class);
 
-it('renders custom script', function (): void {
-    Mailbook::add(TestMail::class);
+        $this->get(route('mailbook.content', ['class' => TestMail::class, 's' => '123']))
+            ->assertSuccessful()
+            ->assertSeeText('Test mail');
+    }
 
-    get(route('mailbook.content', ['class' => TestMail::class, 's' => '123']))
-        ->assertSee(value: '<script defer>', escape: false);
-});
+    public function test_can_render_with_seed(): void
+    {
+        Mailbook::add(TestMail::class);
 
-it('cannot render without class', function (): void {
-    Mailbook::add(OtherMail::class);
+        $fakeSeedGenerator = FakeSeedGeneratorExpectation::factory();
+        $fakeSeedGenerator->expectsRestoreSeed('123');
 
-    get(route('mailbook.content'))
-        ->assertStatus(404);
-});
+        $this->app->instance(FakeSeedGenerator::class, $fakeSeedGenerator->mock);
 
-it('can render different locale mailable', function (): void {
-    config()->set('mailbook.locales', [
-        'en' => 'English',
-        'nl' => 'Dutch',
-        'de' => 'German',
-    ]);
+        $this->get(route('mailbook.content', ['class' => TestMail::class, 's' => '123']))
+            ->assertSuccessful()
+            ->assertSeeText('Test mail');
+    }
 
-    app('translator')->addJsonPath(__DIR__.'/../../lang');
+    public function test_renders_custom_script(): void
+    {
+        Mailbook::add(TestMail::class);
 
-    Mailbook::add(TranslatedMail::class);
+        $this->get(route('mailbook.content', ['class' => TestMail::class, 's' => '123']))
+            ->assertSee('<script defer>', escape: false);
+    }
 
-    get(route('mailbook.content', ['class' => TranslatedMail::class, 'locale' => 'nl']))
-        ->assertSuccessful()
-        ->assertSeeText('Dit is een test mail');
-});
+    public function test_cannot_render_without_class(): void
+    {
+        Mailbook::add(OtherMail::class);
 
-it('can render different locale notification', function (): void {
-    config()->set('mailbook.locales', [
-        'en' => 'English',
-        'nl' => 'Dutch',
-        'de' => 'German',
-    ]);
+        $this->get(route('mailbook.content'))
+            ->assertStatus(404);
+    }
 
-    app('translator')->addJsonPath(__DIR__.'/../../lang');
+    public function test_can_render_different_locale_mailable(): void
+    {
+        Mailbook::add(TranslatedMail::class);
 
-    Mailbook::add(TranslatedNotification::class);
+        $this->get(route('mailbook.content', ['class' => TranslatedMail::class, 'locale' => 'nl']))
+            ->assertSuccessful()
+            ->assertSeeText('Dit is een test mail');
+    }
 
-    get(route('mailbook.content', ['class' => TranslatedNotification::class, 'locale' => 'nl']))
-        ->assertSuccessful()
-        ->assertSeeText('Dit is een test mail');
-});
+    public function test_can_render_different_locale_notification(): void
+    {
+        Mailbook::add(TranslatedNotification::class);
 
-it('can render without locales', function (): void {
-    config()->set('mailbook.locales', []);
+        $this->get(route('mailbook.content', ['class' => TranslatedNotification::class, 'locale' => 'nl']))
+            ->assertSuccessful()
+            ->assertSeeText('Dit is een test mail');
+    }
 
-    Mailbook::add(TranslatedMail::class);
+    public function test_can_render_without_locales(): void
+    {
+        config()->set('mailbook.locales', []);
 
-    get(route('mailbook.content', ['class' => TranslatedMail::class]))->assertSuccessful();
-});
+        Mailbook::add(TranslatedMail::class);
 
-it('can render default variant', function (): void {
-    Mailbook::add(TestMail::class)
-        ->variant('First variant', fn (): TestMail => new TestMail)
-        ->variant('Second variant', fn (): OtherMail => new OtherMail);
+        $this->get(route('mailbook.content', ['class' => TranslatedMail::class]))->assertSuccessful();
+    }
 
-    get(route('mailbook.content', ['class' => TestMail::class]))
-        ->assertSuccessful()
-        ->assertSeeText('Test mail');
-});
+    public function test_can_render_default_variant(): void
+    {
+        Mailbook::add(TestMail::class)
+            ->variant('First variant', fn (): TestMail => new TestMail)
+            ->variant('Second variant', fn (): OtherMail => new OtherMail);
 
-it('can render selected variant', function (): void {
-    Mailbook::add(TestMail::class)
-        ->variant('Second variant', fn (): OtherMail => new OtherMail)
-        ->variant('First variant', fn (): TestMail => new TestMail);
+        $this->get(route('mailbook.content', ['class' => TestMail::class]))
+            ->assertSuccessful()
+            ->assertSeeText('Test mail');
+    }
 
-    get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'first-variant']))
-        ->assertSuccessful()
-        ->assertSeeText('Test mail');
-});
+    public function test_can_render_selected_variant(): void
+    {
+        Mailbook::add(TestMail::class)
+            ->variant('Second variant', fn (): OtherMail => new OtherMail)
+            ->variant('First variant', fn (): TestMail => new TestMail);
 
-it('cannot render unknown variant', function (): void {
-    Mailbook::add(TestMail::class)
-        ->variant('First variant', fn (): TestMail => new TestMail)
-        ->variant('Second variant', fn (): OtherMail => new OtherMail);
+        $this->get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'first-variant']))
+            ->assertSuccessful()
+            ->assertSeeText('Test mail');
+    }
 
-    get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'unknown']))
-        ->assertSuccessful()
-        ->assertSeeText('Test mail');
-});
+    public function test_cannot_render_unknown_variant(): void
+    {
+        Mailbook::add(TestMail::class)
+            ->variant('First variant', fn (): TestMail => new TestMail)
+            ->variant('Second variant', fn (): OtherMail => new OtherMail);
 
-it('can render closure', function (): void {
-    Mailbook::add(fn () => new TestMail);
+        $this->get(route('mailbook.content', ['class' => TestMail::class, 'variant' => 'unknown']))
+            ->assertSuccessful()
+            ->assertSeeText('Test mail');
+    }
 
-    get(route('mailbook.content', ['class' => TestMail::class]))
-        ->assertSuccessful()
-        ->assertSeeText('Test mail');
-});
+    public function test_can_render_closure(): void
+    {
+        Mailbook::add(fn () => new TestMail);
 
-it('cannot render without mailables', function (): void {
-    get(route('mailbook.content', ['class' => TestMail::class]))
-        ->assertStatus(500);
-});
+        $this->get(route('mailbook.content', ['class' => TestMail::class]))
+            ->assertSuccessful()
+            ->assertSeeText('Test mail');
+    }
 
-it('cannot render with unknown mailable', function (): void {
-    Mailbook::add(TestMail::class);
+    public function test_cannot_render_without_mailables(): void
+    {
+        $this->get(route('mailbook.content', ['class' => TestMail::class]))
+            ->assertStatus(500);
+    }
 
-    get(route('mailbook.content', ['class' => 'test-mail']))
-        ->assertStatus(404);
-});
+    public function test_cannot_render_with_unknown_mailable(): void
+    {
+        Mailbook::add(TestMail::class);
 
-it('rolls back database changes', function (): void {
-    config()->set('mailbook.database_rollback', true);
+        $this->get(route('mailbook.content', ['class' => 'test-mail']))
+            ->assertStatus(404);
+    }
 
-    expect(DB::transactionLevel())->toBe(0);
+    public function test_rolls_back_database_changes(): void
+    {
+        config()->set('mailbook.database_rollback', true);
 
-    Mailbook::add(function () {
-        expect(DB::transactionLevel())->toBe(1);
+        self::assertSame(0, DB::transactionLevel());
 
-        return new TestMail;
-    });
+        Mailbook::add(function () {
+            self::assertSame(1, DB::transactionLevel());
 
-    get(route('mailbook.content', ['class' => TestMail::class]))
-        ->assertSuccessful()
-        ->assertSeeText('Test mail');
+            return new TestMail;
+        });
 
-    expect(DB::transactionLevel())->toBe(0);
-});
+        $this->get(route('mailbook.content', ['class' => TestMail::class]))
+            ->assertSuccessful()
+            ->assertSeeText('Test mail');
 
-it('does not rollback database changes when disabled', function (): void {
-    config()->set('mailbook.database_rollback', false);
+        self::assertSame(0, DB::transactionLevel());
+    }
 
-    expect(DB::transactionLevel())->toBe(0);
+    public function test_does_not_rollback_database_changes_when_disabled(): void
+    {
+        config()->set('mailbook.database_rollback', false);
 
-    Mailbook::add(function () {
-        expect(DB::transactionLevel())->toBe(0);
+        self::assertSame(0, DB::transactionLevel());
 
-        return new TestMail;
-    });
+        Mailbook::add(function () {
+            self::assertSame(0, DB::transactionLevel());
 
-    get(route('mailbook.content', ['class' => TestMail::class]))
-        ->assertSuccessful()
-        ->assertSeeText('Test mail');
+            return new TestMail;
+        });
 
-    expect(DB::transactionLevel())->toBe(0);
-});
+        $this->get(route('mailbook.content', ['class' => TestMail::class]))
+            ->assertSuccessful()
+            ->assertSeeText('Test mail');
+
+        self::assertSame(0, DB::transactionLevel());
+    }
+}

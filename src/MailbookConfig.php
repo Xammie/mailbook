@@ -23,7 +23,7 @@ class MailbookConfig
             throw new RuntimeException('invalid config mailbook.send_to should be string');
         }
 
-        if (empty($to)) {
+        if ($to === '' || $to === '0') {
             throw new RuntimeException('invalid config mailbook.send_to should not be empty');
         }
 

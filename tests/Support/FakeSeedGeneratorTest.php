@@ -2,54 +2,72 @@
 
 declare(strict_types=1);
 
+namespace Xammie\Mailbook\Tests\Support;
+
 use Faker\Generator;
-use Mockery\MockInterface;
 use Xammie\Mailbook\Support\FakeSeedGenerator;
+use Xammie\Mailbook\Tests\Fixtures\GeneratorExpectation;
+use Xammie\Mailbook\Tests\TestCase;
 
-it('can get random seed', function (): void {
-    $mock = $this->mock(Generator::class, function (MockInterface $mock): void {
-        $mock->shouldReceive('randomNumber')->once()->andReturn(123);
-        $mock->shouldReceive('seed')->with(123)->once();
-    });
-    $this->app->bind(Generator::class.':en_US', fn () => $mock);
+class FakeSeedGeneratorTest extends TestCase
+{
+    private FakeSeedGenerator $subject;
 
-    $generator = new FakeSeedGenerator;
+    private GeneratorExpectation $generator;
 
-    $seed = $generator->getCurrentSeed();
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-    expect($seed)->toBe(123);
-})
-    ->skip(! function_exists('fake'));
+        $this->generator = GeneratorExpectation::factory();
+        $this->app->instance(Generator::class.':en_US', $this->generator->mock);
+        $this->subject = new FakeSeedGenerator;
+    }
 
-it('cannot get random seed', function (): void {
-    $generator = new FakeSeedGenerator;
+    public function test_can_get_random_seed(): void
+    {
+        if (! function_exists('fake')) {
+            $this->markTestSkipped('Function fake() does not exist.');
+        }
 
-    $seed = $generator->getCurrentSeed();
+        $this->generator->expectsRandomNumber(123);
+        $this->generator->expectsSeed(123);
 
-    expect($seed)->toBeNull();
-})
-    ->skip(function_exists('fake'));
+        $seed = $this->subject->getCurrentSeed();
 
-it('can restore seed', function (): void {
-    $mock = $this->mock(Generator::class, function (MockInterface $mock): void {
-        $mock->shouldReceive('seed')->with('abc')->once();
-    });
-    $this->app->bind(Generator::class.':en_US', fn () => $mock);
+        self::assertSame(123, $seed);
+    }
 
-    $generator = new FakeSeedGenerator;
+    public function test_cannot_get_random_seed(): void
+    {
+        if (function_exists('fake')) {
+            $this->markTestSkipped('Function fake() exists.');
+        }
 
-    $generator->restoreSeed('abc');
-})
-    ->skip(! function_exists('fake'));
+        $seed = $this->subject->getCurrentSeed();
 
-it('cannot restore empty seed', function (): void {
-    $mock = $this->mock(Generator::class, function (MockInterface $mock): void {
-        $mock->shouldReceive('seed')->never();
-    });
-    $this->app->bind(Generator::class.':en_US', fn () => $mock);
+        self::assertNull($seed);
+    }
 
-    $generator = new FakeSeedGenerator;
+    public function test_can_restore_seed(): void
+    {
+        if (! function_exists('fake')) {
+            $this->markTestSkipped('Function fake() does not exist.');
+        }
 
-    $generator->restoreSeed(null);
-})
-    ->skip(! function_exists('fake'));
+        $this->generator->expectsSeed('abc');
+
+        $this->subject->restoreSeed('abc');
+    }
+
+    public function test_cannot_restore_empty_seed(): void
+    {
+        if (! function_exists('fake')) {
+            $this->markTestSkipped('Function fake() does not exist.');
+        }
+
+        $this->expectNotToPerformAssertions();
+
+        $this->subject->restoreSeed(null);
+    }
+}

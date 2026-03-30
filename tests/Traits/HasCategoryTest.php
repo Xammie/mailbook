@@ -2,37 +2,40 @@
 
 declare(strict_types=1);
 
+namespace Xammie\Mailbook\Tests\Traits;
+
+use Xammie\Mailbook\Tests\TestCase;
 use Xammie\Mailbook\Traits\HasCategory;
 
-it('can get category', function (): void {
-    $instance = new class
+class HasCategoryTest extends TestCase
+{
+    public function test_can_get_category(): void
     {
-        use HasCategory;
-    };
+        $instance = new class
+        {
+            use HasCategory;
+        };
+        self::assertNull($instance->getCategory());
+    }
 
-    expect($instance->getCategory())->toBeNull();
-});
-
-it('can set category', function (): void {
-    $instance = new class
+    public function test_can_set_category(): void
     {
-        use HasCategory;
-    };
+        $instance = new class
+        {
+            use HasCategory;
+        };
+        $instance->category('Test category');
+        self::assertSame('Test category', $instance->getCategory());
+    }
 
-    $instance->category('Test category');
-
-    expect($instance->getCategory())->toBe('Test category');
-});
-
-it('can detect category', function (): void {
-    $instance = new class
+    public function test_can_detect_category(): void
     {
-        use HasCategory;
-    };
-
-    expect($instance->hasCategory())->toBeFalse();
-
-    $instance->category('Test category');
-
-    expect($instance->hasCategory())->toBeTrue();
-});
+        $instance = new class
+        {
+            use HasCategory;
+        };
+        self::assertFalse($instance->hasCategory());
+        $instance->category('Test category');
+        self::assertTrue($instance->hasCategory());
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": ["src"],
+        "excludes": ["Commands", "Support"]
+    },
+    "logs": {
+        "text": "infection.log",
+        "html": "infection.html",
+    },
+    "mutators": {
+        "@default": true,
+        "MBString": false,
+        "MethodCallRemoval": {
+            "ignore": [
+                "Xammie\\Mailbook\\Data\\MailableItem::send::208",
+                "Xammie\\Mailbook\\Data\\MailableItem::send::219",
+                "Xammie\\Mailbook\\Data\\MailableItem::send::227",
+            ]
+        },
+        "UnwrapArrayUnique": {
+            "ignore": [
+                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::83",
+            ]
+        },
+        "ReturnRemoval": {
+            "ignore": [
+                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::107"
+            ]
+        },
+        "IfNegation": {
+            "ignore": [
+                "Xammie\\Mailbook\\Data\\MailableItem::send::207",
+                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::106"
+            ]
+        },
+        "Break_": {
+            "ignore": [
+                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::92"
+            ]
+        }
+    }
+}

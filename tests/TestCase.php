@@ -21,4 +21,24 @@ class TestCase extends Orchestra
         config()->set('database.default', 'testing');
         config()->set('mailbook.enabled', true);
     }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->cleanInstallFiles();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->cleanInstallFiles();
+        parent::tearDown();
+    }
+
+    protected function cleanInstallFiles(): void
+    {
+        @unlink(base_path('routes/mailbook.php'));
+        @unlink(base_path('app/Mail/MailbookMail.php'));
+        @unlink(base_path('resources/views/mail/mailbook.blade.php'));
+        @rmdir(base_path('app/Mail'));
+    }
 }

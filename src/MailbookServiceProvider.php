@@ -23,8 +23,6 @@ class MailbookServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-        $this->app->extend('mail.manager', function (MailManager $manager): MailManager {
-            return $manager->extend('mailbook', fn () => new MailbookTransport);
-        });
+        $this->app->extend('mail.manager', fn (MailManager $manager): MailManager => $manager->extend('mailbook', fn () => new MailbookTransport));
     }
 }

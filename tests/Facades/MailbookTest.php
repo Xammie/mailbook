@@ -2,51 +2,64 @@
 
 declare(strict_types=1);
 
+namespace Xammie\Mailbook\Tests\Facades;
+
+use PHPUnit\Framework\Attributes\DataProvider;
 use Xammie\Mailbook\Facades\Mailbook;
+use Xammie\Mailbook\Tests\TestCase;
 
-it('can set locale', function ($locale): void {
-    config()->set('mailbook.locales', [
-        'en' => 'English',
-        'nl' => 'Dutch',
-        'de' => 'German',
-    ]);
+class MailbookTest extends TestCase
+{
+    public static function localeProvider(): array
+    {
+        return [
+            ['en'],
+            ['nl'],
+            ['de'],
+        ];
+    }
 
-    expect(Mailbook::getLocale())->toBeNull();
+    #[DataProvider('localeProvider')]
+    public function test_can_set_locale($locale): void
+    {
+        config()->set('mailbook.locales', [
+            'en' => 'English',
+            'nl' => 'Dutch',
+            'de' => 'German',
+        ]);
+        self::assertNull(Mailbook::getLocale());
+        Mailbook::setLocale($locale);
+        self::assertSame($locale, Mailbook::getLocale());
+    }
 
-    Mailbook::setLocale($locale);
+    public function test_cannot_set_invalid_locale(): void
+    {
+        config()->set('mailbook.locales', [
+            'en' => 'English',
+            'nl' => 'Dutch',
+            'de' => 'German',
+        ]);
+        Mailbook::setLocale(123);
+        self::assertNull(Mailbook::getLocale());
+    }
 
-    expect(Mailbook::getLocale())->toBe($locale);
-})
-    ->with(['en', 'nl', 'de']);
+    public function test_cannot_set_unknown_locale(): void
+    {
+        config()->set('mailbook.locales', [
+            'en' => 'English',
+            'nl' => 'Dutch',
+            'de' => 'German',
+        ]);
 
-it('cannot set invalid locale', function (): void {
-    config()->set('mailbook.locales', [
-        'en' => 'English',
-        'nl' => 'Dutch',
-        'de' => 'German',
-    ]);
+        Mailbook::setLocale('be');
 
-    Mailbook::setLocale(123);
+        self::assertNull(Mailbook::getLocale());
+    }
 
-    expect(Mailbook::getLocale())->toBeNull();
-});
-
-it('cannot set unknown locale', function (): void {
-    config()->set('mailbook.locales', [
-        'en' => 'English',
-        'nl' => 'Dutch',
-        'de' => 'German',
-    ]);
-
-    Mailbook::setLocale('be');
-
-    expect(Mailbook::getLocale())->toBeNull();
-});
-
-it('cannot set locales when none are set', function (): void {
-    config()->set('mailbook.locales', null);
-
-    Mailbook::setLocale('be');
-
-    expect(Mailbook::getLocale())->toBeNull();
-});
+    public function test_cannot_set_locales_when_none_are_set(): void
+    {
+        config()->set('mailbook.locales', null);
+        Mailbook::setLocale('be');
+        self::assertNull(Mailbook::getLocale());
+    }
+}

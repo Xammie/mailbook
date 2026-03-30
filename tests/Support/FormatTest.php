@@ -2,16 +2,29 @@
 
 declare(strict_types=1);
 
-use Xammie\Mailbook\Support\Format;
+namespace Xammie\Mailbook\Tests\Support;
 
-it('can convert to human readable sizes', function ($bytes, $expected): void {
-    expect(Format::bytesToHuman($bytes))->toBe($expected);
-})
-    ->with([
-        [-10, '0 B'],
-        [1, '1 B'],
-        [64, '64 B'],
-        [64 * 64, '4 KB'],
-        [64 * 64 * 64, '256 KB'],
-        [64 * 64 * 64 * 64, '16 MB'],
-    ]);
+use PHPUnit\Framework\Attributes\DataProvider;
+use Xammie\Mailbook\Support\Format;
+use Xammie\Mailbook\Tests\TestCase;
+
+class FormatTest extends TestCase
+{
+    public static function bytesProvider(): array
+    {
+        return [
+            'negative' => [-10, '0 B'],
+            'single byte' => [1, '1 B'],
+            'small number' => [64, '64 B'],
+            'kb' => [64 * 64, '4 KB'],
+            'many kb' => [64 * 64 * 64, '256 KB'],
+            'mb' => [64 * 64 * 64 * 64, '16 MB'],
+        ];
+    }
+
+    #[DataProvider('bytesProvider')]
+    public function test_can_convert_to_human_readable_sizes(int $bytes, string $expected): void
+    {
+        self::assertSame($expected, Format::bytesToHuman($bytes));
+    }
+}
