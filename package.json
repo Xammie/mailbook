@@ -1,7 +1,10 @@
 {
     "dependencies": {
-        "tailwindcss": "^4.1.13",
-        "@tailwindcss/cli": "^4.1.13"
+        "@tailwindcss/cli": "^4.2.2",
+        "tailwindcss": "^4.2.2"
+    },
+    "resolutions": {
+        "picomatch": "^2.3.2"
     },
     "scripts": {
         "dev": "yarn watch",
