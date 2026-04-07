@@ -119,12 +119,32 @@ class ResolvedMailTest extends TestCase
 
     public function test_will_replace_inline_attachments(): void
     {
-        $this->emailExpectation->expectsGetHtmlBody('<img src="cid:GRM6dF7cV3" alt="img alt">');
+        $this->emailExpectation->expectsGetHtmlBody('<img src="cid:GRM6dF7cV3@symfony" alt="img alt">');
         $this->emailExpectation->expectsGetAttachments([
-            new DataPart('attachment1', 'GRM6dF7cV3', 'image/png'),
+            (new DataPart(body: 'attachment1', filename: 'GRM6dF7cV3@symfony', contentType: 'image/png')),
         ]);
 
         self::assertSame('<img src="data:image/png;base64,YXR0YWNobWVudDE=" alt="img alt">', $this->subject->content());
+    }
+
+    public function test_will_replace_inline_attachments_with_content_id(): void
+    {
+        $this->emailExpectation->expectsGetHtmlBody('<img src="cid:GRM6dF7cV3@symfony" alt="img alt">');
+        $this->emailExpectation->expectsGetAttachments([
+            (new DataPart(body: 'attachment1', filename: 'file.png', contentType: 'image/png'))->setContentId('GRM6dF7cV3@symfony'),
+        ]);
+
+        self::assertSame('<img src="data:image/png;base64,YXR0YWNobWVudDE=" alt="img alt">', $this->subject->content());
+    }
+
+    public function test_wont_replace_inline_attachments_when_ids_dont_match(): void
+    {
+        $this->emailExpectation->expectsGetHtmlBody('<img src="cid:GRM6dF7cV3@symfony" alt="img alt">');
+        $this->emailExpectation->expectsGetAttachments([
+            new DataPart(body: 'attachment1', filename: 'file.png', contentType: 'image/png'),
+        ]);
+
+        self::assertSame('<img src="cid:GRM6dF7cV3@symfony" alt="img alt">', $this->subject->content());
     }
 
     public function test_can_get_attachments(): void

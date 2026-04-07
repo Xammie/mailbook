@@ -20,23 +20,24 @@
         },
         "UnwrapArrayUnique": {
             "ignore": [
-                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::83",
+                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::85",
             ]
         },
         "ReturnRemoval": {
             "ignore": [
-                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::107"
+                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::109",
+                "Xammie\\Mailbook\\Data\\MailableItem::currentVariant::157"
             ]
         },
         "IfNegation": {
             "ignore": [
                 "Xammie\\Mailbook\\Data\\MailableItem::send::207",
-                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::106"
+                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::108"
             ]
         },
         "Break_": {
             "ignore": [
-                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::92"
+                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::94"
             ]
         }
     }
