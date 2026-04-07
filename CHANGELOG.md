@@ -2,6 +2,16 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.11.1 - 2026-04-07
+
+### What's Changed
+
+* Migrate to phpunit by @Xammie in https://github.com/Xammie/mailbook/pull/158
+* Upgrade tailwind by @Xammie in https://github.com/Xammie/mailbook/pull/159
+* Fixed embedded attachments not being replaced by @Xammie in https://github.com/Xammie/mailbook/pull/161
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.11.0...1.11.1
+
 ## 1.11.0 - 2026-03-26
 
 ### What's Changed
