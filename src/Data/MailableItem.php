@@ -235,7 +235,7 @@ class MailableItem
     public function meta(): array
     {
         return array_filter([
-            'Déclencheur' => $this->getComment(),
+            'Comment' => $this->getComment(),
             'Subject' => $this->subject(),
             'From' => $this->from(),
             'Reply To' => $this->replyTo(),
