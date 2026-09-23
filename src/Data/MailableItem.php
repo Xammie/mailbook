@@ -205,10 +205,7 @@ class MailableItem
 
     public function send(string $email): void
     {
-        /** @phpstan-ignore function.alreadyNarrowedType */
-        if (method_exists(app(Mailer::class), 'alwaysTo')) {
-            Mail::alwaysTo($email);
-        }
+        $this->alwaysTo($email);
 
         $instance = $this->variantResolver()->instance();
         $locale = MailbookFacade::getLocale();
@@ -217,7 +214,7 @@ class MailableItem
             $instance->locale($locale);
         }
 
-        $injector = new ConfigInjector;
+        $injector = app(ConfigInjector::class);
         $injector->set('queue.default', 'sync');
 
         if ($instance instanceof Notification) {
@@ -244,5 +241,16 @@ class MailableItem
             'Bcc' => $this->bcc(),
             'Theme' => $this->theme(),
         ]);
+    }
+
+    /**
+     * @infection-ignore-all
+     */
+    private function alwaysTo(string $email): void
+    {
+        /** @phpstan-ignore function.alreadyNarrowedType */
+        if (method_exists(app(Mailer::class), 'alwaysTo')) {
+            Mail::alwaysTo($email);
+        }
     }
 }

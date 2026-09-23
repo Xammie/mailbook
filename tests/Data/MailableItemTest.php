@@ -4,18 +4,33 @@ declare(strict_types=1);
 
 namespace Xammie\Mailbook\Tests\Data;
 
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use UnexpectedValueException;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
+use Xammie\Mailbook\Support\ConfigInjector;
 use Xammie\Mailbook\Tests\Fixtures\Mails\NotificationMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestBinding;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
+use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Fixtures\Mails\WithAttachmentsMail;
+use Xammie\Mailbook\Tests\Support\ConfigInjectorExpectation;
 use Xammie\Mailbook\Tests\TestCase;
 
 class MailableItemTest extends TestCase
 {
+    private ConfigInjectorExpectation $configInjector;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->configInjector = ConfigInjectorExpectation::factory();
+        $this->app->instance(ConfigInjector::class, $this->configInjector->mock);
+    }
+
     public function test_can_render(): void
     {
         $html = Mailbook::add(TestMail::class)->content();
@@ -233,5 +248,33 @@ class MailableItemTest extends TestCase
     {
         $item = Mailbook::comment('Sent when a user registers')->add(OtherMail::class);
         self::assertSame('Sent when a user registers', $item->meta()['Comment']);
+    }
+
+    public function test_can_send_mailable(): void
+    {
+        Mail::fake();
+        Notification::fake();
+        $this->configInjector->expectsSet('queue.default', 'sync');
+        $this->configInjector->expectsRevert();
+
+        $item = Mailbook::add(TestMail::class);
+        $item->send('test@example.com');
+
+        Mail::assertSent(TestMail::class);
+        Notification::assertNothingSent();
+    }
+
+    public function test_can_send_notification(): void
+    {
+        Mail::fake();
+        Notification::fake();
+        $this->configInjector->expectsSet('queue.default', 'sync');
+        $this->configInjector->expectsRevert();
+
+        $item = Mailbook::add(TestNotification::class);
+        $item->send('test@example.com');
+
+        Notification::assertSentOnDemand(TestNotification::class);
+        Mail::assertNothingSent();
     }
 }
