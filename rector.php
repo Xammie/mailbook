@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitSelfCallRector;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferTestsWithSnakeCaseRector;
 use Rector\Set\ValueObject\LevelSetList;
 
 return RectorConfig::configure()
@@ -15,6 +16,7 @@ return RectorConfig::configure()
     ])
     ->withRules([
         PreferPHPUnitSelfCallRector::class,
+        PreferTestsWithSnakeCaseRector::class,
     ])
     ->withSets([
         LevelSetList::UP_TO_PHP_80,
