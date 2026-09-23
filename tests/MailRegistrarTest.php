@@ -25,6 +25,19 @@ class MailRegistrarTest extends TestCase
         self::assertSame('Test Mail', $item->getLabel());
     }
 
+    public function test_can_register_mailable_with_comment_as_first_method(): void
+    {
+        $item = Mailbook::comment('Test comment')->add(TestMail::class);
+        self::assertSame('Test comment', $item->getComment());
+    }
+
+    public function test_will_clear_comment_in_next_call(): void
+    {
+        Mailbook::comment('Test comment');
+        $item = Mailbook::add(TestMail::class);
+        self::assertNull($item->getComment());
+    }
+
     public function test_can_group_mails(): void
     {
         Mailbook::to('test@mailbook.dev')
