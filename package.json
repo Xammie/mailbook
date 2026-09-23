@@ -3,12 +3,12 @@
     "devDependencies": {
         "@rollup/plugin-swc": "^0.4.1",
         "@rollup/plugin-terser": "^1.0.0",
-        "@swc/core": "^1.15.47",
+        "@swc/core": "^1.16.2",
         "@tailwindcss/cli": "^4.2.2",
-        "prettier": "^3.8.4",
-        "prettier-plugin-blade": "^3.2.2",
-        "prettier-plugin-tailwindcss": "^0.8.0",
-        "rollup": "^4.62.4",
+        "prettier": "^3.9.9",
+        "prettier-plugin-blade": "^3.3.3",
+        "prettier-plugin-tailwindcss": "^0.8.1",
+        "rollup": "^4.63.4",
         "tailwindcss": "^4.2.2",
         "typescript": "^7.0.2"
     },
