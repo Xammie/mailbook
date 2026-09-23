@@ -19,11 +19,13 @@ use Xammie\Mailbook\MailableResolver;
 use Xammie\Mailbook\Support\ConfigInjector;
 use Xammie\Mailbook\Support\Format;
 use Xammie\Mailbook\Traits\HasCategory;
+use Xammie\Mailbook\Traits\HasComment;
 use Xammie\Mailbook\Traits\HasLabel;
 
 class MailableItem
 {
     use HasCategory;
+    use HasComment;
     use HasLabel;
 
     /**
@@ -233,6 +235,7 @@ class MailableItem
     public function meta(): array
     {
         return array_filter([
+            'Comment' => $this->getComment(),
             'Subject' => $this->subject(),
             'From' => $this->from(),
             'Reply To' => $this->replyTo(),

@@ -120,6 +120,24 @@ Mailbook::to('example@mailbook.dev')
     });
 ```
 
+## Adding a comment
+
+You can attach a comment to a mail to give extra context, for example when it gets sent. The comment is shown in the
+mail's meta information. This can be done using the `comment()` method.
+
+```php
+Mailbook::add(WelcomeNotification::class)
+    ->comment('Sent when a user completes registration');
+```
+
+Just like `category()`, you can also chain it to a `group()`.
+
+```php
+Mailbook::comment('Sent when a user completes registration')->group(function () {
+    Mailbook::add(WelcomeNotification::class);
+});
+```
+
 ## Variants
 
 When creating mails you might have a couple of different scenario's that you want to test for one mail, you can use

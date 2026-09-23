@@ -228,4 +228,10 @@ class MailableItemTest extends TestCase
             ],
         ], $item->meta());
     }
+
+    public function test_can_get_meta_with_comment(): void
+    {
+        $item = Mailbook::comment('Sent when a user registers')->add(OtherMail::class);
+        self::assertSame('Sent when a user registers', $item->meta()['Comment']);
+    }
 }

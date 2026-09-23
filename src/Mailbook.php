@@ -46,6 +46,11 @@ class Mailbook
         return $this->registrar()->category($category);
     }
 
+    public function comment(string $comment): MailRegistrar
+    {
+        return $this->registrar()->comment($comment);
+    }
+
     public function to(mixed $notifiable): MailRegistrar
     {
         return $this->registrar()->to($notifiable);
