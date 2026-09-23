@@ -17,6 +17,8 @@ class MailRegistrar
 
     protected ?string $category = null;
 
+    protected ?string $comment = null;
+
     protected mixed $notifiable = null;
 
     public function __construct(protected MailCollection $collection) {}
@@ -40,6 +42,13 @@ class MailRegistrar
         return $this;
     }
 
+    public function comment(string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
     public function to(mixed $notifiable): self
     {
         $this->notifiable = $notifiable;
@@ -57,6 +66,10 @@ class MailRegistrar
 
         if ($this->category) {
             $item->category($this->category);
+        }
+
+        if ($this->comment) {
+            $item->comment($this->comment);
         }
 
         $this->collection->push($item);
