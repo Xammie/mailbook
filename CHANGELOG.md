@@ -2,6 +2,20 @@
 
 All notable changes to `mailbook` will be documented in this file.
 
+## 1.12.1 - 2026-09-23
+
+### What's Changed
+
+* Add comment() method to document mails by @WhereIsLucas in https://github.com/Xammie/mailbook/pull/170
+* Ignore css and js source files in export by @Xammie in https://github.com/Xammie/mailbook/pull/168
+* Remove support for laravel 11 as it has reached end of life by @Xammie in https://github.com/Xammie/mailbook/pull/169
+
+### New Contributors
+
+* @WhereIsLucas made their first contribution in https://github.com/Xammie/mailbook/pull/170
+
+**Full Changelog**: https://github.com/Xammie/mailbook/compare/1.12.0...1.12.1
+
 ## 1.12.0 - 2026-08-01
 
 ### What's Changed
