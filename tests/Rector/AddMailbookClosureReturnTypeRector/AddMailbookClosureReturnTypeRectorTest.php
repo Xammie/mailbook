@@ -7,6 +7,7 @@ namespace Xammie\Mailbook\Tests\Rector\AddMailbookClosureReturnTypeRector;
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
+use Xammie\Mailbook\Tests\TestCase;
 
 /*
  * Rector is a dev dependency and is not installed in every test matrix combination.
@@ -30,6 +31,14 @@ if (class_exists(AbstractRectorTestCase::class)) {
         public function provideConfigFilePath(): string
         {
             return __DIR__.'/config/configured_rule.php';
+        }
+    }
+} else {
+    final class AddMailbookClosureReturnTypeRectorTest extends TestCase
+    {
+        public function test_skip(): void
+        {
+            $this->markTestSkipped('Rector is missing');
         }
     }
 }
