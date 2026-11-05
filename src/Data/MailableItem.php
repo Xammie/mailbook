@@ -138,6 +138,11 @@ class MailableItem
         return $this->resolve()->content();
     }
 
+    public function raw(): string
+    {
+        return $this->resolve()->raw();
+    }
+
     public function size(): string
     {
         return Format::bytesToHuman(strlen($this->content()));

@@ -72,6 +72,41 @@ class ResolvedMail
     }
 
     /**
+     * Get the complete message including its headers, as it would be sent.
+     *
+     * The preview recipient is removed because it never receives an actual mail,
+     * and the `Bcc` header is omitted just like Symfony does when preparing
+     * a message for delivery.
+     */
+    public function raw(): string
+    {
+        $message = clone $this->message;
+
+        $this->removePreviewRecipients($message);
+
+        return $message->toString();
+    }
+
+    /**
+     * Remove the sentinel recipient that is added to render mails without recipients.
+     */
+    private function removePreviewRecipients(Email $message): void
+    {
+        $addresses = array_filter(
+            $message->getTo(),
+            fn (Address $address) => $address->getAddress() !== 'remove@mailbook.dev'
+        );
+
+        if ($addresses !== []) {
+            $message->to(...$addresses);
+
+            return;
+        }
+
+        $message->getHeaders()->remove('To');
+    }
+
+    /**
      * Replace embedded attachments with base64 encoded images.
      *
      * @see https://github.com/Xammie/mailbook/discussions/98

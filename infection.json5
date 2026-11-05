@@ -13,32 +13,32 @@
         "MBString": false,
         "MethodCallRemoval": {
             "ignore": [
-                "Xammie\\Mailbook\\Data\\MailableItem::send::208",
-                "Xammie\\Mailbook\\Data\\MailableItem::send::219",
-                "Xammie\\Mailbook\\Data\\MailableItem::send::227",
-            ]
+                "Xammie\\Mailbook\\Data\\MailableItem::send::213",
+                "Xammie\\Mailbook\\Data\\MailableItem::send::224",
+                "Xammie\\Mailbook\\Data\\MailableItem::send::232",
+            ],
         },
         "UnwrapArrayUnique": {
             "ignore": [
-                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::85",
-            ]
+                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::120",
+            ],
         },
         "ReturnRemoval": {
             "ignore": [
-                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::109",
-                "Xammie\\Mailbook\\Data\\MailableItem::currentVariant::157"
-            ]
+                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::144",
+                "Xammie\\Mailbook\\Data\\MailableItem::currentVariant::162"
+            ],
         },
         "IfNegation": {
             "ignore": [
-                "Xammie\\Mailbook\\Data\\MailableItem::send::207",
-                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::108"
-            ]
+                "Xammie\\Mailbook\\Data\\MailableItem::send::212",
+                "Xammie\\Mailbook\\Data\\ResolvedMail::attachments::143"
+            ],
         },
         "Break_": {
             "ignore": [
-                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::94"
-            ]
+                "Xammie\\Mailbook\\Data\\ResolvedMail::replaceEmbeddedAttachments::129"
+            ],
         }
     }
 }
