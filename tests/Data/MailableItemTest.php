@@ -76,6 +76,15 @@ class MailableItemTest extends TestCase
         self::assertSame($item->content(), $item->content());
     }
 
+    public function test_can_get_raw_message(): void
+    {
+        $raw = Mailbook::add(TestMail::class)->raw();
+
+        self::assertStringContainsString('Subject: Test email subject', $raw);
+        self::assertStringContainsString('Test mail', $raw);
+        self::assertStringNotContainsString('remove@mailbook.dev', $raw);
+    }
+
     public function test_can_register_variants(): void
     {
         $item = Mailbook::add(TestMail::class)

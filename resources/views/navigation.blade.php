@@ -8,6 +8,8 @@
      * @var mixed $currentLocale
      * @var string|null $send_to
      * @var array $locales
+     * @var mixed $download
+     * @var string $download_url
      */
 @endphp
 <div class="z-20 flex h-16 shrink-0 grow-0 items-stretch bg-[#151e2b]">
@@ -17,6 +19,20 @@
             <div class="text-xl">{{ $subject }}</div>
         </div>
         <div class="hidden sm:flex">
+            @if ($download)
+                <div class="py-2">
+                    <a
+                        href="{{ $download_url }}"
+                        class="flex items-center justify-center rounded-lg p-3 transition-colors duration-100 hover:bg-gray-700"
+                        aria-label="Download mail"
+                        title="Download mail"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6 fill-white">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.25a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V3a.75.75 0 0 1 .75-.75Zm-9 9.75a.75.75 0 0 1 .75.75v3.375c0 .621.504 1.125 1.125 1.125h14.25c.621 0 1.125-.504 1.125-1.125V12.75a.75.75 0 0 1 1.5 0v3.375c0 1.456-1.179 2.625-2.625 2.625H3.75A2.625 2.625 0 0 1 1.125 16.125V12.75a.75.75 0 0 1 .75-.75Z" />
+                        </svg>
+                    </a>
+                </div>
+            @endif
             @if ($send)
                 <div class="py-2">
                     <a
