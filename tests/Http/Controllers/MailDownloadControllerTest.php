@@ -16,6 +16,23 @@ use Xammie\Mailbook\Tests\TestCase;
 
 class MailDownloadControllerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config()->set('mailbook.download', true);
+    }
+
+    public function test_cannot_download_when_disabled(): void
+    {
+        config()->set('mailbook.download', false);
+
+        Mailbook::add(TestMail::class);
+
+        $this->get(route('mailbook.download', ['class' => TestMail::class]))
+            ->assertStatus(404);
+    }
+
     public function test_can_download(): void
     {
         Mailbook::add(TestMail::class);

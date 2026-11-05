@@ -73,10 +73,6 @@ class ResolvedMail
 
     /**
      * Get the complete message including its headers, as it would be sent.
-     *
-     * The preview recipient is removed because it never receives an actual mail,
-     * and the `Bcc` header is omitted just like Symfony does when preparing
-     * a message for delivery.
      */
     public function raw(): string
     {

@@ -11,7 +11,8 @@
      * @var mixed $currentLocale
      * @var array<string, array|string> $meta
      * @var string $preview
-     * @var string $download
+     * @var mixed $download
+     * @var string $download_url
      * @var mixed $send
      * @var string|null $send_to
      * @var Illuminate\Support\HtmlString $style

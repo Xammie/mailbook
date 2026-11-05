@@ -47,7 +47,7 @@ class DashboardControllerTest extends TestCase
                 ],
                 'attachments' => [],
                 'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5CTestMail&locale=en&s=123456',
-                'download' => 'http://localhost/mailbook/download?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5CTestMail&locale=en&s=123456',
+                'download_url' => 'http://localhost/mailbook/download?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5CTestMail&locale=en&s=123456',
             ]);
     }
 
@@ -72,7 +72,7 @@ class DashboardControllerTest extends TestCase
                 ],
                 'attachments' => [],
                 'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5COtherMail&locale=en',
-                'download' => 'http://localhost/mailbook/download?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5COtherMail&locale=en',
+                'download_url' => 'http://localhost/mailbook/download?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5COtherMail&locale=en',
             ]);
     }
 
@@ -97,7 +97,7 @@ class DashboardControllerTest extends TestCase
                 ],
                 'attachments' => [],
                 'preview' => 'http://localhost/mailbook/content?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5COtherMail&locale=en&s=123456',
-                'download' => 'http://localhost/mailbook/download?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5COtherMail&locale=en&s=123456',
+                'download_url' => 'http://localhost/mailbook/download?class=Xammie%5CMailbook%5CTests%5CFixtures%5CMails%5COtherMail&locale=en&s=123456',
             ]);
     }
 
@@ -295,6 +295,7 @@ class DashboardControllerTest extends TestCase
     public function test_can_see_download_button(): void
     {
         $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+        config()->set('mailbook.download', true);
 
         Mailbook::add(TestMail::class);
 
@@ -302,6 +303,18 @@ class DashboardControllerTest extends TestCase
             ->assertSuccessful()
             ->assertSee('Download mail')
             ->assertSee('/mailbook/download');
+    }
+
+    public function test_cannot_see_download_button_when_disabled(): void
+    {
+        $this->fakeSeedGenerator->expectsGetCurrentSeed(null);
+
+        Mailbook::add(TestMail::class);
+
+        $this->get(route('mailbook.dashboard', ['class' => TestMail::class]))
+            ->assertSuccessful()
+            ->assertDontSee('Download mail')
+            ->assertDontSee('/mailbook/download');
     }
 
     public function test_can_fallback_to_unknown_class(): void

@@ -19,6 +19,10 @@ class MailDownloadController
 
     public function __invoke(MailbookRequest $request): Response
     {
+        if (! config('mailbook.download')) {
+            abort(404);
+        }
+
         $current = Mailbook::retrieve(
             class: $request->class(),
             variant: $request->variant(),
