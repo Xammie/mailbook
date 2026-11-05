@@ -57,6 +57,26 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit
 
+  phpunit-rector:
+    name: Rector rule tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.5
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --prefer-dist --no-interaction
+
+      - name: Execute tests
+        run: vendor/bin/phpunit tests/Rector
+
   infection:
     name: Mutation Tests
     runs-on: ubuntu-latest
