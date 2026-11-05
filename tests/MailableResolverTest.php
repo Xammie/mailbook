@@ -17,32 +17,32 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 
-class MailableResolverTest extends TestCase
+final class MailableResolverTest extends TestCase
 {
     #[DataProvider('provideMailables')]
     public function test_can_get_class_from_mailable($mailable): void
     {
         $resolver = new MailableResolver($mailable);
-        self::assertEquals(TestMail::class, $resolver->className());
+        self::assertSame(TestMail::class, $resolver->className());
     }
 
     #[DataProvider('provideNotifications')]
     public function test_can_get_class_from_notification($mailable): void
     {
         $resolver = new MailableResolver($mailable);
-        self::assertEquals(TestNotification::class, $resolver->className());
+        self::assertSame(TestNotification::class, $resolver->className());
     }
 
     public function test_can_get_class_from_class(): void
     {
         $resolver = new MailableResolver(TestMail::class);
-        self::assertEquals(TestMail::class, $resolver->className());
+        self::assertSame(TestMail::class, $resolver->className());
     }
 
     public function test_can_get_class_from_closure(): void
     {
         $resolver = new MailableResolver(fn () => new TestMail);
-        self::assertEquals(TestMail::class, $resolver->className());
+        self::assertSame(TestMail::class, $resolver->className());
     }
 
     public function test_cannot_get_class_from_closure_with_invalid_type(): void
@@ -58,7 +58,7 @@ class MailableResolverTest extends TestCase
         $resolver = new MailableResolver(function (): TestMail {
             throw new Exception('this will not be executed');
         });
-        self::assertEquals(TestMail::class, $resolver->className());
+        self::assertSame(TestMail::class, $resolver->className());
     }
 
     #[DataProvider('provideMailables')]
@@ -133,25 +133,25 @@ class MailableResolverTest extends TestCase
         $resolver->className();
         $resolver->className();
         $resolver->className();
-        self::assertEquals(1, $executed);
+        self::assertSame(1, $executed);
     }
 
     public function test_resolved_class_instance_can_be_built(): void
     {
         $resolver = new MailableResolver(fn () => new TestMail);
-        self::assertEquals('Test email subject', $resolver->resolve()->subject());
+        self::assertSame('Test email subject', $resolver->resolve()->subject());
     }
 
     public function test_can_resolve_class_name_from_notification_class(): void
     {
         $resolver = new MailableResolver(NotificationMail::class);
-        self::assertEquals(NotificationMail::class, $resolver->className());
+        self::assertSame(NotificationMail::class, $resolver->className());
     }
 
     public function test_can_resolve_class_name_from_notification_closure(): void
     {
         $resolver = new MailableResolver(fn () => new NotificationMail);
-        self::assertEquals(NotificationMail::class, $resolver->className());
+        self::assertSame(NotificationMail::class, $resolver->className());
     }
 
     public function test_can_resolve_mail_from_notification(): void

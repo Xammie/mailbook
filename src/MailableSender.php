@@ -15,9 +15,9 @@ use Xammie\Mailbook\Support\ConfigInjector;
 
 class MailableSender
 {
-    private ConfigInjector $injector;
+    private readonly ConfigInjector $injector;
 
-    public function __construct(private Mailable|Notification $subject, public mixed $notifiable = null)
+    public function __construct(private readonly Mailable|Notification $subject, public mixed $notifiable = null)
     {
         $this->injector = new ConfigInjector;
     }

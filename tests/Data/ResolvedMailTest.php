@@ -10,7 +10,7 @@ use Xammie\Mailbook\Data\ResolvedMail;
 use Xammie\Mailbook\Tests\Fixtures\EmailExpectation;
 use Xammie\Mailbook\Tests\TestCase;
 
-class ResolvedMailTest extends TestCase
+final class ResolvedMailTest extends TestCase
 {
     private EmailExpectation $emailExpectation;
 

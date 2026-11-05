@@ -9,7 +9,7 @@ use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\AlternativeMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\ClassicMail;
 
-class AlternativeMailTest extends TestCase
+final class AlternativeMailTest extends TestCase
 {
     #[DataProvider('mailProvider')]
     public function test_can_get_mail_subject_and_content($mailable): void
@@ -24,11 +24,9 @@ class AlternativeMailTest extends TestCase
         self::assertSame([], $item->bcc());
     }
 
-    public static function mailProvider(): array
+    public static function mailProvider(): \Iterator
     {
-        return [
-            [new ClassicMail],
-            [new AlternativeMail],
-        ];
+        yield [new ClassicMail];
+        yield [new AlternativeMail];
     }
 }

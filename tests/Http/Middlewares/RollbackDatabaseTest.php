@@ -10,7 +10,7 @@ use stdClass;
 use Xammie\Mailbook\Http\Middlewares\RollbackDatabase;
 use Xammie\Mailbook\Tests\TestCase;
 
-class RollbackDatabaseTest extends TestCase
+final class RollbackDatabaseTest extends TestCase
 {
     public function test_will_rollback_database(): void
     {

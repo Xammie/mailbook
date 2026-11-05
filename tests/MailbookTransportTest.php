@@ -6,7 +6,7 @@ namespace Xammie\Mailbook\Tests;
 
 use Xammie\Mailbook\MailbookTransport;
 
-class MailbookTransportTest extends TestCase
+final class MailbookTransportTest extends TestCase
 {
     public function test_has_correct_transport_name(): void
     {

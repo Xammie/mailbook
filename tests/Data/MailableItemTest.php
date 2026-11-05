@@ -7,6 +7,7 @@ namespace Xammie\Mailbook\Tests\Data;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use UnexpectedValueException;
+use Xammie\Mailbook\Data\MailableItem;
 use Xammie\Mailbook\Exceptions\MailbookException;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Support\ConfigInjector;
@@ -19,7 +20,7 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\WithAttachmentsMail;
 use Xammie\Mailbook\Tests\Support\ConfigInjectorExpectation;
 use Xammie\Mailbook\Tests\TestCase;
 
-class MailableItemTest extends TestCase
+final class MailableItemTest extends TestCase
 {
     private ConfigInjectorExpectation $configInjector;
 
@@ -107,6 +108,7 @@ class MailableItemTest extends TestCase
     {
         $item = Mailbook::add(TestMail::class);
         $other = Mailbook::mailables()->first();
+        self::assertInstanceOf(MailableItem::class, $other);
         self::assertTrue($item->is($other));
     }
 

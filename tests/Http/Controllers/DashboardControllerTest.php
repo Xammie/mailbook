@@ -15,7 +15,7 @@ use Xammie\Mailbook\Tests\Fixtures\User;
 use Xammie\Mailbook\Tests\Support\FakeSeedGeneratorExpectation;
 use Xammie\Mailbook\Tests\TestCase;
 
-class DashboardControllerTest extends TestCase
+final class DashboardControllerTest extends TestCase
 {
     private FakeSeedGeneratorExpectation $fakeSeedGenerator;
 
