@@ -13,7 +13,7 @@ use Xammie\Mailbook\Support\FakeSeedGenerator;
 class MailContentController
 {
     public function __construct(
-        private FakeSeedGenerator $fakeSeedGenerator,
+        private readonly FakeSeedGenerator $fakeSeedGenerator,
     ) {}
 
     public function __invoke(MailbookRequest $request): View

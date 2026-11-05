@@ -9,7 +9,7 @@ use Xammie\Mailbook\MailableSender;
 use Xammie\Mailbook\Tests\Fixtures\Mails\ShouldQueueMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 
-class ShouldQueueTest extends TestCase
+final class ShouldQueueTest extends TestCase
 {
     public function test_can_get_mail_content_from_mail_with_should_queue_interface(): void
     {

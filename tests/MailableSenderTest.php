@@ -19,7 +19,7 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 use Xammie\Mailbook\Tests\Fixtures\User;
 
-class MailableSenderTest extends TestCase
+final class MailableSenderTest extends TestCase
 {
     public function test_can_collect_mail(): void
     {

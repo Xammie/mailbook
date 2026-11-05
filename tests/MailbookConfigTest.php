@@ -7,7 +7,7 @@ namespace Xammie\Mailbook\Tests;
 use RuntimeException;
 use Xammie\Mailbook\MailbookConfig;
 
-class MailbookConfigTest extends TestCase
+final class MailbookConfigTest extends TestCase
 {
     public function test_can_get_send_to(): void
     {

@@ -14,7 +14,7 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedNotification;
 use Xammie\Mailbook\Tests\Support\FakeSeedGeneratorExpectation;
 use Xammie\Mailbook\Tests\TestCase;
 
-class MailContentControllerTest extends TestCase
+final class MailContentControllerTest extends TestCase
 {
     protected function setUp(): void
     {

@@ -14,7 +14,7 @@ use Symfony\Component\Mime\Part\DataPart;
 class ResolvedMail
 {
     public function __construct(
-        private Email $message
+        private readonly Email $message
     ) {}
 
     public function subject(): ?string
