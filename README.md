@@ -203,6 +203,60 @@ You can enable this in the config:
 'send_to' => 'test@mailbook.dev',
 ```
 
+## Rector
+
+When registering mails with a closure you can add a return type to that closure. Mailbook does not require it to
+function, but it uses it to read the class name of the mail through reflection, without having to actually build the
+mail through the container. Without a return type, Mailbook has to resolve the mail for every registered closure, which
+makes rendering the mailbook page significantly slower.
+
+Since the return type is not required to function, it is easily forgotten. Therefore this package ships a Rector rule
+which adds the return type automatically, based on the `new` statements returned by the closure:
+
+```php
+// before
+Mailbook::add(function () {
+    $user = User::factory()->make();
+
+    return new VerificationMail($user, '/example/url');
+});
+
+// after
+Mailbook::add(function (): VerificationMail {
+    $user = User::factory()->make();
+
+    return new VerificationMail($user, '/example/url');
+});
+```
+
+To use the rule, add it to the `rector.php` of your project:
+
+```php
+use Rector\Config\RectorConfig;
+use Xammie\Mailbook\Rector\AddMailbookClosureReturnTypeRector;
+
+return RectorConfig::configure()
+    ->withPaths([
+        __DIR__ . '/routes/mailbook.php',
+    ])
+    ->withRules([
+        AddMailbookClosureReturnTypeRector::class,
+    ]);
+```
+
+Next run Rector to process your mailbook route file:
+
+```bash
+vendor/bin/rector process
+```
+
+> [!NOTE]
+> The rule requires [Rector](https://getrector.com) to be installed as a dev dependency: `composer require --dev rector/rector`.
+
+Closures are only rewritten when all of their return statements create an instance of the same class using `new`.
+Closures that already have a return type, return different classes, or return something else than a new instance are
+left untouched.
+
 ## Customization
 
 You can publish the config file with:

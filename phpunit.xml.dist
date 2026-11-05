@@ -2,7 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd"
          backupGlobals="false"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/bootstrap.php"
          colors="true"
          processIsolation="false"
          stopOnFailure="false"
@@ -19,6 +19,10 @@
     </testsuite>
   </testsuites>
   <coverage/>
+  <php>
+    <!-- the rector rule tests boot the rector and phpstan containers in-process, which needs more memory during coverage runs -->
+    <ini name="memory_limit" value="512M"/>
+  </php>
   <logging>
     <junit outputFile="build/report.junit.xml"/>
   </logging>
