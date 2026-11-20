@@ -14,7 +14,7 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\UnsluggableSubjectMail;
 use Xammie\Mailbook\Tests\Support\FakeSeedGeneratorExpectation;
 use Xammie\Mailbook\Tests\TestCase;
 
-class MailDownloadControllerTest extends TestCase
+final class MailDownloadControllerTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -45,13 +45,13 @@ class MailDownloadControllerTest extends TestCase
 
         $content = $response->getContent();
 
-        self::assertStringContainsString('Subject: Test email subject', $content);
-        self::assertStringContainsString('hello@example.com', $content);
-        self::assertStringContainsString('MIME-Version: 1.0', $content);
-        self::assertStringContainsString('Date:', $content);
-        self::assertStringContainsString('Message-ID:', $content);
-        self::assertStringContainsString('Test mail', $content);
-        self::assertStringNotContainsString('remove@mailbook.dev', $content);
+        self::assertStringContainsString('Subject: Test email subject', (string) $content);
+        self::assertStringContainsString('hello@example.com', (string) $content);
+        self::assertStringContainsString('MIME-Version: 1.0', (string) $content);
+        self::assertStringContainsString('Date:', (string) $content);
+        self::assertStringContainsString('Message-ID:', (string) $content);
+        self::assertStringContainsString('Test mail', (string) $content);
+        self::assertStringNotContainsString('remove@mailbook.dev', (string) $content);
     }
 
     public function test_can_download_mail_with_recipients(): void
@@ -65,12 +65,12 @@ class MailDownloadControllerTest extends TestCase
 
         $content = $response->getContent();
 
-        self::assertStringContainsString('From: Harry Potter <harry@example.com>', $content);
-        self::assertStringContainsString('Reply-To: Support <questions@example.com>', $content);
-        self::assertStringContainsString('To: Mailbook <example@mailbook.dev>', $content);
-        self::assertStringContainsString('Cc: Mailbook <cc@mailbook.dev>', $content);
-        self::assertStringNotContainsString('remove@mailbook.dev', $content);
-        self::assertStringNotContainsString('bcc@mailbook.dev', $content);
+        self::assertStringContainsString('From: Harry Potter <harry@example.com>', (string) $content);
+        self::assertStringContainsString('Reply-To: Support <questions@example.com>', (string) $content);
+        self::assertStringContainsString('To: Mailbook <example@mailbook.dev>', (string) $content);
+        self::assertStringContainsString('Cc: Mailbook <cc@mailbook.dev>', (string) $content);
+        self::assertStringNotContainsString('remove@mailbook.dev', (string) $content);
+        self::assertStringNotContainsString('bcc@mailbook.dev', (string) $content);
     }
 
     public function test_can_download_selected_variant(): void
@@ -99,7 +99,7 @@ class MailDownloadControllerTest extends TestCase
         $response->assertSuccessful();
         $response->assertDownload('voorbeeld-e-mail-onderwerp.eml');
 
-        self::assertStringContainsString('Dit is een test mail', $response->getContent());
+        self::assertStringContainsString('Dit is een test mail', (string) $response->getContent());
     }
 
     public function test_can_download_with_seed(): void
@@ -124,7 +124,7 @@ class MailDownloadControllerTest extends TestCase
         $response->assertSuccessful();
         $response->assertDownload('unsluggablesubjectmail.eml');
 
-        self::assertStringContainsString('Subject: ***', $response->getContent());
+        self::assertStringContainsString('Subject: ***', (string) $response->getContent());
     }
 
     public function test_cannot_download_without_class(): void
