@@ -9,7 +9,7 @@ use Xammie\Mailbook\Support\FakeSeedGenerator;
 use Xammie\Mailbook\Tests\Fixtures\GeneratorExpectation;
 use Xammie\Mailbook\Tests\TestCase;
 
-class FakeSeedGeneratorTest extends TestCase
+final class FakeSeedGeneratorTest extends TestCase
 {
     private FakeSeedGenerator $subject;
 

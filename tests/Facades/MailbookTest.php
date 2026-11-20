@@ -8,15 +8,13 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\TestCase;
 
-class MailbookTest extends TestCase
+final class MailbookTest extends TestCase
 {
-    public static function localeProvider(): array
+    public static function localeProvider(): \Iterator
     {
-        return [
-            ['en'],
-            ['nl'],
-            ['de'],
-        ];
+        yield ['en'];
+        yield ['nl'];
+        yield ['de'];
     }
 
     #[DataProvider('localeProvider')]

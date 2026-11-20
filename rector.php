@@ -19,9 +19,10 @@ return RectorConfig::configure()
         PreferTestsWithSnakeCaseRector::class,
     ])
     ->withSets([
-        LevelSetList::UP_TO_PHP_80,
+        LevelSetList::UP_TO_PHP_82,
     ])
     ->withPreparedSets(
         codeQuality: true,
         earlyReturn: true,
+        phpunitCodeQuality: true,
     );

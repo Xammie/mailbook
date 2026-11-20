@@ -16,8 +16,8 @@ use Xammie\Mailbook\Support\FakeSeedGenerator;
 class DashboardController
 {
     public function __construct(
-        private FakeSeedGenerator $fakeSeedGenerator,
-        private MailbookConfig $config,
+        private readonly FakeSeedGenerator $fakeSeedGenerator,
+        private readonly MailbookConfig $config,
     ) {}
 
     public function __invoke(MailbookRequest $request): View

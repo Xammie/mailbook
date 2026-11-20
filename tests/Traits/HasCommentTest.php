@@ -7,7 +7,7 @@ namespace Xammie\Mailbook\Tests\Traits;
 use Xammie\Mailbook\Tests\TestCase;
 use Xammie\Mailbook\Traits\HasComment;
 
-class HasCommentTest extends TestCase
+final class HasCommentTest extends TestCase
 {
     public function test_can_get_comment(): void
     {

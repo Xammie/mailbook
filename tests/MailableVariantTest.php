@@ -7,7 +7,7 @@ namespace Xammie\Mailbook\Tests;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 
-class MailableVariantTest extends TestCase
+final class MailableVariantTest extends TestCase
 {
     public function test_executes_the_closure_once(): void
     {

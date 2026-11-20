@@ -9,7 +9,7 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\TestCase;
 use Xammie\Mailbook\Traits\HasLabel;
 
-class HasLabelTest extends TestCase
+final class HasLabelTest extends TestCase
 {
     public function test_can_get_label(): void
     {

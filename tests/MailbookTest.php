@@ -11,7 +11,7 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedMail;
 
-class MailbookTest extends TestCase
+final class MailbookTest extends TestCase
 {
     public function test_can_get_mailables(): void
     {

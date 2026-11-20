@@ -7,7 +7,7 @@ namespace Xammie\Mailbook\Tests\Support;
 use Xammie\Mailbook\Support\ConfigInjector;
 use Xammie\Mailbook\Tests\TestCase;
 
-class ConfigInjectorTest extends TestCase
+final class ConfigInjectorTest extends TestCase
 {
     public function test_can_set_and_revert_config(): void
     {

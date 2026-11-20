@@ -9,7 +9,7 @@ use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\TestCase;
 
-class MailCollectionTest extends TestCase
+final class MailCollectionTest extends TestCase
 {
     public function test_can_collect_mails(): void
     {

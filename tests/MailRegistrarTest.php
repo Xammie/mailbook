@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Xammie\Mailbook\Tests;
 
+use Xammie\Mailbook\Data\MailableItem;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\Fixtures\Mails\ClassicMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\OtherMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestMail;
 use Xammie\Mailbook\Tests\Fixtures\Mails\TestNotification;
 
-class MailRegistrarTest extends TestCase
+final class MailRegistrarTest extends TestCase
 {
     public function test_can_register_mailable_with_label_as_first_method(): void
     {
@@ -47,7 +48,9 @@ class MailRegistrarTest extends TestCase
             });
         $first = Mailbook::mailables()->first();
         $last = Mailbook::mailables()->last();
+        self::assertInstanceOf(MailableItem::class, $first);
         self::assertSame(['test@mailbook.dev'], $first->to());
+        self::assertInstanceOf(MailableItem::class, $last);
         self::assertSame(['test@mailbook.dev'], $last->to());
     }
 
@@ -89,6 +92,7 @@ class MailRegistrarTest extends TestCase
                 Mailbook::add(TestNotification::class);
             });
         $first = Mailbook::mailables()->first();
+        self::assertInstanceOf(MailableItem::class, $first);
         self::assertSame(['test@mailbook.dev'], $first->to());
     }
 }

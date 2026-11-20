@@ -7,7 +7,7 @@ namespace Xammie\Mailbook\Tests\Data;
 use Xammie\Mailbook\Data\MailableGroup;
 use Xammie\Mailbook\Tests\TestCase;
 
-class MailableGroupTest extends TestCase
+final class MailableGroupTest extends TestCase
 {
     public function test_can_create_mailable_group(): void
     {

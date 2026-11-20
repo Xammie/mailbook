@@ -15,7 +15,7 @@ use Xammie\Mailbook\Tests\Fixtures\Mails\TranslatedNotification;
 use Xammie\Mailbook\Tests\Fixtures\User;
 use Xammie\Mailbook\Tests\TestCase;
 
-class MailSendControllerTest extends TestCase
+final class MailSendControllerTest extends TestCase
 {
     protected function setUp(): void
     {

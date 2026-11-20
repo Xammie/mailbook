@@ -9,7 +9,7 @@ use Xammie\Mailbook\Commands\InstallMailbookCommand;
 use Xammie\Mailbook\Facades\Mailbook;
 use Xammie\Mailbook\Tests\TestCase;
 
-class InstallMailbookCommandTest extends TestCase
+final class InstallMailbookCommandTest extends TestCase
 {
     public function test_can_install_mailbook(): void
     {

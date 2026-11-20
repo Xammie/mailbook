@@ -7,7 +7,7 @@ namespace Xammie\Mailbook\Tests\Traits;
 use Xammie\Mailbook\Tests\TestCase;
 use Xammie\Mailbook\Traits\HasCategory;
 
-class HasCategoryTest extends TestCase
+final class HasCategoryTest extends TestCase
 {
     public function test_can_get_category(): void
     {

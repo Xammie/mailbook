@@ -8,7 +8,7 @@ use Xammie\Mailbook\Data\MailableVariant;
 use Xammie\Mailbook\MailableResolver;
 use Xammie\Mailbook\Tests\TestCase;
 
-class MailableVariantTest extends TestCase
+final class MailableVariantTest extends TestCase
 {
     public function test_can_create_a_mailable_variant(): void
     {
