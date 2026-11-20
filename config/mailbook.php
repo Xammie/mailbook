@@ -68,6 +68,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Download
+    |--------------------------------------------------------------------------
+    |
+    | This option allows you to enable the download mail button. When enabled
+    | mails can be downloaded as a complete .eml file including headers.
+    */
+    'download' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Domain Name
     |--------------------------------------------------------------------------
     |

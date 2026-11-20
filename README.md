@@ -203,6 +203,19 @@ You can enable this in the config:
 'send_to' => 'test@mailbook.dev',
 ```
 
+## Downloading Mails
+
+Every mail can be downloaded as a complete `.eml` file containing the entire message including its headers, just like
+it would have if it was really sent. You can open this file in your favorite email client to inspect the raw mail.
+
+This feature is disabled by default, you can enable it in the config:
+
+```php
+'download' => true,
+```
+
+When enabled a download button will show in the top-right corner of the dashboard.
+
 ## Customization
 
 You can publish the config file with:

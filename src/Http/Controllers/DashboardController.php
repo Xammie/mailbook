@@ -34,6 +34,13 @@ class DashboardController
 
         $locale = Mailbook::getLocale() ?? config('app.locale');
 
+        $url = [
+            'class' => $current->class(),
+            'variant' => $current->currentVariant()?->slug,
+            'locale' => $locale,
+            's' => $this->fakeSeedGenerator->getCurrentSeed(),
+        ];
+
         return view('mailbook::dashboard', [
             'current' => $current,
             'subject' => $current->subject(),
@@ -43,12 +50,9 @@ class DashboardController
             'locales' => $this->config->getLocales(),
             'currentLocale' => $locale,
             'meta' => $current->meta(),
-            'preview' => route('mailbook.content', [
-                'class' => $current->class(),
-                'variant' => $current->currentVariant()?->slug,
-                'locale' => $locale,
-                's' => $this->fakeSeedGenerator->getCurrentSeed(),
-            ]),
+            'preview' => route('mailbook.content', $url),
+            'download' => config('mailbook.download'),
+            'download_url' => route('mailbook.download', $url),
             'send' => config('mailbook.send'),
             'send_to' => $this->config->getSendTo(),
             'style' => new HtmlString(File::get(__DIR__.'/../../../resources/dist/mailbook.css')),
